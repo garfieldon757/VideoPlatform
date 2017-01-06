@@ -117,77 +117,56 @@
             <div class="col-xs-9 col-xs-9-remove">
                 <div class="ng-scope">
                     <div class="page-header ng-scope">
-                        <h1>个人视频管理</h1>
+                        <h1>视频管理页</h1>
                     </div>
                     <div class="ng-scope">
-                    		
-                    	<form id="form_VideoProfile" action="videoInfoEdit" method="POST">
-		                    <div class="ng-scope">
-		                        <div class="panel ng-scope">
-		                            <div class="panel-body">
-			                            <div id="hidden_div" class="form-group" hidden>
-			                            	<input id="videoId" name="videoId" class="form-group" type="text"  value="${video.videoId}">
-		                                </div>
-			                            <div id="videoCover_div" class="form-group" >
-		                                    <div class="form-inline">
-			                                    <label for="videoCover" class="form-group">视频封面</label>
-		                                        &nbsp;&nbsp;&nbsp;&nbsp;
-		                                    	<img id="videoCover" src="${video.videoCoverLink}" class="img-responsive"  class="form-group" alt="Responsive image">
-		                                    </div>
-		                                </div>
-		                                <div id="videoName_div" class="form-group" >
-		                                    <div class="form-inline">
-		                                        <label for="videoName" class="form-group">标题</label>
-		                                        &nbsp;&nbsp;&nbsp;&nbsp;
-		                                        <input id="videoName" name="videoName" class="form-group" type="text"  value="${video.videoName}">
-		                                    </div>
-		                                </div>
-		                                <div class="form-group">
-		                                    <div class="form-inline">
-		                                        <label for="introduction" class="form-group">简介</label>
-		                                        &nbsp;&nbsp;&nbsp;&nbsp;
-		                                        <textarea class="form-group" id="videoDescription" name="videoDescription"  rows="3" value="${video.videoDescription}">${video.videoDescription}</textarea>
-		                                    </div>
-		                                </div>
-		                                <div class="form-group form-inline">
-		                                        <label for="videoCategory" class="form-group">分类</label>
-		                                        &nbsp;&nbsp;
-                                        		<select class="form-group" id="videoCategory" name="videoCategory">
-                                        				<option>${video.tblDatadictionary.dataDictionaryName}</option>
-                                        			<c:forEach items="${videoCategoryList}" var="vcl">
-                                        				<c:if test="${ vcl.dataDictionaryName != video.tblDatadictionary.dataDictionaryName }">
-                                        					<option>${vcl.dataDictionaryName}</option>
-                                        				</c:if>
-                                        			</c:forEach>
-                                        		</select>
-		                                </div>
-		                                <div class="form-group" >
-		                                    <div>
-		                                        <label for="tag" class="form-inline">标签</label>
-		                                        &nbsp;&nbsp;
-                                        		<input id="tag" name="tag" class="form-group" type="text">(多个标签用空格分隔)
-                                        		<div class="form-inline">
-		                                        		<span class="form-group">常用的标签</span>
-		                                        		<div class="bs-example form-group">
-			                                        		<c:forEach items="${videoTagList}" var="vtl" varStatus="status">
-		                                        				<span class="label label-default">${vtl.tblTag.tagName}</span>
-			                                        	    </c:forEach>
-		                                        	  </div>
-	                                        	</div>
-		                                    </div>
-		                                </div>
-		                            </div>
-		                        </div>
-		                        
-		                    </div>
-		                <button class="btn btn-primary" id="updateVideoProfileBtn">保存</button>
-		                </form>
+
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+
+                                    <div class="row">
+                                        <div class="col-md-8">
+
+                                            <div class="form-group row">
+                                                <label for="video_keyword" class="col-sm-2 control-label">视频关键字</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="video_keyword" name="video_keyword" placeholder="输入视频关键字">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <div class="col-sm-offset-2 col-sm-10">
+                                                    <button type="submit" id="videoKeywordSearchBtn" class="btn btn-primary btn-lg" >查询</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                        	<th>视频封面</th>
+                                            <th>视频标题</th>
+                                            <th>类别</th>
+                                            <th>标签</th>
+                                            <th>简介</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="favorite_Tbody">
+                                        <tr>
+                                            <td colspan="7" style="text-align:center;vertical-align:middle;"> 尚未查询结果 </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
                     </div>
                 </div>
-
             </div>
-
-        </div>
 
     </div>
 </div>
@@ -211,9 +190,43 @@
 <script type="text/javascript">
 
     $(document).ready(function(){
-    	
-    	var t = $("#videoDescription").val();
-    	alert(t);
+
+        $("#videoKeywordSearchBtn").click(function(){
+
+            var videoKeyword = $("#video_keyword").val() ;
+
+            $.ajax({
+                url:"ajax_search_videoManage_videos",
+                data:{
+            	videoKeyword : videoKeyword
+                },
+                type:"GET",
+                success:function(jsonString){
+
+                    jsonObject = eval("(" + jsonString + ")");
+                    jsonObjectLength = jsonObject.length;
+                    var concatStr = "";
+                    for(var i = 0 ; i < jsonObjectLength ; i++)
+                    {
+                        concatStr += 	"<tr>"
+                                + 			"<td>" + "<img class='img-rounded' src='" + jsonObject[i].videoCoverLink + "' data-holder-rendered='true' style='width: 50px; height: 50px;'>" + "</td>"
+                                + 			"<td>" + jsonObject[i].videoName + "</td>"
+                                + 			"<td>" + jsonObject[i]. + "</td>"
+                                + 			"<td>" + jsonObject[i].numOfPlay + "</td>"
+                                + 			"<td>" + jsonObject[i].numOfComment + "</td>"
+                                + 			"<td><a href=''>监控</a>/<a href=''>删除</a></td>"
+                                +		 "</tr>";
+                    }
+
+                    $("#myVideos_Tbody").html("");
+                    $("#myVideos_Tbody").html(concatStr);
+
+                }
+            })
+
+        });
+
+
     });
 
 

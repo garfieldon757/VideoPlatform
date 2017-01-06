@@ -20,6 +20,7 @@ public interface VideoManager {
 	public TblVideo getVideoByVideoID(String videoID);
 	public List<CustomVideoInfo> getCustomVideoInfoList(String videoName, String uploadDateStart, String uploadDateEnd) throws ParseException;
 	public List<TblVideotagrelation> getVideoTagList(String videoId);
-	public void addVideotagrelations(TblUser user, String videoId, String[] newTagList);
+	public void addVideotagrelations(TblUser user, String videoId, List<String> newTagList);
+	public void addTags(List<String> newTagList);
 
 }

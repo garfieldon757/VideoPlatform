@@ -84,10 +84,19 @@ public class VideoManagerImpl implements VideoManager{
 	}
 
 	@Override
-	public void addVideotagrelations(TblUser user, String videoId, String[] newTagList) {
+	public void addVideotagrelations(TblUser user, String videoId, List<String> newTagList) {
 		// TODO Auto-generated method stub
 		for(String newTag:newTagList){
 			videoDAO.addVideotagrelation(user, videoId, newTag);
+		}
+		return;
+	}
+
+	@Override
+	public void addTags(List<String> newTagList) {
+		// TODO Auto-generated method stub
+		for(String newTag:newTagList){
+			videoDAO.addTag(newTag);
 		}
 		return;
 	}

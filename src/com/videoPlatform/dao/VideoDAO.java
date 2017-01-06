@@ -17,6 +17,7 @@ public interface VideoDAO {
 	public int getVideoListSizeByVideoCategory(TblDatadictionary videoCategory);
 	public TblVideo getVideoByVideoID(String videoID);
 	public List<TblVideo> getVideoByVideoname(String userId, String videoName);
+	public List<TblVideo> getVideoByVideokeyword(String userId, String videoKeyword);
 	public Integer getNumOfComments(String videoId, String uploadDateStart, String uploadDateEnd) throws ParseException;
 	public Integer getNumOfPlays(String videoId, String uploadDateStart, String uploadDateEnd);
 	public List<TblVideotagrelation> getVideoTagList(String videoId);
@@ -25,6 +26,8 @@ public interface VideoDAO {
 	public TblVideo updateVideo(String videoId, String videoName, String videoDescription, String videoCategory);
 	public TblTag getTblTagByTagName(String newTag);
 	public void addVideotagrelation(TblUser user, String videoId, String newTag);
+	public void addTag(String newTag);
+	
 	
 	
 

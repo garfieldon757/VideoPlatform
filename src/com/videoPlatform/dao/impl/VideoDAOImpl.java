@@ -3,6 +3,7 @@ package com.videoPlatform.dao.impl;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -80,6 +81,17 @@ public class VideoDAOImpl implements VideoDAO{
 																					.getResultList();
 		return videoList;
 	}
+	
+	@Override
+	public List<TblVideo> getVideoByVideokeyword(String userId, String videoKeyword) {
+		// TODO Auto-generated method stub
+		//随后需要将这个方法修改成“高级”的模糊查询
+		String jpql  = "select v from TblVideo v where v.tblUser.userId =:userId and v.videoName LIKE :videoKeyword";
+		List<TblVideo> videoList = em.createQuery(jpql).setParameter("userId", userId)
+																					.setParameter("videoKeyword", "%" + videoKeyword + "%")
+																					.getResultList();
+		return videoList;
+	}
 
 	@Override
 	public Integer getNumOfComments(String videoId, String uploadDateStart, String uploadDateEnd) throws ParseException {
@@ -150,7 +162,7 @@ public class VideoDAOImpl implements VideoDAO{
 		TblVideo video = getVideoByVideoID(videoId);
 		video.setVideoName(videoName);
 		video.setVideoDescription(videoDescription);
-		TblDatadictionary tblDatadictionary = getTblDatadictionaryByVideoCategory(videoDescription);
+		TblDatadictionary tblDatadictionary = getTblDatadictionaryByVideoCategory(videoCategory);
 		video.setTblDatadictionary(tblDatadictionary);
 		
 		em.merge(video);
@@ -171,6 +183,8 @@ public class VideoDAOImpl implements VideoDAO{
 		TblVideotagrelation tblVideotagrelation = new TblVideotagrelation();
 		TblVideo tblVideo = getVideoByVideoID(videoId);
 		TblTag tblTag = getTblTagByTagName(newTag);
+		UUID uuid = UUID.randomUUID();
+		tblVideotagrelation.setVideoTagRelationId(uuid.toString());
 		tblVideotagrelation.setTblUser(user);
 		tblVideotagrelation.setTblVideo(tblVideo);
 		tblVideotagrelation.setTblTag(tblTag);
@@ -178,6 +192,18 @@ public class VideoDAOImpl implements VideoDAO{
 		em.persist(tblVideotagrelation);
 		return ;
 	}
+
+	@Override
+	public void addTag(String newTag) {
+		// TODO Auto-generated method stub
+		TblTag newTblTag = new TblTag();
+		UUID uuid = UUID.randomUUID();
+		newTblTag.setTagId(uuid.toString());
+		newTblTag.setTagName(newTag);
+		em.persist(newTblTag);
+	}
+
+
 
 	
 

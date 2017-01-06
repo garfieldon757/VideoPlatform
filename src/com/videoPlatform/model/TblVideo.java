@@ -93,7 +93,7 @@ public class TblVideo implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "videoCategory_ID")
+	@JoinColumn(name = "dataDictionary_ID")
 	public TblDatadictionary getTblDatadictionary() {
 		return this.tblDatadictionary;
 	}
