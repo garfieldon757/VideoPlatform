@@ -155,7 +155,7 @@
                                             <th>操作</th>
                                         </tr>
                                         </thead>
-                                        <tbody id="favorite_Tbody">
+                                        <tbody id="myVideos_Tbody">
                                         <tr>
                                             <td colspan="7" style="text-align:center;vertical-align:middle;"> 尚未查询结果 </td>
                                         </tr>
@@ -211,9 +211,9 @@
                         concatStr += 	"<tr>"
                                 + 			"<td>" + "<img class='img-rounded' src='" + jsonObject[i].videoCoverLink + "' data-holder-rendered='true' style='width: 50px; height: 50px;'>" + "</td>"
                                 + 			"<td>" + jsonObject[i].videoName + "</td>"
-                                + 			"<td>" + jsonObject[i]. + "</td>"
-                                + 			"<td>" + jsonObject[i].numOfPlay + "</td>"
-                                + 			"<td>" + jsonObject[i].numOfComment + "</td>"
+                                + 			"<td>" + jsonObject[i].tblDatadictionary.dataDictionaryName + "</td>"
+                                + 			"<td><a href=''>标签浮动框</a></td>"
+                                + 			"<td>" + jsonObject[i].videoDescription + "</td>"
                                 + 			"<td><a href=''>监控</a>/<a href=''>删除</a></td>"
                                 +		 "</tr>";
                     }
