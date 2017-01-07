@@ -1,12 +1,11 @@
 package com.videoPlatform.service;
 
+import java.sql.Date;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.videoPlatform.model.TblDatadictionary;
-import com.videoPlatform.model.TblTag;
 import com.videoPlatform.model.TblUser;
 import com.videoPlatform.model.TblVideo;
 import com.videoPlatform.model.TblVideotagrelation;
@@ -22,5 +21,8 @@ public interface VideoManager {
 	public List<TblVideotagrelation> getVideoTagList(String videoId);
 	public void addVideotagrelations(TblUser user, String videoId, List<String> newTagList);
 	public void addTags(List<String> newTagList);
+	
+	public HashMap<String, Integer> getPlayInfo(String videoId, Date videoPlayDatetimeStart, Date videoPlayDatetimeEnd);
+	public HashMap<String, Integer> getPlayCountList(String videoId, Date videoPlayDatetimeStart, Date videoPlayDatetimeEnd);
 
 }

@@ -1,23 +1,20 @@
 package com.videoPlatform.dao.impl;
 
+import java.sql.Date;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.videoPlatform.dao.UserDAO;
 import com.videoPlatform.dao.VideoDAO;
 import com.videoPlatform.model.TblDatadictionary;
 import com.videoPlatform.model.TblTag;
 import com.videoPlatform.model.TblUser;
-import com.videoPlatform.model.TblUservideorelation;
 import com.videoPlatform.model.TblVideo;
 import com.videoPlatform.model.TblVideotagrelation;
 
@@ -201,6 +198,32 @@ public class VideoDAOImpl implements VideoDAO{
 		newTblTag.setTagId(uuid.toString());
 		newTblTag.setTagName(newTag);
 		em.persist(newTblTag);
+	}
+
+	@Override
+	public Integer getTotalCountOfPlay(String videoId, Date videoPlayDatetimeStart, Date videoPlayDatetimeEnd) {
+		// TODO Auto-generated method stub
+		String videoPlayDatetimeStart_string = videoPlayDatetimeStart.toString();
+		String videoPlayDatetimeEnd_string = videoPlayDatetimeEnd.toString();
+		String jpql = "select count(uvr) from TblUservideorelation uvr where uvr.tblVideo.videoId =:videoId and uvr.userVideoRelationOperationTimestamps >:videoPlayDatetimeStart and uvr.userVideoRelationOperationTimestamps <:videoPlayDatetimeEnd";
+		Number totalCount_play = (Number)em.createQuery(jpql).setParameter("videoId", videoId)
+																					.setParameter("videoPlayDatetimeStart", videoPlayDatetimeStart)
+																					.setParameter("videoPlayDatetimeEnd", videoPlayDatetimeEnd)
+																					.getSingleResult();
+		
+		return totalCount_play.intValue();
+	}
+
+	@Override
+	public Integer getTotalCountOfPlayPeople(String videoId, Date videoPlayDatetimeStart, Date videoPlayDatetimeEnd) {
+		// TODO Auto-generated method stub
+		String jpql = "select count(DISTINCT user_ID) from TblUservideorelation uvr where uvr.tblVideo.videoId =:videoId and uvr.userVideoRelationType =:userVideoRelationType and uvr.userVideoRelationOperationTimestamps >:videoPlayDatetimeStart and uvr.userVideoRelationOperationTimestamps <:videoPlayDatetimeEnd ";
+		Number totalCount_playPeople = (Number) em.createQuery(jpql).setParameter("videoId", videoId)
+																								.setParameter("userVideoRelationType", "play")
+																								.setParameter("videoPlayDatetimeStart", videoPlayDatetimeStart)
+																								.setParameter("videoPlayDatetimeEnd", videoPlayDatetimeEnd)
+																								.getSingleResult();
+		return totalCount_playPeople.intValue();
 	}
 
 

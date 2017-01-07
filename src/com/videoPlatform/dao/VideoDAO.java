@@ -1,5 +1,6 @@
 package com.videoPlatform.dao;
 
+import java.sql.Date;
 import java.text.ParseException;
 import java.util.List;
 
@@ -27,6 +28,9 @@ public interface VideoDAO {
 	public TblTag getTblTagByTagName(String newTag);
 	public void addVideotagrelation(TblUser user, String videoId, String newTag);
 	public void addTag(String newTag);
+	
+	public Integer getTotalCountOfPlay(String videoId, Date videoPlayDatetimeStart, Date videoPlayDatetimeEnd);
+	public Integer getTotalCountOfPlayPeople(String videoId, Date videoPlayDatetimeStart, Date videoPlayDatetimeEnd);
 	
 	
 	

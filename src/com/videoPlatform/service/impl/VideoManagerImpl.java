@@ -1,7 +1,9 @@
 package com.videoPlatform.service.impl;
 
+import java.sql.Date;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.videoPlatform.dao.RelationDAO;
 import com.videoPlatform.dao.VideoDAO;
 import com.videoPlatform.model.TblDatadictionary;
 import com.videoPlatform.model.TblTag;
@@ -18,12 +21,16 @@ import com.videoPlatform.model.TblVideo;
 import com.videoPlatform.model.TblVideotagrelation;
 import com.videoPlatform.service.VideoManager;
 import com.videoPlatform.util.CustomVideoInfo;
+import com.videoPlatform.util.MonthCalculate;
 
 @Service("vm")
 public class VideoManagerImpl implements VideoManager{
 
 	@Autowired(required=true)
 	private VideoDAO videoDAO;
+	
+	@Autowired(required=true)
+	private RelationDAO relationDAO;
 	
 	@Autowired(required=true)
 	private HttpServletRequest httpServletRequest;
@@ -99,6 +106,44 @@ public class VideoManagerImpl implements VideoManager{
 			videoDAO.addTag(newTag);
 		}
 		return;
+	}
+
+	@Override
+	public HashMap<String, Integer> getPlayInfo(String videoId, Date videoPlayDatetimeStart,
+			Date videoPlayDatetimeEnd) {
+		// TODO Auto-generated method stub
+		Integer totalCount_play = videoDAO.getTotalCountOfPlay(videoId, videoPlayDatetimeStart, videoPlayDatetimeEnd);
+		Integer totalCount_playProple = videoDAO.getTotalCountOfPlayPeople(videoId, videoPlayDatetimeStart, videoPlayDatetimeEnd);
+		Integer totalMinite_play = 0;//videoDAO.getTotalMiniteOfPlay();
+		double totalPercent_play = 0;//videoDAO.getPercentOfPlay()
+				
+		HashMap<String, Integer> videoInfo = new HashMap<String, Integer>();
+		videoInfo.put("totalCount_play", totalCount_play );
+		videoInfo.put("totalCount_playProple", totalCount_playProple );
+		videoInfo.put("totalCount_playProple", totalCount_playProple);
+		videoInfo.put("totalPercent_play", 0);
+			
+		return videoInfo;
+	}
+
+	@Override
+	public HashMap<String, Integer> getPlayCountList(String videoId, Date videoPlayDatetimeStart,
+			Date videoPlayDatetimeEnd) {
+		// TODO Auto-generated method stub
+		MonthCalculate monthCalculate = new MonthCalculate(videoPlayDatetimeStart, videoPlayDatetimeEnd);
+		List<String> xAxisValueList = monthCalculate.calculateAndOutput();//x轴坐标获取
+		List<Integer> yAxisValueList = new ArrayList<Integer>();
+		for(int i=0; i < (xAxisValueList.size()-1); i++){
+			Integer temp = relationDAO.getVideoPlayNumList(videoId, xAxisValueList.get(i), xAxisValueList.get(i));
+			yAxisValueList.add(temp);
+		}//根据x轴的坐标值获取对应的y轴数据值
+		
+		HashMap<String, Integer> playCountList = new HashMap<String, Integer>();
+		for(int i=0; i < xAxisValueList.size(); i++){
+			playCountList.put( xAxisValueList.get(i) , yAxisValueList.get(i) );
+		}
+		
+		return playCountList;
 	}
 
 

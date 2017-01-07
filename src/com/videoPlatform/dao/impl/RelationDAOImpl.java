@@ -50,9 +50,9 @@ public class RelationDAOImpl implements RelationDAO {
 		
 		String jpql = "select count(uvr) from TblUservideorelation uvr where uvr.userVideoRelationOperationTimestamps >:uploadDateStart and uvr.userVideoRelationOperationTimestamps <:uploadDateEnd and uvr.userVideoRelationType =:relationType ";
 		Number num = (Number) em.createQuery(jpql).setParameter("uploadDateStart", uploadDateStart_temp2)
-																																.setParameter("uploadDateEnd", uploadDateEnd_temp2)
-																																.setParameter("relationType", "play")
-																																.getResultList().get(0);
+																				.setParameter("uploadDateEnd", uploadDateEnd_temp2)
+																				.setParameter("relationType", "play")
+																				.getResultList().get(0);
 		Integer numOfPlays = num.intValue();
 		return numOfPlays;
 		
@@ -73,6 +73,24 @@ public class RelationDAOImpl implements RelationDAO {
 			return null;
 		}
 		
+	}
+
+	@Override
+	public Integer getVideoPlayNumList(String videoId, String datetimeStart, String datetimeEnd) {
+		// TODO Auto-generated method stub
+		
+		java.sql.Date uploadDateStart_temp1 = java.sql.Date.valueOf(datetimeStart+"-01");
+		java.util.Date uploadDateStart_temp2 = new java.util.Date(uploadDateStart_temp1.getTime());
+		java.sql.Date uploadDateEnd_temp1 = java.sql.Date.valueOf(datetimeEnd+"-01");
+		java.util.Date uploadDateEnd_temp2 = new java.util.Date(uploadDateEnd_temp1.getTime());
+		
+		String jpql = "select count(uvr) from TblUservideorelation uvr where uvr.userVideoRelationOperationTimestamps >:uploadDateStart and uvr.userVideoRelationOperationTimestamps <:uploadDateEnd and uvr.userVideoRelationType =:relationType ";
+		Number num = (Number) em.createQuery(jpql).setParameter("uploadDateStart", uploadDateStart_temp2)
+																				.setParameter("uploadDateEnd", uploadDateEnd_temp2)
+																				.setParameter("relationType", "play")
+																				.getResultList().get(0);
+		Integer numOfPlays = num.intValue();
+		return numOfPlays;
 	}
 
 }

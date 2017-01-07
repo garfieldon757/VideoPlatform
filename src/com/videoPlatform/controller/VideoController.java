@@ -1,10 +1,15 @@
 package com.videoPlatform.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,14 +127,12 @@ public class VideoController {
 	public ModelAndView videoManage_load(HttpServletRequest request){
 		ModelAndView mv = new ModelAndView("videoManage");
 
-		
-		
 		return mv;
 	}
 	
-	@RequestMapping(value="ajax_search_videoManage_videos")
+	@RequestMapping(value="ajax_search_videoManage_videos", method=RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	@ResponseBody
-	public String ajax_search_videoManage_videos(String videoKeyword) throws JsonProcessingException{
+	public String ajax_search_videoManage_videos(String videoKeyword, HttpServletResponse response) throws JsonProcessingException{
 
 		HttpSession session = httpServletRequest.getSession();
 		TblUser user = (TblUser) session.getAttribute("user");
@@ -138,6 +141,42 @@ public class VideoController {
 		
 		ObjectMapper mapper = new ObjectMapper(); 
 	    String jsonString = mapper.writeValueAsString(tblVideoList);
+	    return jsonString;
+	}
+	
+	@RequestMapping(value="videoConsole_load")
+	public ModelAndView videoConsole_load(String videoId, HttpServletRequest request){
+		ModelAndView mv = new ModelAndView("videoConsole");
+		TblVideo video = vm.getVideoByVideoID(videoId);
+		mv.addObject("video", video);
+		return mv;
+	}
+	
+	@RequestMapping(value="ajax_search_videoConsole_videoPlayInfo", method=RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String ajax_search_videoConsole_videoPlayInfo(String videoId, String videoPlayDatetimeStart, String videoPlayDatetimeEnd, HttpServletResponse response) throws JsonProcessingException, ParseException{
+
+		HttpSession session = httpServletRequest.getSession();
+		TblUser user = (TblUser) session.getAttribute("user");
+		
+		HashMap<String , Integer> videoPlayInfo = new HashMap<String , Integer>();
+		HashMap<String , Integer> playCountList = new HashMap<String , Integer>();
+		
+		SimpleDateFormat df =  new SimpleDateFormat("yyyy-MM-dd");
+		java.util.Date videoPlayDatetimeStart_temp1 = df.parse(videoPlayDatetimeStart);
+		java.sql.Date videoPlayDatetimeStart_final = new java.sql.Date(videoPlayDatetimeStart_temp1.getTime());
+		
+		java.util.Date videoPlayDatetimeEnd_temp1 = df.parse(videoPlayDatetimeEnd);
+		java.sql.Date videoPlayDatetimeEnd_final = new java.sql.Date(videoPlayDatetimeEnd_temp1.getTime());//为了将2017-01格式转换成2017-01-01的格式的类型
+		
+		videoPlayInfo = vm.getPlayInfo(videoId, videoPlayDatetimeStart_final, videoPlayDatetimeEnd_final);//获取当前视频的播放统计数据
+		playCountList = vm.getPlayCountList(videoId, videoPlayDatetimeStart_final, videoPlayDatetimeEnd_final);
+		List<Object> returnObj = new ArrayList<Object>();
+		returnObj.add(videoPlayInfo);
+		returnObj.add(playCountList);
+		
+		ObjectMapper mapper = new ObjectMapper(); 
+	    String jsonString = mapper.writeValueAsString(returnObj);
 	    return jsonString;
 	}
 	
