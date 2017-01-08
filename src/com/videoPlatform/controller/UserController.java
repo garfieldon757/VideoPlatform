@@ -6,12 +6,14 @@ import java.util.List;
 import java.sql.Date;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.videoPlatform.dao.UserDAO;
 import com.videoPlatform.model.TblUser;
 import com.videoPlatform.model.TblUservideorelation;
+import com.videoPlatform.model.TblVideo;
 import com.videoPlatform.service.UserManager;
 import com.videoPlatform.service.VideoManager;
 import com.videoPlatform.util.CustomVideoInfo;
@@ -33,10 +36,14 @@ public class UserController {
 	UserManager um;
 	
 	@Autowired(required=true)
-	UserDAO ud;
+	VideoManager vm;
 	
 	@Autowired(required=true)
-	VideoManager vm;
+	UserDAO userDAO;
+	
+	@Autowired(required=true)
+    private HttpServletRequest httpServletRequest;
+	
 
 	@RequestMapping(value="signUp_page")
 	public String signUp_page(){
@@ -141,6 +148,27 @@ public class UserController {
 		return mv;//跳转至personalProfile页面
 	}
 	
+	
+	@RequestMapping(value="userManage_load")
+	public ModelAndView userManage_load(HttpServletRequest request){
+		ModelAndView mv = new ModelAndView("userManage");
+		return mv;
+	}
+	
+	@RequestMapping(value="ajax_search_userManage_users", method=RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String ajax_search_userManage_users(String userNickname, HttpServletResponse response) throws JsonProcessingException{
+
+		HttpSession session = httpServletRequest.getSession();
+		TblUser user = (TblUser) session.getAttribute("user");
+		
+		//List<TblVideo> tblVideoList = videoDAO.getVideoByVideokeyword(user.getUserId(), videoKeyword);
+		List<TblUser> tblUserList = userDAO.getUserByUserNickName_likeSearch(userNickname);
+		
+		ObjectMapper mapper = new ObjectMapper(); 
+	    String jsonString = mapper.writeValueAsString(tblUserList);
+	    return jsonString;
+	}
 	
 	
 	

@@ -3,8 +3,10 @@ package com.videoPlatform.service.impl;
 import java.sql.Date;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -127,19 +129,22 @@ public class VideoManagerImpl implements VideoManager{
 	}
 
 	@Override
-	public HashMap<String, Integer> getPlayCountList(String videoId, Date videoPlayDatetimeStart,
+	public TreeMap<String, Integer> getPlayCountList(String videoId, Date videoPlayDatetimeStart,
 			Date videoPlayDatetimeEnd) {
 		// TODO Auto-generated method stub
 		MonthCalculate monthCalculate = new MonthCalculate(videoPlayDatetimeStart, videoPlayDatetimeEnd);
 		List<String> xAxisValueList = monthCalculate.calculateAndOutput();//x轴坐标获取
 		List<Integer> yAxisValueList = new ArrayList<Integer>();
-		for(int i=0; i < (xAxisValueList.size()-1); i++){
-			Integer temp = relationDAO.getVideoPlayNumList(videoId, xAxisValueList.get(i), xAxisValueList.get(i));
+		for(int i=0;  ; i++){
+			if( xAxisValueList.get(i+1).equals("") ){
+				break;
+			}
+			Integer temp = relationDAO.getVideoPlayNumList(videoId, xAxisValueList.get(i), xAxisValueList.get(i+1));//边界不受影响，因为xAxis专门在结尾添加了结尾的月份信息
 			yAxisValueList.add(temp);
 		}//根据x轴的坐标值获取对应的y轴数据值
 		
-		HashMap<String, Integer> playCountList = new HashMap<String, Integer>();
-		for(int i=0; i < xAxisValueList.size(); i++){
+		TreeMap<String, Integer> playCountList = new TreeMap<String, Integer>();
+		for(int i=0; i < (xAxisValueList.size()-2); i++){
 			playCountList.put( xAxisValueList.get(i) , yAxisValueList.get(i) );
 		}
 		

@@ -117,7 +117,7 @@
             <div class="col-xs-9 col-xs-9-remove">
                 <div class="ng-scope">
                     <div class="page-header ng-scope">
-                        <h1>视频管理页</h1>
+                        <h1>用户监控页</h1>
                     </div>
                     <div class="ng-scope">
 

@@ -64,6 +64,14 @@ public class UserDAOImpl implements UserDAO{
 			return null;
 		}
 	}
+	
+	@Override
+	public List<TblUser> getUserByUserNickName_likeSearch(String userNickName) {
+		// TODO Auto-generated method stub
+		String jpql = "select u from TblUser u where u.userNickName LIKE :userNickName";
+		List<TblUser> userList = em.createQuery(jpql).setParameter("userNickName", "%" + userNickName + "%").getResultList();
+		return userList;
+	}
 
 	@Override
 	public TblUser updateTblUser(TblUser user) {
@@ -71,5 +79,7 @@ public class UserDAOImpl implements UserDAO{
 		em.merge(user);
 		return user;
 	}
+
+	
 	
 }

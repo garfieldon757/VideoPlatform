@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 import com.videoPlatform.model.TblDatadictionary;
 import com.videoPlatform.model.TblUser;
@@ -23,6 +24,6 @@ public interface VideoManager {
 	public void addTags(List<String> newTagList);
 	
 	public HashMap<String, Integer> getPlayInfo(String videoId, Date videoPlayDatetimeStart, Date videoPlayDatetimeEnd);
-	public HashMap<String, Integer> getPlayCountList(String videoId, Date videoPlayDatetimeStart, Date videoPlayDatetimeEnd);
+	public TreeMap<String, Integer> getPlayCountList(String videoId, Date videoPlayDatetimeStart, Date videoPlayDatetimeEnd);
 
 }

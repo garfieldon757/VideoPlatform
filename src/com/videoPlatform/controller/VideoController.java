@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -160,7 +161,7 @@ public class VideoController {
 		TblUser user = (TblUser) session.getAttribute("user");
 		
 		HashMap<String , Integer> videoPlayInfo = new HashMap<String , Integer>();
-		HashMap<String , Integer> playCountList = new HashMap<String , Integer>();
+		TreeMap<String , Integer> playCountList = new TreeMap<String , Integer>();
 		
 		SimpleDateFormat df =  new SimpleDateFormat("yyyy-MM-dd");
 		java.util.Date videoPlayDatetimeStart_temp1 = df.parse(videoPlayDatetimeStart);
