@@ -12,11 +12,10 @@
     <link rel="shortcut icon" href="/public/images/favicons/favicon.ico">
 
     <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-    <!-- build:css(.) /public/css/app.min.css -->
     <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
     <link href="css/app.css" rel="stylesheet" type="text/css">
     <link href="css/carer-badges.css" rel="stylesheet" type="text/css">
-    <!-- endbuild -->
+    <link href="css/comment.css" rel="stylesheet" type="text/css">
 </head>
 <body class="ng-scope">
 
@@ -53,7 +52,7 @@
 				<div class="horizontal-header ng-scope" ng-if="currentUser &amp;&amp; currentUser.isConsumer">
 				    <div class="container ">
 				    	<img class="pic-thumb pull-left" src="img/logo.jpg">
-				        <h4 id="userName_label" class="ng-binding" value="${user.userName}">${user.userName}</h4>
+				        <h4 id="userName_label" class="ng-binding" value="${user.userNickName}">${user.userNickName}</h4>
 				        <a href="logout"><button type="button" class="btn btn-default pull-right">退出</button></a>
 				    </div>
 				</div>
@@ -124,6 +123,81 @@
 
                 </div>
             </div>
+            
+            <div class="panel panel-default">
+	            <div class="panel-body">
+	            
+	                <div class="page-header">
+	                	<h2>发布评论</h2>
+	                </div>
+	                
+	                <div id="video-block-footer" class="row">
+		                <div id="top_reply">
+			                <div id="commentArea" class="out">
+			                    <div class="np-reply-box blueLight np-reply-box-active" id="np-reply-box" style="">
+			                    
+			                        <div class="np-reply-box-content textarea">
+			                            <textarea tabindex="1" autocomplete="off" name="content" accesskey="u" id="top_textarea" style="height: 60px; padding: 10px;"></textarea>
+			                        </div>
+			                        
+			                        <div class="commtSub np-reply-box-footer" style="position:relative;display:block;height:40px" id="p_login_btn">
+				                        <div class="submitBtn">
+				                            <span class="subline">
+												<a href="javascript:void(0)" class="np-btn np-btn-submit" id="top_post_btn" hidefocus="true">发表评论</a>
+											</span>
+				                        </div>
+				                    </div>
+				                    
+			                    </div>
+			                </div>
+			            </div>
+	                </div>
+	                
+	                <ul class="post-list np-comment-list">
+	                	<li class="np-title-hot">热门评论</li>
+	                	<li class="np-post   topAll  " id="">
+
+	                	  <img class="np-avatar popClick" src="" alt="头像">
+
+	                	  <div class="np-post-body">
+	                	    <div class="np-post-header">
+	                	      <span class="">
+	                	        <a href="" class="np-user popClick ">用户昵称</a>
+	                	      </span>
+	                	      <span class="np-time" data="1483915021">回复时间</span></div>
+	                	    <div class="np-post-content" data-height="5">
+	                	      <p>回复内容</p>
+	                	    </div>
+	                	    <div class="np-post-footer">
+	                	      <a href="javascript:void(0)" class="np-btn np-btn-reply reply">回复</a>
+	                	    </div>
+	                	  </div>
+	                	  
+	                	  <ul class="children"><div class="pop_reply np-reply-box np-reply-box-inline" id="public_reply">
+
+			                      <div class="textarea np-reply-box-content">
+			                          <textarea name="content" id=""></textarea>
+			                      </div>
+			                          
+			                      <div class="commtSub" id="p_login_btn">
+			                          <div class="np-reply-box-footer">
+			                              <div class="np-reply-box-info" style="display: block;">
+			                                  <span class="tips"></span>
+			                              </div>
+			                              <a href="" class="submit np-btn np-btn-submit" id="" hidefocus="true">回复</a>
+			                          </div>
+			                      </div>
+			                      
+			                  </div>
+			               </ul>
+	                	  
+	                	</li>
+	                	
+	                </ul>
+	                
+	            </div>
+	        </div>
+            
         </div>
         <div class="col-md-3">
             <div class="panel panel-default">
