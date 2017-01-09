@@ -2,7 +2,9 @@ package com.videoPlatform.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 import java.sql.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,10 +21,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.videoPlatform.dao.RelationDAO;
 import com.videoPlatform.dao.UserDAO;
 import com.videoPlatform.model.TblUser;
 import com.videoPlatform.model.TblUservideorelation;
 import com.videoPlatform.model.TblVideo;
+import com.videoPlatform.service.RelationManager;
 import com.videoPlatform.service.UserManager;
 import com.videoPlatform.service.VideoManager;
 import com.videoPlatform.util.CustomVideoInfo;
@@ -39,7 +43,13 @@ public class UserController {
 	VideoManager vm;
 	
 	@Autowired(required=true)
+	RelationManager rm;
+	
+	@Autowired(required=true)
 	UserDAO userDAO;
+	
+	@Autowired(required=true)
+	RelationDAO relationDAO;
 	
 	@Autowired(required=true)
     private HttpServletRequest httpServletRequest;
@@ -170,6 +180,49 @@ public class UserController {
 	    return jsonString;
 	}
 	
+	@RequestMapping(value="userConsole_load")
+	public ModelAndView userConsole_load(HttpServletRequest request){
+		ModelAndView mv = new ModelAndView("userConsole");
+		TblUser user = um.getSession(request, "user");
+		mv.addObject("user", user);
+		return mv;
+	}
+	
+	@RequestMapping(value="ajax_search_userConsole_operationInfo", method=RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String ajax_search_userConsole_operationInfo(String userId, String userOperationDatetimeStart, String userOperationDatetimeEnd, HttpServletResponse response) throws JsonProcessingException, ParseException{
+		
+		SimpleDateFormat df =  new SimpleDateFormat("yyyy-MM-dd");
+		java.util.Date userOperationDatetimeStart_temp1 = df.parse(userOperationDatetimeStart);
+		java.sql.Date userOperationDatetimeStart_final = new java.sql.Date(userOperationDatetimeStart_temp1.getTime());
+		java.util.Date userOperationDatetimeEnd_temp1 = df.parse(userOperationDatetimeEnd);
+		java.sql.Date userOperationDatetimeEnd_final = new java.sql.Date(userOperationDatetimeEnd_temp1.getTime());
+		
+		//获取用户视频交互信息折线图信息
+		TreeMap<String , Integer> playCountList = new TreeMap<String , Integer>();
+		playCountList = rm.getOperationCountList(userId, userOperationDatetimeStart_final, userOperationDatetimeEnd_final, "play");
+		TreeMap<String , Integer> collectCountList = new TreeMap<String , Integer>();
+		collectCountList = rm.getOperationCountList(userId, userOperationDatetimeStart_final, userOperationDatetimeEnd_final, "collect");
+		TreeMap<String , Integer> commentCountList = new TreeMap<String , Integer>();
+		commentCountList = rm.getOperationCountList(userId, userOperationDatetimeStart_final, userOperationDatetimeEnd_final, "comment");
+		
+		//获取用户视频交互信息详情数据
+		List<TblUservideorelation> tblUservideorelation_play_List = relationDAO.getUservideorelationList(userId, userOperationDatetimeStart_final, userOperationDatetimeEnd_final, "play" );
+		List<TblUservideorelation> tblUservideorelation_collect_List = relationDAO.getUservideorelationList(userId, userOperationDatetimeStart_final, userOperationDatetimeEnd_final, "collect" );
+		List<TblUservideorelation> tblUservideorelation_comment_List = relationDAO.getUservideorelationList(userId, userOperationDatetimeStart_final, userOperationDatetimeEnd_final, "comment" );
+		
+		//存入结构体队列，json返回至前台
+		List<Object> returnObj = new ArrayList<Object>();
+		returnObj.add(playCountList);
+		returnObj.add(collectCountList);
+		returnObj.add(commentCountList);
+		returnObj.add(tblUservideorelation_play_List);
+		returnObj.add(tblUservideorelation_collect_List);
+		returnObj.add(tblUservideorelation_comment_List);
+		ObjectMapper mapper = new ObjectMapper(); 
+	    String jsonString = mapper.writeValueAsString(returnObj);
+	    return jsonString;
+	}
 	
 	
 	

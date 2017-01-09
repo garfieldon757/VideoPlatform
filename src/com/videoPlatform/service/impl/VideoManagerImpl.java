@@ -139,7 +139,7 @@ public class VideoManagerImpl implements VideoManager{
 			if( xAxisValueList.get(i+1).equals("") ){
 				break;
 			}
-			Integer temp = relationDAO.getVideoPlayNumList(videoId, xAxisValueList.get(i), xAxisValueList.get(i+1));//边界不受影响，因为xAxis专门在结尾添加了结尾的月份信息
+			Integer temp = relationDAO.getVideoPlayNum(videoId, xAxisValueList.get(i), xAxisValueList.get(i+1));//边界不受影响，因为xAxis专门在结尾添加了结尾的月份信息
 			yAxisValueList.add(temp);
 		}//根据x轴的坐标值获取对应的y轴数据值
 		

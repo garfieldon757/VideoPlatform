@@ -1,6 +1,6 @@
 package com.videoPlatform.dao.impl;
 
-import java.util.Date;
+import java.sql.Date;
 import java.text.ParseException;
 import java.util.List;
 
@@ -67,7 +67,7 @@ public class RelationDAOImpl implements RelationDAO {
 																															.setParameter("userVideoRelationType", operation_type)
 																															.getResultList();
 		if(tblUservideorelationList.size() > 0){
-			Date operationDatetime = tblUservideorelationList.get(0).getUserVideoRelationOperationTimestamps();
+			Date operationDatetime = new java.sql.Date(tblUservideorelationList.get(0).getUserVideoRelationOperationTimestamps().getTime());
 			return operationDatetime;
 		}else{
 			return null;
@@ -76,7 +76,7 @@ public class RelationDAOImpl implements RelationDAO {
 	}
 
 	@Override
-	public Integer getVideoPlayNumList(String videoId, String datetimeStart, String datetimeEnd) {
+	public Integer getVideoPlayNum(String videoId, String datetimeStart, String datetimeEnd) {
 		// TODO Auto-generated method stub
 		
 		java.sql.Date uploadDateStart_temp1 = java.sql.Date.valueOf(datetimeStart+"-01");
@@ -91,6 +91,72 @@ public class RelationDAOImpl implements RelationDAO {
 																				.getResultList().get(0);
 		Integer numOfPlays = num.intValue();
 		return numOfPlays;
+	}
+
+	@Override
+	public List<TblUservideorelation> getUservideorelationList(String userId, Date userOperationDatetimeStart,
+			Date userOperationDatetimeEnd, String operationType) {
+		// TODO Auto-generated method stub
+		String jpql = "select uvr from TblUservideorelation uvr where uvr.tblUser.userId =:userId and uvr.userVideoRelationOperationTimestamps >:uploadDateStart and uvr.userVideoRelationOperationTimestamps <:uploadDateEnd and uvr.userVideoRelationType =:relationType ";
+		List<TblUservideorelation> tblUservideorelationList = em.createQuery(jpql).setParameter("userId", userId)
+																																.setParameter("uploadDateStart", userOperationDatetimeStart)
+																																.setParameter("uploadDateEnd", userOperationDatetimeEnd)
+																																.setParameter("relationType", operationType)
+																																.getResultList();
+		return tblUservideorelationList;
+	}
+
+	@Override
+	public Integer getUserPlayNum(String userId, String datetimeStart, String datetimeEnd) {
+		// TODO Auto-generated method stub
+		java.sql.Date dateStart_temp1 = java.sql.Date.valueOf(datetimeStart+"-01");
+		java.util.Date dateStart_temp2 = new java.util.Date(dateStart_temp1.getTime());
+		java.sql.Date dateEnd_temp1 = java.sql.Date.valueOf(datetimeEnd+"-01");
+		java.util.Date dateEnd_temp2 = new java.util.Date(dateEnd_temp1.getTime());
+		
+		String jpql = "select count(uvr) from TblUservideorelation uvr where uvr.tblUser.userId =:userId and uvr.userVideoRelationOperationTimestamps >:uploadDateStart and uvr.userVideoRelationOperationTimestamps <:uploadDateEnd and uvr.userVideoRelationType =:relationType ";
+		Number num = (Number) em.createQuery(jpql).setParameter("userId", userId)
+																				.setParameter("uploadDateStart", dateStart_temp2)
+																				.setParameter("uploadDateEnd", dateEnd_temp2)
+																				.setParameter("relationType", "play")
+																				.getResultList().get(0);
+		Integer numOfPlays = num.intValue();
+		return numOfPlays;
+	}
+
+	@Override
+	public Integer getUserCollectNum(String userId, String datetimeStart, String datetimeEnd) {
+		// TODO Auto-generated method stub
+		java.sql.Date dateStart_temp1 = java.sql.Date.valueOf(datetimeStart+"-01");
+		java.util.Date dateStart_temp2 = new java.util.Date(dateStart_temp1.getTime());
+		java.sql.Date dateEnd_temp1 = java.sql.Date.valueOf(datetimeEnd+"-01");
+		java.util.Date dateEnd_temp2 = new java.util.Date(dateEnd_temp1.getTime());
+		
+		String jpql = "select count(uvr) from TblUservideorelation uvr where uvr.tblUser.userId =:userId and uvr.userVideoRelationOperationTimestamps >:uploadDateStart and uvr.userVideoRelationOperationTimestamps <:uploadDateEnd and uvr.userVideoRelationType =:relationType ";
+		Number num = (Number) em.createQuery(jpql).setParameter("userId", userId)
+																				.setParameter("uploadDateStart", dateStart_temp2)
+																				.setParameter("uploadDateEnd", dateEnd_temp2)
+																				.setParameter("relationType", "collect")
+																				.getResultList().get(0);
+		Integer numOfCollect = num.intValue();
+		return numOfCollect;
+	}
+
+	@Override
+	public Integer getUserCommentNum(String userId, String datetimeStart, String datetimeEnd) {
+		// TODO Auto-generated method stub
+		java.sql.Date dateStart_temp1 = java.sql.Date.valueOf(datetimeStart+"-01");
+		java.util.Date dateStart_temp2 = new java.util.Date(dateStart_temp1.getTime());
+		java.sql.Date dateEnd_temp1 = java.sql.Date.valueOf(datetimeEnd+"-01");
+		java.util.Date dateEnd_temp2 = new java.util.Date(dateEnd_temp1.getTime());
+		
+		String jpql = "select count(c) from TblComment c where c.tblUser.userId =:userId and c.commentCommentTimestamps >:uploadDateStart and c.commentCommentTimestamps <:uploadDateEnd ";
+		Number num = (Number) em.createQuery(jpql).setParameter("userId", userId)
+																				.setParameter("uploadDateStart", dateStart_temp2)
+																				.setParameter("uploadDateEnd", dateEnd_temp2)
+																				.getResultList().get(0);
+		Integer numOfComment = num.intValue();
+		return numOfComment;
 	}
 
 }

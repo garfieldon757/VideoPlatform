@@ -28,7 +28,6 @@ public class TblComment implements java.io.Serializable {
 	private TblVideo tblVideo;
 	private TblUser tblUser;
 	private TblComment tblComment;
-	private String commentContent;
 	private Date commentCommentTimestamps;
 	@JsonIgnore
 	private Set<TblComment> tblComments = new HashSet<TblComment>(0);
@@ -41,12 +40,11 @@ public class TblComment implements java.io.Serializable {
 	}
 
 	public TblComment(String commentId, TblVideo tblVideo, TblUser tblUser, TblComment tblComment,
-			String commentContent, Date commentCommentTimestamps, Set<TblComment> tblComments) {
+			Date commentCommentTimestamps, Set<TblComment> tblComments) {
 		this.commentId = commentId;
 		this.tblVideo = tblVideo;
 		this.tblUser = tblUser;
 		this.tblComment = tblComment;
-		this.commentContent = commentContent;
 		this.commentCommentTimestamps = commentCommentTimestamps;
 		this.tblComments = tblComments;
 	}
@@ -90,15 +88,6 @@ public class TblComment implements java.io.Serializable {
 
 	public void setTblComment(TblComment tblComment) {
 		this.tblComment = tblComment;
-	}
-
-	@Column(name = "comment_content")
-	public String getCommentContent() {
-		return this.commentContent;
-	}
-
-	public void setCommentContent(String commentContent) {
-		this.commentContent = commentContent;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)

@@ -1,9 +1,10 @@
 package com.videoPlatform.service.impl;
 
-import java.util.Date;
+import java.sql.Date;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import com.videoPlatform.model.TblUser;
 import com.videoPlatform.model.TblVideo;
 import com.videoPlatform.service.RelationManager;
 import com.videoPlatform.util.CustomVideoInfo;
+import com.videoPlatform.util.MonthCalculate;
 
 @Service("rm")
 public class RelationManagerImpl implements RelationManager {
@@ -46,6 +48,40 @@ public class RelationManagerImpl implements RelationManager {
 			customVideoInfoList.add(customVideoInfo);//添加到list的尾部
 		}
 		return customVideoInfoList;
+	}
+
+	@Override
+	public TreeMap<String, Integer> getOperationCountList(String userId, Date userOperationDatetimeStart,
+			Date userOperationDatetimeEnd, String operationType) {
+		// TODO Auto-generated method stub
+		MonthCalculate monthCalculate = new MonthCalculate(userOperationDatetimeStart, userOperationDatetimeEnd);
+		List<String> xAxisValueList = monthCalculate.calculateAndOutput();//x轴坐标获取
+		List<Integer> yAxisValueList = new ArrayList<Integer>();
+		for(int i=0;  ; i++){
+			if( xAxisValueList.get(i+1).equals("") ){
+				break;
+			}
+			Integer temp = 0;
+			switch (operationType){
+				case "play":
+					temp = relationDAO.getUserPlayNum(userId, xAxisValueList.get(i), xAxisValueList.get(i+1) );
+					break;
+				case "collect":
+					temp = relationDAO.getUserCollectNum(userId, xAxisValueList.get(i), xAxisValueList.get(i+1) );
+					break;
+				case "comment":
+					temp = relationDAO.getUserCommentNum(userId, xAxisValueList.get(i), xAxisValueList.get(i+1) );
+					break;
+			}
+			yAxisValueList.add(temp);
+		}//根据x轴的坐标值获取对应的y轴数据值
+		
+		TreeMap<String, Integer> countList = new TreeMap<String, Integer>();
+		for(int i=0; i < (xAxisValueList.size()-2); i++){
+			countList.put( xAxisValueList.get(i) , yAxisValueList.get(i) );
+		}
+		
+		return countList;
 	}
 
 }

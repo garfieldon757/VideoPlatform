@@ -171,7 +171,7 @@ public class VideoController {
 		java.sql.Date videoPlayDatetimeEnd_final = new java.sql.Date(videoPlayDatetimeEnd_temp1.getTime());//为了将2017-01格式转换成2017-01-01的格式的类型
 		
 		videoPlayInfo = vm.getPlayInfo(videoId, videoPlayDatetimeStart_final, videoPlayDatetimeEnd_final);//获取当前视频的播放统计数据
-		playCountList = vm.getPlayCountList(videoId, videoPlayDatetimeStart_final, videoPlayDatetimeEnd_final);
+		playCountList = vm.getPlayCountList(videoId, videoPlayDatetimeStart_final, videoPlayDatetimeEnd_final);//获取当前视频的播放统计折线图数据
 		List<Object> returnObj = new ArrayList<Object>();
 		returnObj.add(videoPlayInfo);
 		returnObj.add(playCountList);

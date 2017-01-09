@@ -29,7 +29,7 @@ public class TblUser implements java.io.Serializable {
 	private String userNickName;
 	private String userSex;
 	private String userBirthPlace;
-	private String userAvatarImfLink;
+	private String userAvatarImgLink;
 	private String userEmail;
 	private String userPhoneNumber;
 	private String userPassword;
@@ -55,7 +55,7 @@ public class TblUser implements java.io.Serializable {
 	}
 
 	public TblUser(String userId, TblRole tblRole, String userNickName, String userSex, String userBirthPlace,
-			String userAvatarImfLink, String userEmail, String userPhoneNumber, String userPassword, Date userBirthDate,
+			String userAvatarImgLink, String userEmail, String userPhoneNumber, String userPassword, Date userBirthDate,
 			Set<TblVideo> tblVideos, Set<TblUserpicture> tblUserpictures, Set<TblComment> tblComments,
 			Set<TblUservideorelation> tblUservideorelations, Set<TblUserlog> tblUserlogs,
 			Set<TblVideotagrelation> tblVideotagrelations) {
@@ -64,7 +64,7 @@ public class TblUser implements java.io.Serializable {
 		this.userNickName = userNickName;
 		this.userSex = userSex;
 		this.userBirthPlace = userBirthPlace;
-		this.userAvatarImfLink = userAvatarImfLink;
+		this.userAvatarImgLink = userAvatarImgLink;
 		this.userEmail = userEmail;
 		this.userPhoneNumber = userPhoneNumber;
 		this.userPassword = userPassword;
@@ -125,13 +125,13 @@ public class TblUser implements java.io.Serializable {
 		this.userBirthPlace = userBirthPlace;
 	}
 
-	@Column(name = "user_avatarImfLink")
-	public String getUserAvatarImfLink() {
-		return this.userAvatarImfLink;
+	@Column(name = "user_avatarImgLink")
+	public String getUserAvatarImgLink() {
+		return this.userAvatarImgLink;
 	}
 
-	public void setUserAvatarImfLink(String userAvatarImfLink) {
-		this.userAvatarImfLink = userAvatarImfLink;
+	public void setUserAvatarImgLink(String userAvatarImgLink) {
+		this.userAvatarImgLink = userAvatarImgLink;
 	}
 
 	@Column(name = "user_email")
