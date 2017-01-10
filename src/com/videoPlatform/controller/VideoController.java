@@ -74,9 +74,13 @@ public class VideoController {
 		ModelAndView mv = new ModelAndView("VideoPlayer");
 		TblVideo video = vm.getVideoByVideoID(videoID);//视频部分信息
 		List<TblComment> commentList = relationDAO.getCommentListByVideoId(videoID);//评论部分信息
+		List<TblVideotagrelation> tblVideotagrelationList = videoDAO.getVideoTagList(videoID);//标签部分信息
+		//推荐视频部分信息
+		//推荐最近看过该视频用户信息
 		if(video != null){
 			mv.addObject("video", video);
 			mv.addObject("commentList", commentList);
+			mv.addObject("tblVideotagrelationList", tblVideotagrelationList);
 		}
 		return mv;
 	}

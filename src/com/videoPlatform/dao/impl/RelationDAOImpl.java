@@ -177,7 +177,7 @@ public class RelationDAOImpl implements RelationDAO {
 	@Override
 	public List<TblComment> getCommentListByVideoId(String videoId) {
 		// TODO Auto-generated method stub
-		String jpql = "select c from TblComment c where c.tblVideo.videoId =:videoId";
+		String jpql = "select c from TblComment c where c.tblVideo.videoId =:videoId ORDER BY c.commentCommentTimestamps DESC ";
 		List<TblComment> commentList = em.createQuery(jpql).setParameter("videoId", videoId).getResultList();
 		return commentList;
 	}
@@ -186,7 +186,7 @@ public class RelationDAOImpl implements RelationDAO {
 	public TblComment getCommentByCommentId(String replyTo_commentId) {
 		// TODO Auto-generated method stub
 		String jpql = "select c from TblComment c where c.commentId =:replyTo_commentId";
-		TblComment replyTo_comment = (TblComment) em.createQuery(jpql).setParameter("replyTo_commentId", replyTo_commentId).getResultList();
+		TblComment replyTo_comment = (TblComment) em.createQuery(jpql).setParameter("replyTo_commentId", replyTo_commentId).getResultList().get(0);
 		return replyTo_comment;
 	}
 

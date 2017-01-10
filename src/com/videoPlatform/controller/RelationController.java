@@ -100,7 +100,7 @@ public class RelationController {
 		
 		ObjectMapper mapper = new ObjectMapper(); 
 	    String jsonString = mapper.writeValueAsString(comment);
-	    return "success";
+	    return jsonString;
 	}
 	
 }

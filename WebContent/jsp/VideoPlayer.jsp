@@ -156,7 +156,7 @@
 	                </div>
 	                
 	                <ul id="comment_list" class="post-list np-comment-list">
-	                	<li id="comment_list_first" class="np-title-hot">热门评论</li>
+	                	<li id="comment_list_first" class="np-title-hot">相关评论</li>
 	                	
 	                	<c:forEach items="${commentList}" var="c">
 			                	<li class="np-post   topAll  " id="">
@@ -170,21 +170,21 @@
 			                	      </span>
 			                	      <c:if test="${c.tblComment != null}">
 				                	      <span class="">
-				                	        <a id="replyTo_userNickName" class="np-user popClick ">回复给->${c.tblComment.tblUser.userNickName}</a>
+				                	        <a id="replyTo_userNickName" class="np-btn np-btn-reply reply">  ${c.tblComment.tblUser.userNickName}</a>
 				                	      </span>
 			                	      </c:if>
-			                	      <span id="reply_datetime" class="np-time">${c.commentCommentTimestamps}</span>
+			                	      <span id="reply_datetime" class="np-time"><fmt:formatDate value="${c.commentCommentTimestamps}" pattern="yyyy-MM-dd HH:mm:ss" /></span>
 		                	        </div>
 			                	    <div class="np-post-content" data-height="5">
 			                	      <p id="replyContent">${c.commentContent}</p>
 			                	    </div>
 			                	    <div class="np-post-footer">
-			                	      <a id="reply_link" class="np-btn np-btn-reply reply">回复</a>
+			                	      <a id="reply_link_${c.commentId}" class="np-btn np-btn-reply reply" onclick="replyBox_open('public_reply_${c.commentId}')" >回复</a>
 			                	    </div>
 			                	  </div>
 			                	  
 			                	  <ul class="children">
-			                	  		<div id="public_reply" class="pop_reply np-reply-box np-reply-box-inline" style="display:none">
+			                	  		<div id="public_reply_${c.commentId}" class="pop_reply np-reply-box np-reply-box-inline" style="display:none">
 		
 					                      <div class="textarea np-reply-box-content">
 					                          <textarea name="reply_content_${c.commentId}" id="reply_content_${c.commentId}"></textarea>
@@ -192,7 +192,7 @@
 					                          
 					                      <div class="commtSub" id="p_login_btn">
 					                          <div class="np-reply-box-footer">
-					                          		<a id="reply_btn_${c.commentId}" class="submit np-btn np-btn-submit" onclick="reply(${c.commentId}, reply_content_${c.commentId})" >回复</a>
+					                          		<a id="reply_btn_${c.commentId}" class="submit np-btn np-btn-submit" onclick="reply('${c.commentId}', $('#reply_content_${c.commentId}').val() )" >回复</a>
 					                          </div>
 					                      </div>
 					                      
@@ -200,7 +200,14 @@
 					               </ul>
 			                	  
 			                	</li>
-		                	</c:foreach>
+		                	</c:forEach>
+		                	
+		                	<div id="loadMore" class="np-load-more" style="display: block;">
+
+			                    <span style="display: block;">加载更多</span>
+			                    <em style="display: none;" class="np-load-more-loading">没有更多了</em>
+	
+			                </div>
 	                	
 	                </ul>
 	                
@@ -209,13 +216,106 @@
             
         </div>
         <div class="col-md-3">
+        
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="page-header">
-                        <h2>相关视频推荐</h2>
+                        <h2>该视频常用标签</h2>
                     </div>
+                    
+            		<div class="bs-example">
+            			<c:forEach items="tblVideotagrelationList" var="vtr" varStatus="status" begin="1" end="12">
+            				<c:when test="${status.index % 4 == 0}">
+	            				<div class="row">
+	            			</c:when>
+            				
+	            			<h3 class=" col-md-3"><span class="label label-default" >${vtr.tblTag.tagName}</span></h3>
+            				
+	            			<c:when test="${status.index % 4 == 3}">
+            					</div>
+	            			</c:when>
+		            				
+        				</c:forEach>
+            	   </div>
+                    
                 </div>
             </div>
+            
+            <div class="panel panel-default">
+	            <div class="panel-body">
+	                <div class="page-header">
+	                    <h2>相关视频推荐</h2>
+	                </div>
+	                <div>
+		                <a href="#" class="thumbnail">
+			                <img data-src="holder.js/100%x180" alt="100%x180" src="http://v.cnad.cn/vf3/qqgg1/2016.03.16/微软产品展示_20160317083847.JPG" style="height: 180px; width: 100%; display: block;">
+			              </a>
+			              <a href="#" class="thumbnail">
+			                <img data-src="holder.js/100%x180" alt="100%x180" src="http://v.cnad.cn/vf3/qqgg1/2016.03.10/联想 Lenovo - U300S - 本色篇 杨丽萍_20160311085811.JPG" style="height: 180px; width: 100%; display: block;">
+			              </a>
+			              <a href="#" class="thumbnail">
+			                <img data-src="holder.js/100%x180" alt="100%x180" src="http://v.cnad.cn/vf3/qqgg1/2016.03.09/【苹果】Apple 苹果创意广告_20160310083706.JPG" style="height: 180px; width: 100%; display: block;">
+			              </a>
+			              <a href="#" class="thumbnail">
+			                <img data-src="holder.js/100%x180" alt="100%x180" src="http://v.cnad.cn/vf3/qqgg1/2016.03.07/【锤子手机】Smartisan T1 炫酷广告_20160308084521.JPG" style="height: 180px; width: 100%; display: block;">
+			              </a>
+	                </div>
+	            </div>
+	        </div>
+	        
+	        <div class="panel panel-default">
+	            <div class="panel-body">
+	                <div class="page-header">
+	                    <h2>谁在看这部广告视频</h2>
+	                </div>
+	                
+	                <ul class="media-list">
+	                
+			                <li class="media">
+			                  <a class="media-left" href="#">
+			                  		<img data-src="holder.js/64x64" alt="64x64" src="" data-holder-rendered="true" style="width: 64px; height: 64px;">
+			                  </a>
+			                  <div class="media-body">
+			                    <h4 class="media-heading">Media heading</h4>
+				                     <div class="media-body">
+						                <h4 class="media-heading">徐周兴</h4>
+						                <p>22分钟前</p>
+						              </div>
+			                  </div>
+			              </li>
+		              
+			              <li class="media">
+			                  <a class="media-left" href="#">
+			                  		<img data-src="holder.js/64x64" alt="64x64" src="http://v.cnad.cn/vf3/qqgg1/2016.03.16/微软产品展示_20160317083847.JPG" data-holder-rendered="true" style="width: 64px; height: 64px;">
+			                  </a>
+			                  <div class="media-body">
+			                    <h4 class="media-heading">Media heading</h4>
+				                     <div class="media-body">
+						                <h4 class="media-heading">李飞飞</h4>
+						                <p>22分钟前</p>
+						              </div>
+			                  </div>
+			              </li>
+	              
+			              <li class="media">
+			                  <a class="media-left" href="#">
+			                  		<img data-src="holder.js/64x64" alt="64x64" src="http://v.cnad.cn/vf3/qqgg1/2016.03.16/索尼相机在韩国地区的广告_20160317083840.JPG" data-holder-rendered="true" style="width: 64px; height: 64px;">
+			                  </a>
+			                  <div class="media-body">
+			                    <h4 class="media-heading">Media heading</h4>
+				                     <div class="media-body">
+						                <h4 class="media-heading">马克扎克伯格</h4>
+						                <p>22分钟前</p>
+						              </div>
+			                  </div>
+			              </li>
+		                
+	               </ul>
+	               
+	                
+	            </div>
+	        </div>
+	        
         </div>
         <div class="col-md-2"></div>
     </div>
@@ -256,15 +356,6 @@
 	}
 
 	$(document).ready(function(){
-		
-		$("#reply_link").click(function(e) {
-			var display = $("#public_reply").css('display');
-			if( display == "block" ){
-				$("#public_reply").hide();
-			}else{
-				$("#public_reply").show();
-			}
-		});
 	
 	    $('#comment_btn').click(function(e) {
 	    	
@@ -285,6 +376,7 @@
 					    jsonObject = eval("(" + jsonString + ")");
 					    var userAvatarLink = jsonObject.tblUser.userAvatarImgLink ;
 					    var userNickName = jsonObject.tblUser.userNickName ;
+					    var commentId = jsonObject.commentId;
 					    var userCommentDatetime = timeConverter(jsonObject.commentCommentTimestamps) ;
 					    var commentContent =jsonObject.commentContent ;
 					    
@@ -302,9 +394,21 @@
 												+		  "<p id='replyContent'>"+ commentContent +"</p>"
 											+		 "</div>"
 											+		 "<div class='np-post-footer'>"
-												+		 "<a id='reply_link' class='np-btn np-btn-reply reply'>回复</a>"
+												+		 "<a id='reply_link' class='np-btn np-btn-reply reply' onclick=\"replyBox_open( 'public_reply_"+ commentId +"')\">回复</a>"
 											+		 "</div>"
 										+		 "</div> "
+												 +"<ul class='children'>"
+						                	  		+"<div id='public_reply_"+ commentId +"' class='pop_reply np-reply-box np-reply-box-inline' style='display:none'>"
+									                      +"<div class='textarea np-reply-box-content'>"
+									                       +"<textarea name='reply_content_"+ commentId +"' id='reply_content_"+ commentId +"'></textarea>"
+									                      +"</div>"
+									                      +"<div class='commtSub' id='p_login_btn'>"
+									                        +"<div class='np-reply-box-footer'>"
+									                          +"<a id='reply_btn_"+ commentId +"' class='submit np-btn np-btn-submit' onclick=\"reply('"+ commentId +"', $('#reply_content_"+ commentId +"').val())\" >回复</a>"
+									                         +"</div>"
+									                      +"</div>"
+								                  +"</div>"
+								               +"</ul>"
 										+		 "</li>";
 						
 	                    $("#comment_list_first").after(concatStr);	
@@ -314,15 +418,15 @@
 	    	
 	    });
 	
-	})
+	});
 	
 	
-	function replay( var commentId , var reply_textarea_id)
+	function reply( commentId, reply_textarea_id)
 	{
 			var comment_videoId = $("#videoId").val();
 	    	var comment_userId = $('#userId').val();
 	    	var replyTo_commentId = commentId;
-			var comment_content = $('#reply_textarea_id').val();
+			var comment_content = reply_textarea_id;
 		
 			$.ajax({
 	            url: "ajax_add_videoPlayer_replyPublish" ,
@@ -335,10 +439,61 @@
 	            type: "GET",
 	            success: function (jsonString) {
 							  
-				   alert("yesjjjjjjj");
+							  	jsonObject = eval("(" + jsonString + ")");
+							    var userAvatarLink = jsonObject.tblUser.userAvatarImgLink ;
+							    var userNickName = jsonObject.tblUser.userNickName ;
+							    var commentId = jsonObject.commentId;
+							    var userCommentDatetime = timeConverter(jsonObject.commentCommentTimestamps) ;
+							    var commentContent =jsonObject.commentContent ;
+							    var replyTo_userNickName = jsonObject.tblComment.tblUser.userNickName ; 
+							    
+								concatStr = "";
+								concatStr += "<li class='np-post topAll' id=''>"
+												+		 "<img class='np-avatar popClick' src='" + userAvatarLink + "' alt='头像'>"
+												+		 "<div class='np-post-body'>"
+													+		 "<div class='np-post-header'>"
+														+		  "<span class=''>"
+														+		  "<a id='userNickName' class='np-user popClick '>"  + userNickName + "</a>"
+														+		  "<a id='' class='np-btn np-btn-reply reply'></a>"
+														+		  "<a id='userNickName' class='np-user popClick '>"  + replyTo_userNickName + "</a>"
+														+		 "</span>"
+														+		 "<span id='reply_datetime' class='np-time'>"+ userCommentDatetime +"</span>"
+													+		 "</div>"
+													+		 "<div class='np-post-content' data-height='5'>"
+														+		  "<p id='replyContent'>"+ commentContent +"</p>"
+													+		 "</div>"
+													+		 "<div class='np-post-footer'>"
+														+		 "<a id='reply_link' class='np-btn np-btn-reply reply' onclick=\"replyBox_open( 'public_reply_"+ commentId +"')\">回复</a>"
+													+		 "</div>"
+												+		 "</div> "
+														 +"<ul class='children'>"
+								                	  		+"<div id='public_reply_"+ commentId +"' class='pop_reply np-reply-box np-reply-box-inline' style='display:none'>"
+											                      +"<div class='textarea np-reply-box-content'>"
+											                       +"<textarea name='reply_content_"+ commentId +"' id='reply_content_"+ commentId +"'></textarea>"
+											                      +"</div>"
+											                      +"<div class='commtSub' id='p_login_btn'>"
+											                        +"<div class='np-reply-box-footer'>"
+											                          +"<a id='reply_btn_"+ commentId +"' class='submit np-btn np-btn-submit' onclick=\"reply('"+ commentId +"', $('#reply_content_"+ commentId +"').val())\" >回复</a>"
+											                         +"</div>"
+											                      +"</div>"
+										                  +"</div>"
+										               +"</ul>"
+												+		 "</li>";
+								
+			                    $("#comment_list_first").after(concatStr);	
 	            	
 	            }
 	        })
+	}
+	
+	function replyBox_open( public_reply_div_id )
+	{
+		var display = $("#" + public_reply_div_id ).css('display');
+		if( display == "block" ){
+			$("#" + public_reply_div_id ).hide();
+		}else{
+			$("#" + public_reply_div_id ).show();
+		}
 	}
 
 </script>
