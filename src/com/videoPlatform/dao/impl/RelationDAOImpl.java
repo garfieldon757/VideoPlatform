@@ -1,8 +1,11 @@
 package com.videoPlatform.dao.impl;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.videoPlatform.dao.RelationDAO;
+import com.videoPlatform.model.TblComment;
 import com.videoPlatform.model.TblUser;
 import com.videoPlatform.model.TblUservideorelation;
 import com.videoPlatform.model.TblVideo;
@@ -157,6 +161,33 @@ public class RelationDAOImpl implements RelationDAO {
 																				.getResultList().get(0);
 		Integer numOfComment = num.intValue();
 		return numOfComment;
+	}
+
+	@Override
+	public TblComment addComment(TblUser user, TblVideo video, TblComment replyTo_tblcomment, String comment_content) {
+		// TODO Auto-generated method stub
+		UUID uuid = UUID.randomUUID();
+		Timestamp now = new Timestamp(System.currentTimeMillis()); 
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
+		TblComment comment = new TblComment(uuid.toString(), video , user, replyTo_tblcomment, comment_content, now, null);
+		em.persist(comment);
+		return comment;
+	}
+	
+	@Override
+	public List<TblComment> getCommentListByVideoId(String videoId) {
+		// TODO Auto-generated method stub
+		String jpql = "select c from TblComment c where c.tblVideo.videoId =:videoId";
+		List<TblComment> commentList = em.createQuery(jpql).setParameter("videoId", videoId).getResultList();
+		return commentList;
+	}
+
+	@Override
+	public TblComment getCommentByCommentId(String replyTo_commentId) {
+		// TODO Auto-generated method stub
+		String jpql = "select c from TblComment c where c.commentId =:replyTo_commentId";
+		TblComment replyTo_comment = (TblComment) em.createQuery(jpql).setParameter("replyTo_commentId", replyTo_commentId).getResultList();
+		return replyTo_comment;
 	}
 
 }

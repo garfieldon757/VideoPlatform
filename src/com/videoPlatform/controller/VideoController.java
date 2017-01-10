@@ -22,10 +22,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.videoPlatform.service.RelationManager;
 import com.videoPlatform.service.VideoManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.videoPlatform.dao.RelationDAO;
 import com.videoPlatform.dao.VideoDAO;
+import com.videoPlatform.model.TblComment;
 import com.videoPlatform.model.TblDatadictionary;
 import com.videoPlatform.model.TblTag;
 import com.videoPlatform.model.TblUser;
@@ -38,6 +41,9 @@ public class VideoController {
 
 	@Autowired(required=true)
 	VideoManager vm;
+	
+	@Autowired(required=true)
+	RelationDAO relationDAO;
 	
 	@Autowired(required=true)
 	VideoDAO videoDAO;
@@ -66,9 +72,11 @@ public class VideoController {
 	@RequestMapping(value="videoPlay")
 	public ModelAndView videoPlay(@RequestParam("videoID") String videoID , HttpServletRequest request){
 		ModelAndView mv = new ModelAndView("VideoPlayer");
-		TblVideo video = vm.getVideoByVideoID(videoID);
+		TblVideo video = vm.getVideoByVideoID(videoID);//视频部分信息
+		List<TblComment> commentList = relationDAO.getCommentListByVideoId(videoID);//评论部分信息
 		if(video != null){
 			mv.addObject("video", video);
+			mv.addObject("commentList", commentList);
 		}
 		return mv;
 	}

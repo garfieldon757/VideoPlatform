@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.videoPlatform.dao.RelationDAO;
 import com.videoPlatform.dao.VideoDAO;
+import com.videoPlatform.model.TblComment;
 import com.videoPlatform.model.TblUser;
 import com.videoPlatform.model.TblVideo;
 import com.videoPlatform.service.RelationManager;

@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.List;
 import java.text.ParseException;
 
+import com.videoPlatform.model.TblComment;
 import com.videoPlatform.model.TblUser;
 import com.videoPlatform.model.TblUservideorelation;
 import com.videoPlatform.model.TblVideo;
@@ -19,4 +20,8 @@ public interface RelationDAO {
 	public Integer getUserPlayNum(String userId, String datetimeStart, String datetimeEnd);
 	public Integer getUserCollectNum(String userId, String datetimeStart, String datetimeEnd);
 	public Integer getUserCommentNum(String userId, String datetimeStart, String datetimeEnd);
+	
+	public TblComment addComment(TblUser user, TblVideo video, TblComment replyTo_tblcomment, String comment_content);
+	public List<TblComment> getCommentListByVideoId(String videoId);
+	public TblComment getCommentByCommentId(String replyTo_commentId);
 }

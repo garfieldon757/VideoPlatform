@@ -53,6 +53,7 @@
 				    <div class="container ">
 				    	<img class="pic-thumb pull-left" src="img/logo.jpg">
 				        <h4 id="userName_label" class="ng-binding" value="${user.userNickName}">${user.userNickName}</h4>
+				        <input type="hidden" id="userId" name="userId" value="${user.userId}"> 
 				        <a href="logout"><button type="button" class="btn btn-default pull-right">退出</button></a>
 				    </div>
 				</div>
@@ -106,7 +107,8 @@
                             <dl class="dl-horizontal">
                                 <dt>发布者信息：</dt>
                                 <dd>${video.tblUser.userNickName} (ID: ${video.tblUser.userId} )</dd>
-                                <button id="userName" value="${video.tblUser.userNickName}" style="display:none"></button>
+                                <input type="hidden" id="videoId" name="videoId" value="${video.videoId}"> 
+                                <button id="video_userName" value="${video.tblUser.userNickName}" style="display:none"></button>
                             </dl>
                             
                         </div>
@@ -137,13 +139,13 @@
 			                    <div class="np-reply-box blueLight np-reply-box-active" id="np-reply-box" style="">
 			                    
 			                        <div class="np-reply-box-content textarea">
-			                            <textarea tabindex="1" autocomplete="off" name="content" accesskey="u" id="top_textarea" style="height: 60px; padding: 10px;"></textarea>
+			                            <textarea id="comment_content" name="comment_content" style="height: 60px; padding: 10px;"></textarea>
 			                        </div>
 			                        
 			                        <div class="commtSub np-reply-box-footer" style="position:relative;display:block;height:40px" id="p_login_btn">
 				                        <div class="submitBtn">
 				                            <span class="subline">
-												<a href="javascript:void(0)" class="np-btn np-btn-submit" id="top_post_btn" hidefocus="true">发表评论</a>
+												<a id="comment_btn" class="np-btn np-btn-submit" id="top_post_btn">发表评论</a>
 											</span>
 				                        </div>
 				                    </div>
@@ -153,45 +155,52 @@
 			            </div>
 	                </div>
 	                
-	                <ul class="post-list np-comment-list">
-	                	<li class="np-title-hot">热门评论</li>
-	                	<li class="np-post   topAll  " id="">
-
-	                	  <img class="np-avatar popClick" src="" alt="头像">
-
-	                	  <div class="np-post-body">
-	                	    <div class="np-post-header">
-	                	      <span class="">
-	                	        <a href="" class="np-user popClick ">用户昵称</a>
-	                	      </span>
-	                	      <span class="np-time" data="1483915021">回复时间</span></div>
-	                	    <div class="np-post-content" data-height="5">
-	                	      <p>回复内容</p>
-	                	    </div>
-	                	    <div class="np-post-footer">
-	                	      <a href="javascript:void(0)" class="np-btn np-btn-reply reply">回复</a>
-	                	    </div>
-	                	  </div>
-	                	  
-	                	  <ul class="children"><div class="pop_reply np-reply-box np-reply-box-inline" id="public_reply">
-
-			                      <div class="textarea np-reply-box-content">
-			                          <textarea name="content" id=""></textarea>
-			                      </div>
-			                          
-			                      <div class="commtSub" id="p_login_btn">
-			                          <div class="np-reply-box-footer">
-			                              <div class="np-reply-box-info" style="display: block;">
-			                                  <span class="tips"></span>
-			                              </div>
-			                              <a href="" class="submit np-btn np-btn-submit" id="" hidefocus="true">回复</a>
-			                          </div>
-			                      </div>
-			                      
-			                  </div>
-			               </ul>
-	                	  
-	                	</li>
+	                <ul id="comment_list" class="post-list np-comment-list">
+	                	<li id="comment_list_first" class="np-title-hot">热门评论</li>
+	                	
+	                	<c:forEach items="${commentList}" var="c">
+			                	<li class="np-post   topAll  " id="">
+		
+			                	  <img class="np-avatar popClick" src="${c.tblUser.userAvatarImgLink}" alt="头像">
+		
+			                	  <div class="np-post-body">
+			                	    <div class="np-post-header">
+			                	      <span class="">
+			                	        <a id="userNickName" class="np-user popClick ">${c.tblUser.userNickName}</a>
+			                	      </span>
+			                	      <c:if test="${c.tblComment != null}">
+				                	      <span class="">
+				                	        <a id="replyTo_userNickName" class="np-user popClick ">回复给->${c.tblComment.tblUser.userNickName}</a>
+				                	      </span>
+			                	      </c:if>
+			                	      <span id="reply_datetime" class="np-time">${c.commentCommentTimestamps}</span>
+		                	        </div>
+			                	    <div class="np-post-content" data-height="5">
+			                	      <p id="replyContent">${c.commentContent}</p>
+			                	    </div>
+			                	    <div class="np-post-footer">
+			                	      <a id="reply_link" class="np-btn np-btn-reply reply">回复</a>
+			                	    </div>
+			                	  </div>
+			                	  
+			                	  <ul class="children">
+			                	  		<div id="public_reply" class="pop_reply np-reply-box np-reply-box-inline" style="display:none">
+		
+					                      <div class="textarea np-reply-box-content">
+					                          <textarea name="reply_content_${c.commentId}" id="reply_content_${c.commentId}"></textarea>
+					                      </div>
+					                          
+					                      <div class="commtSub" id="p_login_btn">
+					                          <div class="np-reply-box-footer">
+					                          		<a id="reply_btn_${c.commentId}" class="submit np-btn np-btn-submit" onclick="reply(${c.commentId}, reply_content_${c.commentId})" >回复</a>
+					                          </div>
+					                      </div>
+					                      
+					                  </div>
+					               </ul>
+			                	  
+			                	</li>
+		                	</c:foreach>
 	                	
 	                </ul>
 	                
@@ -228,31 +237,109 @@
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	
+	function timeConverter(UNIX_timestamp)
+	{
+		  var a = new Date(UNIX_timestamp);
+		  var months = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+		  var day = ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'];
+		  var hour = ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','55','53','54','55','56','57','58','59','60'];
+		  var min = ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','55','53','54','55','56','57','58','59','60'];
+		  var sec = ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','55','53','54','55','56','57','58','59','60'];
+		  var year = a.getFullYear();
+		  var month = months[a.getMonth()];
+		  var day = day[a.getDate()];
+		  var hour = hour[a.getHours()];
+		  var min = min[a.getMinutes()];
+		  var sec = sec[a.getSeconds()];
+		  var time = year + '-' + month + '-' + day + ' ' + hour + ':' + min + ':' + sec ;
+		  return time;
+	}
 
 	$(document).ready(function(){
+		
+		$("#reply_link").click(function(e) {
+			var display = $("#public_reply").css('display');
+			if( display == "block" ){
+				$("#public_reply").hide();
+			}else{
+				$("#public_reply").show();
+			}
+		});
 	
-	    $('#downloadBtn').click(function(e) {
-	    		
-		    	var urlStr_value = $('#downloadBtn').val();
-	    		var userName_value = $('#userName').val();
+	    $('#comment_btn').click(function(e) {
+	    	
+	    		var comment_videoId = $("#videoId").val();
+		    	var comment_userId = $('#userId').val();
+	    		var comment_content = $('#comment_content').val();
 	    	
 	    		$.ajax({
-		            url: "downloadVideo" ,
-		            data: {        urlStr : encodeURI(encodeURI(urlStr_value)) ,
-	    					  userName : encodeURI(encodeURI(userName_value))
-	    							  },
+		            url: "ajax_add_videoPlayer_commentPublish" ,
+		            data: {        
+	    						comment_videoId : comment_videoId ,
+	    						comment_userId : comment_userId,
+	    						comment_content : encodeURI(encodeURI(comment_content))
+							  },
 		            type: "GET",
-		            success: function (response) {
-		                
-		                 alert(response);
+		            success: function (jsonString) {
+								  
+					    jsonObject = eval("(" + jsonString + ")");
+					    var userAvatarLink = jsonObject.tblUser.userAvatarImgLink ;
+					    var userNickName = jsonObject.tblUser.userNickName ;
+					    var userCommentDatetime = timeConverter(jsonObject.commentCommentTimestamps) ;
+					    var commentContent =jsonObject.commentContent ;
+					    
+						concatStr = "";
+						concatStr += "<li class='np-post topAll' id=''>"
+										+		 "<img class='np-avatar popClick' src='" + userAvatarLink + "' alt='头像'>"
+										+		 "<div class='np-post-body'>"
+											+		 "<div class='np-post-header'>"
+												+		  "<span class=''>"
+												+		  "<a id='userNickName' class='np-user popClick '>"  + userNickName + "</a>"
+												+		 "</span>"
+												+		 "<span id='reply_datetime' class='np-time'>"+ userCommentDatetime +"</span>"
+											+		 "</div>"
+											+		 "<div class='np-post-content' data-height='5'>"
+												+		  "<p id='replyContent'>"+ commentContent +"</p>"
+											+		 "</div>"
+											+		 "<div class='np-post-footer'>"
+												+		 "<a id='reply_link' class='np-btn np-btn-reply reply'>回复</a>"
+											+		 "</div>"
+										+		 "</div> "
+										+		 "</li>";
+						
+	                    $("#comment_list_first").after(concatStr);	
 		            	
 		            }
 		        })
 	    	
-	    })
-	    
+	    });
 	
 	})
+	
+	
+	function replay( var commentId , var reply_textarea_id)
+	{
+			var comment_videoId = $("#videoId").val();
+	    	var comment_userId = $('#userId').val();
+	    	var replyTo_commentId = commentId;
+			var comment_content = $('#reply_textarea_id').val();
+		
+			$.ajax({
+	            url: "ajax_add_videoPlayer_replyPublish" ,
+	            data: {        
+							comment_videoId : comment_videoId ,
+							comment_userId : comment_userId,
+							replyTo_commentId : replyTo_commentId,
+							comment_content : encodeURI(encodeURI(comment_content))
+						  },
+	            type: "GET",
+	            success: function (jsonString) {
+							  
+				   alert("yesjjjjjjj");
+	            	
+	            }
+	        })
+	}
 
 </script>
 

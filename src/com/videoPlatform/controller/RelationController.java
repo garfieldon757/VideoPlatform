@@ -14,7 +14,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.videoPlatform.dao.RelationDAO;
+import com.videoPlatform.dao.UserDAO;
+import com.videoPlatform.dao.VideoDAO;
+import com.videoPlatform.model.TblComment;
 import com.videoPlatform.model.TblUser;
+import com.videoPlatform.model.TblVideo;
 import com.videoPlatform.service.RelationManager;
 import com.videoPlatform.service.VideoManager;
 import com.videoPlatform.util.CustomVideoInfo;
@@ -28,6 +33,15 @@ public class RelationController {
 	
 	@Autowired(required=true)
 	RelationManager rm;
+	
+	@Autowired(required=true)
+	UserDAO userDAO;
+	
+	@Autowired(required=true)
+	VideoDAO videoDAO;
+	
+	@Autowired(required=true)
+	RelationDAO relationDAO;
 	
 	@Autowired(required=true)
 	private HttpServletRequest httpServletRequest;
@@ -58,6 +72,35 @@ public class RelationController {
 		ObjectMapper mapper = new ObjectMapper(); 
 	    String jsonString = mapper.writeValueAsString(customVideoInfoList);
 	    return jsonString;
+	}
+	
+	@RequestMapping("ajax_add_videoPlayer_commentPublish")
+	@ResponseBody
+	public String ajax_add_videoPlayer_commentPublish(String comment_videoId, String comment_userId, String comment_content ) throws JsonProcessingException, ParseException{
+		
+		TblUser user = userDAO.getUserByUserId(comment_userId);
+		TblVideo video = videoDAO.getVideoByVideoID(comment_videoId);
+		
+		TblComment comment = relationDAO.addComment(user, video, null, comment_content);
+		
+		ObjectMapper mapper = new ObjectMapper(); 
+	    String jsonString = mapper.writeValueAsString(comment);
+	    return jsonString;
+	}
+	
+	@RequestMapping("ajax_add_videoPlayer_replyPublish")
+	@ResponseBody
+	public String ajax_add_videoPlayer_replyPublish(String comment_videoId, String comment_userId, String replyTo_commentId, String comment_content ) throws JsonProcessingException, ParseException{
+		
+		TblUser user = userDAO.getUserByUserId(comment_userId);
+		TblVideo video = videoDAO.getVideoByVideoID(comment_videoId);
+		TblComment replyTo_comment = relationDAO.getCommentByCommentId(replyTo_commentId);
+		
+		TblComment comment = relationDAO.addComment(user, video, replyTo_comment, comment_content);
+		
+		ObjectMapper mapper = new ObjectMapper(); 
+	    String jsonString = mapper.writeValueAsString(comment);
+	    return "success";
 	}
 	
 }

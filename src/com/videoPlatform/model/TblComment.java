@@ -1,6 +1,7 @@
 package com.videoPlatform.model;
 // Generated 2016-12-27 14:58:57 by Hibernate Tools 3.4.0.CR1
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,7 +29,8 @@ public class TblComment implements java.io.Serializable {
 	private TblVideo tblVideo;
 	private TblUser tblUser;
 	private TblComment tblComment;
-	private Date commentCommentTimestamps;
+	private String commentContent;
+	private Timestamp commentCommentTimestamps;
 	@JsonIgnore
 	private Set<TblComment> tblComments = new HashSet<TblComment>(0);
 
@@ -40,11 +42,12 @@ public class TblComment implements java.io.Serializable {
 	}
 
 	public TblComment(String commentId, TblVideo tblVideo, TblUser tblUser, TblComment tblComment,
-			Date commentCommentTimestamps, Set<TblComment> tblComments) {
+			String commentContent, Timestamp commentCommentTimestamps, Set<TblComment> tblComments) {
 		this.commentId = commentId;
 		this.tblVideo = tblVideo;
 		this.tblUser = tblUser;
 		this.tblComment = tblComment;
+		this.commentContent = commentContent;
 		this.commentCommentTimestamps = commentCommentTimestamps;
 		this.tblComments = tblComments;
 	}
@@ -90,13 +93,21 @@ public class TblComment implements java.io.Serializable {
 		this.tblComment = tblComment;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "comment_content")
+	public String getCommentContent() {
+		return this.commentContent;
+	}
+	
+	public void setCommentContent(String commentContent) {
+		this.commentContent = commentContent;
+	}
+	
 	@Column(name = "comment_commentTimestamps", length = 19)
-	public Date getCommentCommentTimestamps() {
+	public Timestamp getCommentCommentTimestamps() {
 		return this.commentCommentTimestamps;
 	}
 
-	public void setCommentCommentTimestamps(Date commentCommentTimestamps) {
+	public void setCommentCommentTimestamps(Timestamp commentCommentTimestamps) {
 		this.commentCommentTimestamps = commentCommentTimestamps;
 	}
 
