@@ -11,31 +11,66 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.catalina.Session;
+import org.apache.commons.fileupload.FileUploadException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.videoPlatform.dao.UserDAO;
 import com.videoPlatform.listener.MyProgressListener;
+import com.videoPlatform.model.TblUser;
 import com.videoPlatform.util.Progress;
 
 @Component
 @Controller
 public class uploadController {
 
+	@Autowired(required=true)
+	UserDAO userDAO;
+	
+	@RequestMapping(value = "uploadVideoFile", method = RequestMethod.POST)
+	@ResponseBody 
+	public String uploadVideoFile(@RequestParam("uploadVideoFile") MultipartFile uploadVideoFile, HttpServletRequest request) throws IOException,FileUploadException{
+			
+		 	String basePath = "E:/workspace2/VideoPlatform/WebContent/" ;
+		 	String relativePath = "uploadVideo/";
+	        String fileName = uploadVideoFile.getOriginalFilename();
+      
+	        File targetFile = new File( basePath + relativePath  , fileName);  
+	        if(!targetFile.exists()){  
+	            targetFile.mkdirs();  
+	        }  
+	  
+	        //保存  
+	        try {  
+	        	uploadVideoFile.transferTo(targetFile);  
+	            
+	        } catch (Exception e) {  
+	            e.printStackTrace();  
+	        }  
+
+
+		return "sss";
+		
+	}
+	
 	@RequestMapping("uploadAvatar")
-	public ModelAndView uploadAvatar(@RequestParam(value = "imgFile", required = false) MultipartFile file, HttpServletRequest request) throws FileNotFoundException, IOException{
-			ModelAndView mv = new ModelAndView("test");
-		 	String basePath = "C:/Users/oliverfan/git/VideoPlatform/WebContent/" ;
+	public ModelAndView uploadAvatar(@RequestParam(value = "imgFile", required = false) MultipartFile file, HttpServletRequest request) throws FileNotFoundException, IOException, InterruptedException{
+			ModelAndView mv = new ModelAndView("personalProfile");
+		 	String basePath = "E:/workspace2/VideoPlatform/WebContent/" ;
 		 	String relativePath = "avatarImg/";
 		 	HttpSession session = request.getSession();
-	        String personalPath = (String) session.getAttribute("tblUser") ;  
+	        TblUser tblUser = (TblUser) session.getAttribute("user"); 
+	        String personalPath = tblUser.getUserNickName() + "/" ;
 	        String fileName = file.getOriginalFilename();
 	        //在这里建立一个个人的文件夹，要做文件存在性判断和操作
 	        //...
@@ -68,18 +103,24 @@ public class uploadController {
 	        //保存  
 	        try {  
 	            file.transferTo(targetFile);  
+	            
 	        } catch (Exception e) {  
 	            e.printStackTrace();  
 	        }  
 	        
+	        tblUser.setUserAvatarImgLink( relativePath + personalPath + fileName );
+	        tblUser = userDAO.updateTblUser(tblUser);
+	        session.setAttribute("user", tblUser);
 //	        BufferedImage sourceImg = ImageIO.read(new FileInputStream(targetFile));  
 //            int imgWidth = sourceImg.getWidth();  
 //            int imgHeight = sourceImg.getHeight();  
 //            System.out.println("上传的图片宽：" + imgWidth);  
 //            System.out.println("上传的图片高：" + imgHeight); 
 	        
-	        mv.addObject("fileUrl", relativePath +fileName);  
-	  
+        //mv.addObject("fileUrl", relativePath +fileName);
+
+        mv.addObject("user", tblUser);
+        mv.addObject("defualt_tab", "baseAvatar");
 		return mv;
 		
 	}

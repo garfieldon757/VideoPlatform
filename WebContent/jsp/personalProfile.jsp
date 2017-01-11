@@ -222,21 +222,38 @@
                                 <div class="panel panel-default">
                                     <div class="panel-body">
 
-                                    <form id="uploadAvatarForm" action="uploadAvatar" method="post" enctype="multipart/form-data">
-		                                	<input type="file" id="imgFile" name="imgFile" accept="image/jpeg,image/jpg,image/png"/><br> 
-		                                	<img src="" id="imgPreview" style="width:200px; height:200px" ><br>
-		                                	<div class="progress">
-			                                    <div id="progress_bar" class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-			                                        60%
-			                                    </div>
-			                                </div>
-	                                </form>
-		                            <input id="submit-btn" type="button" value="上传" />
+	                                    <form id="uploadAvatarForm" action="uploadAvatar" method="post" enctype="multipart/form-data">
+			                                	<input type="file" id="imgFile" name="imgFile" accept="image/jpeg,image/jpg,image/png"/><br> 
+			                                	<img src="${user.userAvatarImgLink}" id="imgPreview" style="width:200px; height:200px" ><br>
+			                                	<div class="progress">
+				                                    <div id="progress_bar" class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+				                                        60%
+				                                    </div>
+				                                </div>
+				                                <input id="submit-btn" type="submit" value="上传" />
+		                                </form>
 		                              
-
                                     </div>
                                 </div>
                             </div>
+                            
+                            <div role="tabpanel" id="xx" name="xx">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                    	<form id="uploadVideoForm" method="post" enctype="multipart/form-data">
+		                                	<input type="file" id="uploadVideoFile" name="uploadVideoFile" /><br> 
+		                                	<div class="progress">
+			                                    <div id="ajax_uploadVideoFile_progress_bar" class="progress-bar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+			                                        60%
+			                                    </div>
+			                                </div>
+			                                <input type="button"  id="ajax_uploadVideoFile_submit_btn" value="上传视频文件" />
+	                                	</form>
+		                              
+                                    </div>
+                                </div>
+                            </div>
+                            
                             <div role="tabpanel" 
                     		<c:choose>
 	                			<c:when test="${defualt_tab == 'security' }"> class="tab-pane active in" </c:when>
@@ -309,6 +326,7 @@
 
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="js/jqueryForm.js" type="text/javascript"></script>
 
 
 <script type="text/javascript">
@@ -335,164 +353,132 @@
     $(document).ready(function(){
 
 
-    	$("#imgFile").change(function(){
-    		var objUrl = getObjectURL(this.files[0]) ;
-    		console.log("objUrl = "+objUrl) ;
-    		if (objUrl) {
-    			$("#imgPreview").attr("src", objUrl) ;
-    		}
-    		
-    		//设置图片上传标志
-    	      uploadCheck = true;
-    	      
-    	      $("#uploadAvatarForm").submit();
-    	      
-//    	       var $this =  $(this);
-//    	       $this.uploadFile("uploadAvatar",function(data){
-//    	    	   $.ajaxSetup({async: false});
-//    	    	   jQuery.ajax({
-//    	    		   beforeSend: function() {
-////    	    		   		//图片格式监测
-////    	    		   		if(data.Abort){
-////    	    		   			$.box(data.typeError);
-////    	    		   			return false;
-////    	    		   		}
-////    	    		   		//图片大小监测
-////    	    		   		if(data.isOverLimit){
-////    	    		   			$.box(data.SizeLimit);
-////    	    		   			return false;
-////    	    		   		}
-//    	    		   		alert("dsafasfsfsfafsfds");
-//    	    		   		status.empty();
-//    	    		   		var percentVal = "0%";
-//    	    		   		percent.html(percentVal);
-//    	    		   		$("progress_bar").width(percentVal);
-//    	    	   		},
-//    	    		   success: function() {
-////    	    	   			$("progress_bar").text("");
-////    	    	   			var $inpCont = $(".inpCont");
-////    	    	   			$inpCont.append("<p><span id='pic"+picIndex+"' title='' class='picUrl'></span><a  class='png' href='javascript:void(0);' itle='移除'></a></p>");
-////    	    	   			$inpCont.find("p span#pic"+picIndex).html(data.fileName).attr("title",data.url);
-////    	    	   			picIndex++;
-//    	    	   			alert("success!");
-//    	    	   		},
-//    	    		   complete: function(xhr) {
-////	    	   				status.html(xhr.responseText);
-//    	    	   			alert("complete!");
-//    	    	   		}
-//    	    	   })
-//    	       });
-    		
-    	}) ;
+//    	$("#uploadVideoFile").change(function(){
+//    		var objUrl = getObjectURL(this.files[0]) ;
+//    		console.log("objUrl = "+objUrl) ;
+////    		if (objUrl) {
+////    			$("#imgPreview").attr("src", objUrl) ;
+////    		}
+//    		
+//    		//设置图片上传标志
+//    	      uploadCheck = true;
+//    	      
+//    	      
+//    	      
+////    	       var $this =  $(this);
+////    	       $this.uploadFile("uploadAvatar",function(data){
+////    	    	   $.ajaxSetup({async: false});
+////    	    	   jQuery.ajax({
+////    	    		   beforeSend: function() {
+//////    	    		   		//图片格式监测
+//////    	    		   		if(data.Abort){
+//////    	    		   			$.box(data.typeError);
+//////    	    		   			return false;
+//////    	    		   		}
+//////    	    		   		//图片大小监测
+//////    	    		   		if(data.isOverLimit){
+//////    	    		   			$.box(data.SizeLimit);
+//////    	    		   			return false;
+//////    	    		   		}
+////    	    		   		alert("dsafasfsfsfafsfds");
+////    	    		   		status.empty();
+////    	    		   		var percentVal = "0%";
+////    	    		   		percent.html(percentVal);
+////    	    		   		$("progress_bar").width(percentVal);
+////    	    	   		},
+////    	    		   success: function() {
+//////    	    	   			$("progress_bar").text("");
+//////    	    	   			var $inpCont = $(".inpCont");
+//////    	    	   			$inpCont.append("<p><span id='pic"+picIndex+"' title='' class='picUrl'></span><a  class='png' href='javascript:void(0);' itle='移除'></a></p>");
+//////    	    	   			$inpCont.find("p span#pic"+picIndex).html(data.fileName).attr("title",data.url);
+//////    	    	   			picIndex++;
+////    	    	   			alert("success!");
+////    	    	   		},
+////    	    		   complete: function(xhr) {
+//////	    	   				status.html(xhr.responseText);
+////    	    	   			alert("complete!");
+////    	    	   		}
+////    	    	   })
+////    	       });
+//    		
+//    	}) ;
     	
-    	var getProgress = setInterval(function(){
-            if(uploadCheck){
-            
-                $.ajax({
-                    type: "get",
-                    dataType: "json",
-                    url: "progress.json",
-                    success: function(data) {
-                			alert(data);
+//    	var getProgress = setInterval(function(){
+//            if(uploadCheck){
+//            
+//                $.ajax({
+//                    type: "get",
+//                    dataType: "json",
+//                    url: "progress.json",
+//                    success: function(data) {
+//                			alert(data);
 //                        if(data.percent == "100%"){
-//                            $("#progress_bar").width(data.percent);
-//                            $("#progress_bar").text(data.percent);
+//                            $("#ajax_uploadVideoFile_progress_bar").width(data.percent);
+//                            $("#ajax_uploadVideoFile_progress_bar").text(data.percent);
 //                            clearInterval(getProgress);
 //                            uploadComplete = true;
 //                            return true;
 //                        }else{
-//                            $("#progress_bar").width(data.percent);
-//                            $("#progress_bar").text(data.percent);
+//                            $("#ajax_uploadVideoFile_progress_bar").width(data.percent);
+//                            $("#ajax_uploadVideoFile_progress_bar").text(data.percent);
 //                            return false;
 //                        }
-                    },
-                    error: function(err) {
-                        $("#progress_bar").text("Error");
-                        alert("错误:"+err);
-                    }
-                })
-            	
-            }
-        } , 1000 );
+//                    },
+//                    error: function(err) {
+//                        $("#ajax_uploadVideoFile_progress_bar").text("Error");
+//                        alert("错误:"+err);
+//                    }
+//                })
+//            	
+//            }
+//        } , 1000 );
+    	
+    	$("#ajax_uploadVideoFile_submit_btn").click(function(){
+    		$("#uploadVideoForm").ajaxSubmit({
+														type: "POST",
+														url:"uploadVideoFile",
+														dataType: "json",
+													    success: function(data){
+													     	alert("return");
+														}
+    		})
+    	})
     	
     	
-        $("#userName").blur(function () {
-
-            var userNameValue = $('#userName').val();
-            $.ajax({
-                url: "ajax_userNameValidation",
-                data: { userName : userNameValue},
-                type: "GET",
-                success: function (response, status, xhr) {
-
-                    reg_result = response ;//返回用户名和当前页面session的用户名就不做为
-                    //,返回"available"表示userName可用，“unavailable“表示不可用
-
-                    if(reg_result == "available"){
-                        $("#userName_div").removeClass("has-error");
-                        $("#userName_div").addClass("has-success");
-                        $("#userName_div > span:last").css('display', 'none');
-                        $("#userName_div > span:first").css('display', 'block');
-                        alert("用户名可用");
-                    }else if( reg_result != "available" ){
-
-                        if( reg_result == $("#userName").val() ){
-
-                            //不作为
-
-                        }else if(reg_result == "unavailable"){
-                            $("#userName_div").removeClass("has-success");
-                            $("#userName_div").addClass("has-error");
-                            $("#userName_div > span:first").css('display', 'none');
-                            $("#userName_div > span:last").css('display', 'block');
-                            alert("用户名已被占用");
-                        }
-
-                    }
-
-                }
-            });
-
-        });
-
-        $("#userPassword").blur(function () {
-            /*
-             var reg =  new RegExp(" "); // 检测密码是否符合足够的密码强度
-             var userPassword = $('#userPassword').val();
-             reg_result = reg.test(userPassword);
-
-             if(reg_result){
-             $("#userPassword_div").removeClass("has-error");
-             $("#userPassword_div").addClass("has-success");
-             $("#userPassword_div > span:last").css('display', 'none');
-             $("#userPassword_div > span:first").css('display', 'block');
-             }else {
-             $("#userPassword_div").removeClass("has-success");
-             $("#userPassword_div").addClass("has-error");
-             $("#userPassword_div > span:first").css('display', 'none');
-             $("#userPassword_div > span:last").css('display', 'block');
-             }
-             */
-        });
-
-        $("#email").blur(function () {
-            var reg =  new RegExp(".*@.*\.?.*?\.(com|cn)");
-            var email = $('#email').val();
-            reg_result = reg.test(email);
-
-            if(reg_result){
-                $("#email_div").removeClass("has-error");
-                $("#email_div").addClass("has-success");
-                $("#email_div > span:last").css('display', 'none');
-                $("#email_div > span:first").css('display', 'block');
-            }else {
-                $("#email_div").removeClass("has-success");
-                $("#email_div").addClass("has-error");
-                $("#email_div > span:first").css('display', 'none');
-                $("#email_div > span:last").css('display', 'block');
-            }
-
-        });
+//    	$("#ajax_uploadVideoFile_submit-btn").click(function(){
+////    		var ajax_uploadVideoFile_fileElement = $("#ajax_uploadVideoFile_submit");
+////    		ajax_uploadVideoFile_fileElement.uploadFile("uploadVideoFile" , function(data){
+////    			$.ajaxSetup({async: false});
+////    			$.ajax({
+////    				
+////    				 success: function() {
+////			                alert("ajax_upload_success!");
+////			            }
+////    				
+////    			})
+////    		});
+//    		
+//    		//设置图片上传标志
+//  	      uploadCheck = true;
+//    		
+//    		$.ajaxFileUpload
+//            ({
+//                    url: 'uploadVideoFile', //用于文件上传的服务器端请求地址
+//                    secureuri: false, //是否需要安全协议，一般设置为false
+//                    fileElementId: 'uploadVideoFile', //文件上传域的ID
+//                    dataType: 'json', //返回值类型 一般设置为json
+//                    success: function (data, status)  //服务器成功响应处理函数
+//                    {
+//                       alert("success!");
+//                    },
+//                    error: function (data, status, e)//服务器响应失败处理函数
+//                    {
+//                        alert(e);
+//                    }
+//            })
+//    		
+//    	});
+        
     })
 
     function before_submit_baseProfile(){
