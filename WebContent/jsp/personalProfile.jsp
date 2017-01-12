@@ -240,14 +240,14 @@
                             <div role="tabpanel" id="xx" name="xx">
                                 <div class="panel panel-default">
                                     <div class="panel-body">
-                                    	<form id="uploadVideoForm" method="post" enctype="multipart/form-data">
+                                    	<form id="uploadVideoForm" method="post" action="uploadVideoFile" enctype="multipart/form-data">
 		                                	<input type="file" id="uploadVideoFile" name="uploadVideoFile" /><br> 
 		                                	<div class="progress">
 			                                    <div id="ajax_uploadVideoFile_progress_bar" class="progress-bar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
 			                                        60%
 			                                    </div>
 			                                </div>
-			                                <input type="button"  id="ajax_uploadVideoFile_submit_btn" value="上传视频文件" />
+			                                <input type="submit"  id="ajax_uploadVideoFile_submit_btn" value="上传视频文件" />
 	                                	</form>
 		                              
                                     </div>
@@ -403,46 +403,55 @@
 //    		
 //    	}) ;
     	
-//    	var getProgress = setInterval(function(){
-//            if(uploadCheck){
-//            
-//                $.ajax({
-//                    type: "get",
-//                    dataType: "json",
-//                    url: "progress.json",
-//                    success: function(data) {
-//                			alert(data);
-//                        if(data.percent == "100%"){
-//                            $("#ajax_uploadVideoFile_progress_bar").width(data.percent);
-//                            $("#ajax_uploadVideoFile_progress_bar").text(data.percent);
-//                            clearInterval(getProgress);
-//                            uploadComplete = true;
-//                            return true;
-//                        }else{
-//                            $("#ajax_uploadVideoFile_progress_bar").width(data.percent);
-//                            $("#ajax_uploadVideoFile_progress_bar").text(data.percent);
-//                            return false;
-//                        }
-//                    },
-//                    error: function(err) {
-//                        $("#ajax_uploadVideoFile_progress_bar").text("Error");
-//                        alert("错误:"+err);
-//                    }
-//                })
-//            	
-//            }
-//        } , 1000 );
-    	
     	$("#ajax_uploadVideoFile_submit_btn").click(function(){
-    		$("#uploadVideoForm").ajaxSubmit({
-														type: "POST",
-														url:"uploadVideoFile",
-														dataType: "json",
-													    success: function(data){
-													     	alert("return");
-														}
-    		})
+    		
+    		//设置图片上传标志
+            uploadCheck = true;
+    		
+//    		$("#uploadVideoForm").ajaxSubmit({
+//														type: "POST",
+//														url:"uploadVideoFile",
+//														dataType: "json",
+//													    success: function(data){
+//													     	alert("return");
+//														}
+//    		})
     	})
+    	
+    	var getProgress = setInterval(function(){
+            if(uploadCheck){
+            
+                $.ajax({
+                    type: "get",
+                    dataType: "json",
+                    url: "progress.json",
+                    success: function(json) {
+                		var str="Hello world!";
+                		var percentString = JSON.stringify(json);
+            			var percentString_sub = percentString.substring(0,5);
+            			var percentString = ( parseFloat( percentString_sub ) * 100) + "%" ;
+                       /* if(data == "100%"){
+                            $("#ajax_uploadVideoFile_progress_bar").width(data);
+                            $("#ajax_uploadVideoFile_progress_bar").text(data);
+                            clearInterval(getProgress);
+                            uploadComplete = true;
+                            return true;
+                        }else{*/
+                            $("#ajax_uploadVideoFile_progress_bar").width(percentString);
+                            $("#ajax_uploadVideoFile_progress_bar").text(percentString);
+                            return false;
+                       /* }*/
+                    },
+                    error: function(err) {
+                        $("#ajax_uploadVideoFile_progress_bar").text("Error");
+                        alert("错误:"+err);
+                    }
+                })
+            	
+            }
+        } , 10 );
+    	
+
     	
     	
 //    	$("#ajax_uploadVideoFile_submit-btn").click(function(){

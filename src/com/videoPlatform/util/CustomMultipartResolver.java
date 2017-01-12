@@ -2,6 +2,7 @@ package com.videoPlatform.util;
 
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -22,6 +23,7 @@ import com.videoPlatform.listener.MyProgressListener;
 public class CustomMultipartResolver extends CommonsMultipartResolver {
 	
 	private HttpServletRequest request;
+
 	 
     protected FileUpload newFileUpload(FileItemFactory fileItemFactory) {
 		 ServletFileUpload upload = new ServletFileUpload(fileItemFactory);
@@ -46,6 +48,7 @@ public class CustomMultipartResolver extends CommonsMultipartResolver {
 		 FileUpload fileUpload = prepareFileUpload(encoding);
 		 // 设置监听器
 		 MyProgressListener progressListener = new MyProgressListener(request);
+		 progressListener.setSession(session);
 		 fileUpload.setProgressListener(progressListener);
 		 try {
 		     List<FileItem> fileItems = ((ServletFileUpload) fileUpload).parseRequest(request);

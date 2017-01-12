@@ -18,6 +18,12 @@ public class MyProgressListener implements ProgressListener {
 		session.setAttribute("picStatus", status);
 	}
 	
+	public void setSession(HttpSession session){
+			this.session=session;
+			Progress status = new Progress();
+			session.setAttribute("status", status);
+		}
+	
 	@Override
 	public void update(long pBytesRead, long pContentLength, int pItems) {
 		// TODO Auto-generated method stub

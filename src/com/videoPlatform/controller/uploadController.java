@@ -5,22 +5,27 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.catalina.Session;
+import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -28,6 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.videoPlatform.dao.UserDAO;
 import com.videoPlatform.listener.MyProgressListener;
 import com.videoPlatform.model.TblUser;
+import com.videoPlatform.util.CustomMultipartResolver;
 import com.videoPlatform.util.Progress;
 
 @Component
@@ -45,6 +51,9 @@ public class uploadController {
 		 	String relativePath = "uploadVideo/";
 	        String fileName = uploadVideoFile.getOriginalFilename();
       
+	        CustomMultipartResolver multipartResolver = new CustomMultipartResolver();
+	        MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+	        uploadVideoFile = multiRequest.getFile("uploadVideoFile");
 	        File targetFile = new File( basePath + relativePath  , fileName);  
 	        if(!targetFile.exists()){  
 	            targetFile.mkdirs();  
@@ -75,6 +84,7 @@ public class uploadController {
 	        //在这里建立一个个人的文件夹，要做文件存在性判断和操作
 	        //...
 	        String absolutePath = basePath + relativePath + personalPath;
+	        
       
 //	        // 获取上传文件扩展名
 //	        String fileExt = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());  
@@ -99,14 +109,15 @@ public class uploadController {
 	        if(!targetFile.exists()){  
 	            targetFile.mkdirs();  
 	        }  
-	  
-	        //保存  
-	        try {  
-	            file.transferTo(targetFile);  
-	            
-	        } catch (Exception e) {  
-	            e.printStackTrace();  
-	        }  
+
+		        //保存  
+		        try {  
+		        	file.transferTo(targetFile);  
+		            
+		        } catch (Exception e) {  
+		            e.printStackTrace();  
+		        }  
+	        
 	        
 	        tblUser.setUserAvatarImgLink( relativePath + personalPath + fileName );
 	        tblUser = userDAO.updateTblUser(tblUser);
@@ -126,20 +137,21 @@ public class uploadController {
 	}
 	
 	@RequestMapping(value = "progress.json")
+	@ResponseBody
     public String initCreateInfo(HttpServletRequest request, ModelMap map) throws JsonProcessingException {
 		System.out.println("progress.json!!!!!!!!!!!!!  start");
 		// 设置监听器
-		MyProgressListener progressListener = new MyProgressListener(request);
-		progressListener.update(20, 100 , 1 );
-		 Progress status = (Progress) request.getSession().getAttribute("picStatus");
-		 if (status == null) {
+//		MyProgressListener progressListener = new MyProgressListener(request);
+//		progressListener.update(20, 100 , 1 );
+		double percent = (double) request.getSession().getAttribute("percent");
+		 if (percent == 0) {
 		     //return "null %";
 		 }
 		 //System.out.println("progress.json!!!!!!!!!!!!!      " + status.getPercent());
 		// map.put("percent", status.getPercent());
 		 ObjectMapper mapper = new ObjectMapper(); 
-	    String s = mapper.writeValueAsString(status); 
-		 return s;//"/progress.json";
+	    String s = mapper.writeValueAsString(percent); 
+		 return s;
     }
 	
 	
