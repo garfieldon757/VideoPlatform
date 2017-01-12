@@ -429,7 +429,8 @@
                 		var str="Hello world!";
                 		var percentString = JSON.stringify(json);
             			var percentString_sub = percentString.substring(0,5);
-            			var percentString = ( parseFloat( percentString_sub ) * 100) + "%" ;
+            			var percentString_temp = ( parseFloat( percentString_sub ) * 100).toString(); ;
+            			var percentString = percentString_temp.substring(0,4) + "%" ;
                        /* if(data == "100%"){
                             $("#ajax_uploadVideoFile_progress_bar").width(data);
                             $("#ajax_uploadVideoFile_progress_bar").text(data);
@@ -449,7 +450,7 @@
                 })
             	
             }
-        } , 10 );
+        } , 100 );
     	
 
     	
