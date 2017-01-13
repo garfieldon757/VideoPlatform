@@ -43,34 +43,7 @@ public class uploadController {
 	@Autowired(required=true)
 	UserDAO userDAO;
 	
-	@RequestMapping(value = "uploadVideoFile", method = RequestMethod.POST)
-	@ResponseBody 
-	public String uploadVideoFile(@RequestParam("uploadVideoFile") MultipartFile uploadVideoFile, HttpServletRequest request) throws IOException,FileUploadException{
-			
-		 	String basePath = "E:/workspace2/VideoPlatform/WebContent/" ;
-		 	String relativePath = "uploadVideo/";
-	        String fileName = uploadVideoFile.getOriginalFilename();
-      
-	        CustomMultipartResolver multipartResolver = new CustomMultipartResolver();
-	        MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
-	        uploadVideoFile = multiRequest.getFile("uploadVideoFile");
-	        File targetFile = new File( basePath + relativePath  , fileName);  
-	        if(!targetFile.exists()){  
-	            targetFile.mkdirs();  
-	        }  
-	  
-	        //保存  
-	        try {  
-	        	uploadVideoFile.transferTo(targetFile);  
-	            
-	        } catch (Exception e) {  
-	            e.printStackTrace();  
-	        }  
-
-
-		return "sss";
-		
-	}
+	
 	
 	@RequestMapping("uploadAvatar")
 	public ModelAndView uploadAvatar(@RequestParam(value = "imgFile", required = false) MultipartFile file, HttpServletRequest request) throws FileNotFoundException, IOException, InterruptedException{
@@ -153,6 +126,41 @@ public class uploadController {
 	    String s = mapper.writeValueAsString(percent); 
 		 return s;
     }
+	
+	@RequestMapping(value="uploadVideoFile_load")
+	public ModelAndView uploadVideoFile_load(){
+		ModelAndView mv = new ModelAndView("videoUpload");
+		return mv;
+	}
+	
+	@RequestMapping(value = "uploadVideoFile", method = RequestMethod.POST)
+	@ResponseBody 
+	public String uploadVideoFile(@RequestParam("uploadVideoFile") MultipartFile uploadVideoFile, HttpServletRequest request) throws IOException,FileUploadException{
+			
+		 	String basePath = "E:/workspace2/VideoPlatform/WebContent/" ;
+		 	String relativePath = "uploadVideo/";
+	        String fileName = uploadVideoFile.getOriginalFilename();
+      
+	        CustomMultipartResolver multipartResolver = new CustomMultipartResolver();
+	        MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+	        uploadVideoFile = multiRequest.getFile("uploadVideoFile");
+	        File targetFile = new File( basePath + relativePath  , fileName);  
+	        if(!targetFile.exists()){  
+	            targetFile.mkdirs();  
+	        }  
+	  
+	        //保存  
+	        try {  
+	        	uploadVideoFile.transferTo(targetFile);  
+	            
+	        } catch (Exception e) {  
+	            e.printStackTrace();  
+	        }  
+
+
+		return "sss";
+		
+	}
 	
 	
 }

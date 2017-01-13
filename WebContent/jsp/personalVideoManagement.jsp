@@ -191,6 +191,10 @@
                                       </tr>
                                     </tbody>
                                   </table>
+                                  
+                                  <div class="row">
+	                            		<a href=""><button id="upLoadVideoBtn" class="btn btn-primary btn-lg center-block" >上传新视频</button></a>
+	                            </div>
                                         
                                     </div>
                                 </div>
@@ -251,6 +255,7 @@
                                       </tr>
                                     </tbody>
                                   </table>
+                                  
                                         
                                     </div>
                                 </div>
