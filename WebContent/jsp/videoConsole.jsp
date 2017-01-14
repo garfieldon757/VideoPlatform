@@ -198,7 +198,6 @@
     $(document).ready(function(){
 
         $("#videoPlayDatetimeSearchBtn").click(function(){
-        	alert("sdafsfsaf");
         	var videoId = $("#videoId").val();
             var videoPlayDatetimeStart = $("#video_playDatetimeStart").val() ;
             var videoPlayDatetimeEnd = $("#video_playDatetimeEnd").val();

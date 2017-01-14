@@ -181,10 +181,14 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="userConsole_load")
-	public ModelAndView userConsole_load(HttpServletRequest request){
+	public ModelAndView userConsole_load(String userId, HttpServletRequest request){
 		ModelAndView mv = new ModelAndView("userConsole");
+		
 		TblUser user = um.getSession(request, "user");
+		TblUser user_console = userDAO.getUserByUserId(userId);
 		mv.addObject("user", user);
+		mv.addObject("user_console", user_console);
+		
 		return mv;
 	}
 	

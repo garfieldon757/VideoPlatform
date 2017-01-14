@@ -24,7 +24,8 @@ public class TblRole implements java.io.Serializable {
 	@JsonIgnore
 	private Set<TblUser> tblUsers = new HashSet<TblUser>(0);
 	@JsonIgnore
-	private Set<TblPermission> tblPermissions = new HashSet<TblPermission>(0);
+	private Set<TblRolePermissionRelation> tblRolePermissionRelations = new HashSet<TblRolePermissionRelation>(0);
+	
 
 	public TblRole() {
 	}
@@ -33,11 +34,13 @@ public class TblRole implements java.io.Serializable {
 		this.roleId = roleId;
 	}
 
-	public TblRole(String roleId, String roleName, Set<TblUser> tblUsers, Set<TblPermission> tblPermissions) {
+	public TblRole(String roleId, String roleName, Set<TblUser> tblUsers,
+			Set<TblRolePermissionRelation> tblRolePermissionRelations) {
+		super();
 		this.roleId = roleId;
 		this.roleName = roleName;
 		this.tblUsers = tblUsers;
-		this.tblPermissions = tblPermissions;
+		this.tblRolePermissionRelations = tblRolePermissionRelations;
 	}
 
 	@Id
@@ -69,13 +72,14 @@ public class TblRole implements java.io.Serializable {
 		this.tblUsers = tblUsers;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblRole")
-	public Set<TblPermission> getTblPermissions() {
-		return this.tblPermissions;
+	public Set<TblRolePermissionRelation> getTblRolePermissionRelations() {
+		return tblRolePermissionRelations;
 	}
 
-	public void setTblPermissions(Set<TblPermission> tblPermissions) {
-		this.tblPermissions = tblPermissions;
+	public void setTblRolePermissionRelations(Set<TblRolePermissionRelation> tblRolePermissionRelations) {
+		this.tblRolePermissionRelations = tblRolePermissionRelations;
 	}
+	
+	
 
 }

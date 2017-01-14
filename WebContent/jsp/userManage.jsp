@@ -170,6 +170,25 @@
     </div>
 </div>
 </div>
+
+<div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" id="delete_security_infoBox">
+	<div class="modal-dialog modal-sm">
+	  <div class="modal-content">
+		   <div class="modal-header">
+		      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		      <h4 class="modal-title">删除操作安全提醒</h4>
+		    </div>
+		    <div class="modal-body">
+		      <p>确定删除这名用户的全部信息吗？（删除操作无法撤销）</p>
+		    </div>
+		    <div class="modal-footer">
+		      <button id="delete_confirm_btn" type="button" class="btn btn-danger" >确认删除</button>
+		      <button id="delete_cancle_btn" type="button" class="btn btn-default" data-dismiss="modal">取消删除</button>
+		    </div>
+	  </div>
+	</div>
+</div>
+
 </div>
 <footer>
     <div class="container">
@@ -187,6 +206,8 @@
 
 
 <script type="text/javascript">
+
+	var userId_temp = "";
 
     $(document).ready(function(){
 
@@ -215,28 +236,58 @@
                     	
                     	for(var i = 0 ; i < jsonObjectLength ; i++)
 	                    {
-	                        concatStr += 	"<tr>"
+	                        concatStr += 	"<tr id='user_'" + jsonObject[i].userId + ">"
 	                                + 			"<td>" + jsonObject[i].userNickName + "</td>"
 	                                + 			"<td>" + jsonObject[i].userSex + "</td>"
 	                                + 			"<td>" + jsonObject[i].userBirthDate + "</td>"
 	                                + 			"<td>" + jsonObject[i].userBirthPlace + "</td>"
-	                                + 			"<td><a href=''>监控</a>/<a href=''>删除</a></td>"
+	                                + 			"<td><a href='userConsole_load?userId=" + jsonObject[i].userId + "'>监控</a>/<a id='deleteUser_btn_"+ jsonObject[i].userId +"' onclick='deleteUser(\""+ jsonObject[i].userId +"\")' >删除</a></td>"
 	                                +		 "</tr>";
 	                    }
                     	
                     }
                     
 
-                    $("#userNickname_Tbody").html("");
+                    $("#userNickname_Tbody" + userId_temp ).html("");
                     $("#userNickname_Tbody").html(concatStr);
 
                 }
             })
 
         });
+        
+        $("#delete_confirm_btn").click(function(){
+        	
+        	 $.ajax({
+                 url:"ajax_delete_userManage_user",
+                 data:{
+             		userId_temp : userId_temp
+                 },
+                 type:"GET",
+                 success:function(jsonString){
+
+                    if(jsonString == "success" )
+                    {
+                    	alert("用户信息删除成功。");
+                    	$("#user_" + userId ).html("");
+                    }else{
+                    	alert("用户信息删除失败。");
+                    }
+
+                 }
+             })
+        	
+        })
 
 
     });
+    
+    function deleteUser( userId )
+    {
+    	userId_temp = userId;
+    	$('#myModal').modal('show');
+    	
+    }
 
 
 </script>

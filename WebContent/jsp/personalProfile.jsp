@@ -237,23 +237,6 @@
                                 </div>
                             </div>
                             
-                            <div role="tabpanel" id="xx" name="xx">
-                                <div class="panel panel-default">
-                                    <div class="panel-body">
-                                    	<form id="uploadVideoForm" method="post" action="uploadVideoFile" enctype="multipart/form-data">
-		                                	<input type="file" id="uploadVideoFile" name="uploadVideoFile" /><br> 
-		                                	<div class="progress">
-			                                    <div id="ajax_uploadVideoFile_progress_bar" class="progress-bar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-			                                        60%
-			                                    </div>
-			                                </div>
-			                                <input type="submit"  id="ajax_uploadVideoFile_submit_btn" value="上传视频文件" />
-	                                	</form>
-		                              
-                                    </div>
-                                </div>
-                            </div>
-                            
                             <div role="tabpanel" 
                     		<c:choose>
 	                			<c:when test="${defualt_tab == 'security' }"> class="tab-pane active in" </c:when>

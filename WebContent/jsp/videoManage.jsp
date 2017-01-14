@@ -171,6 +171,25 @@
     </div>
 </div>
 </div>
+
+<div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" id="delete_security_infoBox">
+<div class="modal-dialog modal-sm">
+  <div class="modal-content">
+	   <div class="modal-header">
+	      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	      <h4 class="modal-title">删除操作安全提醒</h4>
+	    </div>
+	    <div class="modal-body">
+	      <p>确定删除这段视频的全部信息吗？（删除操作无法撤销）</p>
+	    </div>
+	    <div class="modal-footer">
+	      <button id="delete_confirm_btn" type="button" class="btn btn-danger" >确认删除</button>
+	      <button id="delete_cancle_btn" type="button" class="btn btn-default" data-dismiss="modal">取消删除</button>
+	    </div>
+  </div>
+</div>
+</div>
+
 </div>
 <footer>
     <div class="container">
@@ -191,6 +210,8 @@
 
     $(document).ready(function(){
 
+    	var videoId_temp = "";
+    	
         $("#videoKeywordSearchBtn").click(function(){
 
             var videoKeyword = $("#video_keyword").val() ;
@@ -214,7 +235,7 @@
                                 + 			"<td>" + jsonObject[i].tblDatadictionary.dataDictionaryName + "</td>"
                                 + 			"<td><a href=''>标签浮动框</a></td>"
                                 + 			"<td>" + jsonObject[i].videoDescription + "</td>"
-                                + 			"<td><a href=''>监控</a>/<a href=''>删除</a></td>"
+                                + 			"<td><a href='videoConsole_load?videoId=" + jsonObject[i].videoId + "'>监控</a>/<a id='deleteVideo_btn_"+ jsonObject[i].videoId +"' onclick='deleteVideo(\""+ jsonObject[i].videoId +"\")' >删除</a></td>"
                                 +		 "</tr>";
                     }
 
@@ -226,8 +247,37 @@
 
         });
 
+        $("#delete_confirm_btn").click(function(){
+        	
+       	 $.ajax({
+                url:"ajax_delete_videoManage_video",
+                data:{
+            		userId_temp : userId_temp
+                },
+                type:"GET",
+                success:function(jsonString){
+
+                   if(jsonString == "success" )
+                   {
+                   	alert("用户信息删除成功。");
+                   	$("#user_" + userId ).html("");
+                   }else{
+                   	alert("用户信息删除失败。");
+                   }
+
+                }
+            })
+       	
+       })
 
     });
+    
+    function deleteVideo( videoId )
+    {
+    	videoId_temp = videoId;
+    	$('#myModal').modal('show');
+    	
+    }
 
 
 </script>

@@ -125,9 +125,9 @@
                             <div class="panel-body">
 
                                 <div class="jumbotron" style="">
-                                	<input type="hidden" id="userId" name="userId" value="${user.userId}">
-                                    <img src="${user.userAvatarImgLink}" style="height: 100px; width: 110px; display: inline-block;" >
-                                    <h1 style="display: inline-block; vertical-align: middle">${user.userNickName}</h1>
+                                	<input type="hidden" id="user_console_id" name="user_console_id" value="${user_console.userId}">
+                                    <img src="${user_console.userAvatarImgLink}" style="height: 100px; width: 110px; display: inline-block;" >
+                                    <h1 style="display: inline-block; vertical-align: middle">${user_console.userNickName}</h1>
                                 </div>
                                 
                                 <div class="panel panel-default">
@@ -351,14 +351,14 @@
     	
     	$("#operateTimeSearchBtn").click(function(){
         	
-        	var userId = $("#userId").val();
+        	var user_console_id = $("#user_console_id").val();
             var userOperationDatetimeStart = $("#userOperationDatetimeStart").val() ;
             var userOperationDatetimeEnd = $("#userOperationDatetimeEnd").val();
             
             $.ajax({
                 url:"ajax_search_userConsole_operationInfo",
                 data:{
-            		userId : userId,
+            		user_console_id : user_console_id,
             		userOperationDatetimeStart : userOperationDatetimeStart,
             		userOperationDatetimeEnd : userOperationDatetimeEnd
                 },

@@ -19,21 +19,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "tbl_datadictionary", catalog = "videoplatform")
 public class TblDatadictionary implements java.io.Serializable {
 
+	@Id
+	@Column(name = "dataDictionary_ID", unique = true, nullable = false)
 	private String dataDictionaryId;
 	private String dataDictionaryKey;
 	private String dataDictionaryValue;
-	private String dataDictionaryName;
 	private String dataDictionaryDescription;
-	private String dataDictionaryParam1;
-	private String dataDictionaryParam2;
 	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblDatadictionary")
 	private Set<TblUserlog> tblUserlogs = new HashSet<TblUserlog>(0);
-	@JsonIgnore
-	private Set<TblVideo> tblVideos = new HashSet<TblVideo>(0);
-	@JsonIgnore
-	private Set<TblPermission> tblPermissionsForPermissionOperationId = new HashSet<TblPermission>(0);
-	@JsonIgnore
-	private Set<TblPermission> tblPermissionsForPermissionResourceId = new HashSet<TblPermission>(0);
 
 	public TblDatadictionary() {
 	}
@@ -43,122 +37,55 @@ public class TblDatadictionary implements java.io.Serializable {
 	}
 
 	public TblDatadictionary(String dataDictionaryId, String dataDictionaryKey, String dataDictionaryValue,
-			String dataDictionaryName, String dataDictionaryDescription, String dataDictionaryParam1,
-			String dataDictionaryParam2, Set<TblUserlog> tblUserlogs, Set<TblVideo> tblVideos,
-			Set<TblPermission> tblPermissionsForPermissionOperationId,
-			Set<TblPermission> tblPermissionsForPermissionResourceId) {
+			String dataDictionaryDescription, Set<TblUserlog> tblUserlogs) {
+		super();
 		this.dataDictionaryId = dataDictionaryId;
 		this.dataDictionaryKey = dataDictionaryKey;
 		this.dataDictionaryValue = dataDictionaryValue;
-		this.dataDictionaryName = dataDictionaryName;
 		this.dataDictionaryDescription = dataDictionaryDescription;
-		this.dataDictionaryParam1 = dataDictionaryParam1;
-		this.dataDictionaryParam2 = dataDictionaryParam2;
 		this.tblUserlogs = tblUserlogs;
-		this.tblVideos = tblVideos;
-		this.tblPermissionsForPermissionOperationId = tblPermissionsForPermissionOperationId;
-		this.tblPermissionsForPermissionResourceId = tblPermissionsForPermissionResourceId;
 	}
 
-	@Id
-
-	@Column(name = "dataDictionary_ID", unique = true, nullable = false)
 	public String getDataDictionaryId() {
-		return this.dataDictionaryId;
+		return dataDictionaryId;
 	}
 
 	public void setDataDictionaryId(String dataDictionaryId) {
 		this.dataDictionaryId = dataDictionaryId;
 	}
 
-	@Column(name = "dataDictionary_key")
 	public String getDataDictionaryKey() {
-		return this.dataDictionaryKey;
+		return dataDictionaryKey;
 	}
 
 	public void setDataDictionaryKey(String dataDictionaryKey) {
 		this.dataDictionaryKey = dataDictionaryKey;
 	}
 
-	@Column(name = "dataDictionary_value", length = 255)
 	public String getDataDictionaryValue() {
-		return this.dataDictionaryValue;
+		return dataDictionaryValue;
 	}
 
 	public void setDataDictionaryValue(String dataDictionaryValue) {
 		this.dataDictionaryValue = dataDictionaryValue;
 	}
 
-	@Column(name = "dataDictionary_name")
-	public String getDataDictionaryName() {
-		return this.dataDictionaryName;
-	}
-
-	public void setDataDictionaryName(String dataDictionaryName) {
-		this.dataDictionaryName = dataDictionaryName;
-	}
-
-	@Column(name = "dataDictionary_description")
 	public String getDataDictionaryDescription() {
-		return this.dataDictionaryDescription;
+		return dataDictionaryDescription;
 	}
 
 	public void setDataDictionaryDescription(String dataDictionaryDescription) {
 		this.dataDictionaryDescription = dataDictionaryDescription;
 	}
 
-	@Column(name = "dataDictionary_param1")
-	public String getDataDictionaryParam1() {
-		return this.dataDictionaryParam1;
-	}
-
-	public void setDataDictionaryParam1(String dataDictionaryParam1) {
-		this.dataDictionaryParam1 = dataDictionaryParam1;
-	}
-
-	@Column(name = "dataDictionary_param2")
-	public String getDataDictionaryParam2() {
-		return this.dataDictionaryParam2;
-	}
-
-	public void setDataDictionaryParam2(String dataDictionaryParam2) {
-		this.dataDictionaryParam2 = dataDictionaryParam2;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblDatadictionary")
 	public Set<TblUserlog> getTblUserlogs() {
-		return this.tblUserlogs;
+		return tblUserlogs;
 	}
 
 	public void setTblUserlogs(Set<TblUserlog> tblUserlogs) {
 		this.tblUserlogs = tblUserlogs;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblDatadictionary")
-	public Set<TblVideo> getTblVideos() {
-		return this.tblVideos;
-	}
-
-	public void setTblVideos(Set<TblVideo> tblVideos) {
-		this.tblVideos = tblVideos;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblDatadictionaryByPermissionOperationId")
-	public Set<TblPermission> getTblPermissionsForPermissionOperationId() {
-		return this.tblPermissionsForPermissionOperationId;
-	}
-
-	public void setTblPermissionsForPermissionOperationId(Set<TblPermission> tblPermissionsForPermissionOperationId) {
-		this.tblPermissionsForPermissionOperationId = tblPermissionsForPermissionOperationId;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblDatadictionaryByPermissionResourceId")
-	public Set<TblPermission> getTblPermissionsForPermissionResourceId() {
-		return this.tblPermissionsForPermissionResourceId;
-	}
-
-	public void setTblPermissionsForPermissionResourceId(Set<TblPermission> tblPermissionsForPermissionResourceId) {
-		this.tblPermissionsForPermissionResourceId = tblPermissionsForPermissionResourceId;
-	}
+	
 
 }
