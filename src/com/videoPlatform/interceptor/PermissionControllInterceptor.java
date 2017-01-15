@@ -6,6 +6,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.videoPlatform.dao.UserDAO;
 import com.videoPlatform.model.TblRole;
+import com.videoPlatform.model.TblRolePermissionRelation;
 import com.videoPlatform.model.TblUser;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpSession;
  * @DATE 2016/11/28.
  * aim:   com.adp.interceptor
  */
-public class AuthControllInterceptor implements HandlerInterceptor {
+public class PermissionControllInterceptor implements HandlerInterceptor {
 
 	@Autowired(required=true)
 	private UserDAO userDAO;
@@ -41,11 +42,11 @@ public class AuthControllInterceptor implements HandlerInterceptor {
         }
         
         /*************************2.权限查询************************************/
-        TblRole role = user.getTblRole();
-        List<AuthorizationRoleRelation> authRoleRelationList = userDAO.getAuthRoleRelationListByRole(role);
+        TblRole tblRole = user.getTblRole();
+        List<TblRolePermissionRelation> tblRolePermissionRelationList = userDAO.getRolePermissionRelationListByRole(tblRole);
         
         HttpSession session = request.getSession();
-		session.setAttribute("authRoleRelationList", authRoleRelationList);//将用户对应角色的权限acl存储在session中
+		session.setAttribute("rolePermissionRelationList", tblRolePermissionRelationList);//将用户对应角色的权限acl存储在session中
         
         return returnFlag;
       //todo 此处为false时，请求不会到达control层
@@ -56,11 +57,11 @@ public class AuthControllInterceptor implements HandlerInterceptor {
         
     	System.out.println("postHandle----start"); 
     	/****做一个权限的小测试 start*****************/
-		List<AuthorizationRoleRelation> authRoleRelationList = (List<AuthorizationRoleRelation>) request.getSession().getAttribute("authRoleRelationList");
-		for(int i = 0 ; i < authRoleRelationList.size(); i++){
-			AuthorizationRoleRelation authRoleRelation= authRoleRelationList.get(i);
-			String resourceURI = authRoleRelation.getAuthorization().getResource().getResourceURI();//资源URL
-			String operationValue = authRoleRelation.getAuthorization().getOperation().getOperationValue();//操作值
+    	List<TblRolePermissionRelation> rolePermissionRelationList = (List<TblRolePermissionRelation>) request.getSession().getAttribute("rolePermissionRelationList");
+		for(int i = 0 ; i < rolePermissionRelationList.size(); i++){
+			TblRolePermissionRelation rolePermissionRelation= rolePermissionRelationList.get(i);
+			String resourceURI = rolePermissionRelation.getTblPermission().getTblResource().getResourceUri();//资源URL
+			String operationValue = rolePermissionRelation.getTblPermission().getTblOperation().getOperationValue();//操作值
 			
 			mv.addObject( resourceURI , operationValue );
 		}

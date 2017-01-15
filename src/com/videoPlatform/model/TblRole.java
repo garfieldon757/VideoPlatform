@@ -1,5 +1,5 @@
 package com.videoPlatform.model;
-// Generated 2016-12-27 14:58:57 by Hibernate Tools 3.4.0.CR1
+// Generated 2017-1-15 13:56:31 by Hibernate Tools 3.4.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,11 +21,8 @@ public class TblRole implements java.io.Serializable {
 
 	private String roleId;
 	private String roleName;
-	@JsonIgnore
+	private Set<TblRolePermissionRelation> tblRolepermissionrelations = new HashSet<TblRolePermissionRelation>(0);
 	private Set<TblUser> tblUsers = new HashSet<TblUser>(0);
-	@JsonIgnore
-	private Set<TblRolePermissionRelation> tblRolePermissionRelations = new HashSet<TblRolePermissionRelation>(0);
-	
 
 	public TblRole() {
 	}
@@ -34,13 +31,12 @@ public class TblRole implements java.io.Serializable {
 		this.roleId = roleId;
 	}
 
-	public TblRole(String roleId, String roleName, Set<TblUser> tblUsers,
-			Set<TblRolePermissionRelation> tblRolePermissionRelations) {
-		super();
+	public TblRole(String roleId, String roleName, Set<TblRolePermissionRelation> tblRolepermissionrelations,
+			Set<TblUser> tblUsers) {
 		this.roleId = roleId;
 		this.roleName = roleName;
+		this.tblRolepermissionrelations = tblRolepermissionrelations;
 		this.tblUsers = tblUsers;
-		this.tblRolePermissionRelations = tblRolePermissionRelations;
 	}
 
 	@Id
@@ -63,7 +59,18 @@ public class TblRole implements java.io.Serializable {
 		this.roleName = roleName;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "tblRole")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblRole")
+	@JsonIgnore
+	public Set<TblRolePermissionRelation> getTblRolepermissionrelations() {
+		return this.tblRolepermissionrelations;
+	}
+
+	public void setTblRolepermissionrelations(Set<TblRolePermissionRelation> tblRolepermissionrelations) {
+		this.tblRolepermissionrelations = tblRolepermissionrelations;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblRole")
+	@JsonIgnore
 	public Set<TblUser> getTblUsers() {
 		return this.tblUsers;
 	}
@@ -71,15 +78,5 @@ public class TblRole implements java.io.Serializable {
 	public void setTblUsers(Set<TblUser> tblUsers) {
 		this.tblUsers = tblUsers;
 	}
-
-	public Set<TblRolePermissionRelation> getTblRolePermissionRelations() {
-		return tblRolePermissionRelations;
-	}
-
-	public void setTblRolePermissionRelations(Set<TblRolePermissionRelation> tblRolePermissionRelations) {
-		this.tblRolePermissionRelations = tblRolePermissionRelations;
-	}
-	
-	
 
 }

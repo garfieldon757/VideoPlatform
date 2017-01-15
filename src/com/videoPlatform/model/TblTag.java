@@ -1,5 +1,5 @@
 package com.videoPlatform.model;
-// Generated 2016-12-27 14:58:57 by Hibernate Tools 3.4.0.CR1
+// Generated 2017-1-15 13:56:31 by Hibernate Tools 3.4.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +22,6 @@ public class TblTag implements java.io.Serializable {
 	private String tagId;
 	private String tagName;
 	private String tagCategory;
-	@JsonIgnore
 	private Set<TblVideotagrelation> tblVideotagrelations = new HashSet<TblVideotagrelation>(0);
 
 	public TblTag() {
@@ -69,6 +68,7 @@ public class TblTag implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblTag")
+	@JsonIgnore
 	public Set<TblVideotagrelation> getTblVideotagrelations() {
 		return this.tblVideotagrelations;
 	}

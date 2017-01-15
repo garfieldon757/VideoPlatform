@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +33,9 @@ import com.videoPlatform.model.TblComment;
 import com.videoPlatform.model.TblDatadictionary;
 import com.videoPlatform.model.TblTag;
 import com.videoPlatform.model.TblUser;
+import com.videoPlatform.model.TblUservideorelation;
 import com.videoPlatform.model.TblVideo;
+import com.videoPlatform.model.TblVideoCategory;
 import com.videoPlatform.model.TblVideotagrelation;
 
 @Component
@@ -56,7 +59,7 @@ public class VideoController {
 	public ModelAndView videoSearchInit(@RequestParam("videoCategoryID") String videoCategoryID , @RequestParam("page") int page , HttpServletRequest request)
 	{
 		ModelAndView mv = new ModelAndView("VideoSearch");
-		List<TblDatadictionary> videoCategoryList = vm.getVideoCategoryList();
+		List<TblVideoCategory> videoCategoryList = vm.getVideoCategoryList();
 		List<TblVideo> videoList = vm.getVideoListByVideoCategroyIDAndPage(videoCategoryID , page);
 		int videoListSize = vm.getVideoListSizeByVideoCategoryID(videoCategoryID);
 		if(videoCategoryList != null && videoList != null){
@@ -89,11 +92,11 @@ public class VideoController {
 	public ModelAndView videoInfoEdit_load(@RequestParam("videoId") String videoId , HttpServletRequest request){
 		ModelAndView mv = new ModelAndView("videoEdit");
 		TblVideo video = vm.getVideoByVideoID(videoId);
-		List<TblDatadictionary> tblDatadictionaryList = vm.getVideoCategoryList();
+		List<TblVideoCategory> tblVideoCategoryList = vm.getVideoCategoryList();
 		List<TblVideotagrelation> videoTagList = vm.getVideoTagList(videoId);
 		if(video != null){
 			mv.addObject("video", video);
-			mv.addObject("videoCategoryList", tblDatadictionaryList);
+			mv.addObject("videoCategoryList", tblVideoCategoryList);
 			mv.addObject("videoTagList", videoTagList);
 		}
 		return mv;
@@ -125,14 +128,21 @@ public class VideoController {
 		vm.addVideotagrelations(user, videoId, newTagList);
 		
 		video = vm.getVideoByVideoID(videoId);
-		List<TblDatadictionary> tblDatadictionaryList = vm.getVideoCategoryList();
+		List<TblVideoCategory> tblVideoCategoryList = vm.getVideoCategoryList();
 		List<TblVideotagrelation> videoTagList = vm.getVideoTagList(videoId);
 		if(video != null){
 			mv.addObject("video", video);
-			mv.addObject("videoCategoryList", tblDatadictionaryList);
+			mv.addObject("videoCategoryList", tblVideoCategoryList);
 			mv.addObject("videoTagList", videoTagList);
 		}
 		
+		return mv;
+	}
+	
+	@RequestMapping(value="videoUpload_load")
+	public ModelAndView videoUpload_load(HttpServletRequest request){
+		ModelAndView mv = new ModelAndView("videoUpload");
+
 		return mv;
 	}
 	
@@ -192,5 +202,17 @@ public class VideoController {
 	    String jsonString = mapper.writeValueAsString(returnObj);
 	    return jsonString;
 	}
+	
+	@RequestMapping(value="watchRecord_load", method=RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	public ModelAndView watchRecord_load(HttpServletResponse response) throws ParseException{
+		ModelAndView mv = new ModelAndView("watchRecord");
+		HttpSession session = httpServletRequest.getSession();
+		TblUser user = (TblUser) session.getAttribute("user");
+		
+		List<Map<String, List<TblUservideorelation>>> uservideorelation_watchRecord_list = relationDAO.getUservideorelationListByUserIdAndOpetationType(user.getUserId(), "play");
+
+		mv.addObject("tblUservideorelationList_watchRecord", uservideorelation_watchRecord_list);
+		return mv;
+	} 
 	
 }

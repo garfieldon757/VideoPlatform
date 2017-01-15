@@ -2,6 +2,7 @@ package com.videoPlatform.dao.impl;
 
 import java.sql.Date;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,7 +16,9 @@ import com.videoPlatform.dao.VideoDAO;
 import com.videoPlatform.model.TblDatadictionary;
 import com.videoPlatform.model.TblTag;
 import com.videoPlatform.model.TblUser;
+import com.videoPlatform.model.TblUservideorelation;
 import com.videoPlatform.model.TblVideo;
+import com.videoPlatform.model.TblVideoCategory;
 import com.videoPlatform.model.TblVideotagrelation;
 
 @Repository("vd")
@@ -26,24 +29,24 @@ public class VideoDAOImpl implements VideoDAO{
 	private EntityManager em;
 	
 	@Override
-	public List<TblDatadictionary> getVideoCategoryList() {
+	public List<TblVideoCategory> getVideoCategoryList() {
 		
-		String jpql = "select vc from TblDatadictionary vc where vc.dataDictionaryKey = 'videoCategory' ";
-		List<TblDatadictionary> videoCategoryList = em.createQuery(jpql).getResultList();
+		String jpql = "select vc from TblVideoCategory vc";
+		List<TblVideoCategory> videoCategoryList = em.createQuery(jpql).getResultList();
 		return videoCategoryList;
 		
 	}
 	
 	@Override
-	public TblDatadictionary getVideoCategoryByVideoCategoryID(String videoCategroyID) {
-		String jpql = "select vc from TblDatadictionary vc where vc.dataDictionaryId =:videoCategroyID";
-		TblDatadictionary videoCategroy = (TblDatadictionary) em.createQuery(jpql).setParameter("videoCategroyID", videoCategroyID ).getResultList().get(0);
+	public TblVideoCategory getVideoCategoryByVideoCategoryID(String videoCategroyID) {
+		String jpql = "select vc from TblVideoCategory vc where vc.videoCategoryId =:videoCategroyID";
+		TblVideoCategory videoCategroy = (TblVideoCategory) em.createQuery(jpql).setParameter("videoCategroyID", videoCategroyID ).getResultList().get(0);
 		return videoCategroy;
 	}
 
 	@Override
-	public List<TblVideo> getVideoListByVideoCategroyAndPage(TblDatadictionary videoCategory , int page) {
-		String jpql = "select v from TblVideo v where v.tblDatadictionary =:videoCategory";
+	public List<TblVideo> getVideoListByVideoCategroyAndPage(TblVideoCategory videoCategory , int page) {
+		String jpql = "select v from TblVideo v where v.tblVideocategory =:videoCategory";
 		int startVideoIndex = ( page -1 ) * 16 ;
 		List<TblVideo> videoList = em.createQuery(jpql)
 													.setParameter("videoCategory", videoCategory)
@@ -54,8 +57,8 @@ public class VideoDAOImpl implements VideoDAO{
 	}
 
 	@Override
-	public int getVideoListSizeByVideoCategory(TblDatadictionary videoCategory) {
-		String jpql = "select count(v) from TblVideo v where v.tblDatadictionary =:videoCategory";
+	public int getVideoListSizeByVideoCategory(TblVideoCategory videoCategory) {
+		String jpql = "select count(v) from TblVideo v where v.tblVideocategory =:videoCategory";
 		String videoListSizeTemp=em.createQuery(jpql).setParameter("videoCategory", videoCategory ).getSingleResult().toString();
 		int videoListSize = Integer.parseInt(videoListSizeTemp);
 		return videoListSize;
@@ -89,6 +92,38 @@ public class VideoDAOImpl implements VideoDAO{
 																					.getResultList();
 		return videoList;
 	}
+	
+	@Override
+	public List<TblUservideorelation> getUservideorelationByMultiParams(String userId, String videoKeyword, String operateDateStart,
+			String operateDateEnd, String operation_type) {
+		// TODO Auto-generated method stub
+		java.sql.Date operateDateStart_temp1 = java.sql.Date.valueOf(operateDateStart);
+		java.util.Date operateDateStart_temp2 = new java.util.Date(operateDateStart_temp1.getTime());
+		java.sql.Date operateDateEnd_temp1 = java.sql.Date.valueOf(operateDateEnd);
+		java.util.Date operateDateEnd_temp2 = new java.util.Date(operateDateEnd_temp1.getTime());
+		List<TblUservideorelation> videoList = new ArrayList<TblUservideorelation>();
+		
+		if( !videoKeyword.isEmpty()){
+			String jpql1  = "select uvr from TblUservideorelation uvr where uvr.tblUser.userId =:userId and uvr.tblVideo.videoName LIKE :videoKeyword and  uvr.userVideoRelationOperationTimestamps >:operateDateStart and uvr.userVideoRelationOperationTimestamps <:operateDateEnd and uvr.userVideoRelationType =:operation_type";
+			videoList = em.createQuery(jpql1).setParameter("userId", userId)
+																.setParameter("videoKeyword", "%" + videoKeyword + "%" )
+																.setParameter("operateDateStart", operateDateStart_temp2)
+																.setParameter("operateDateEnd", operateDateEnd_temp2)
+																.setParameter("operation_type", operation_type)
+																.getResultList();
+		}else
+		{
+			String jpql2  = "select uvr from TblUservideorelation uvr where uvr.tblUser.userId =:userId and uvr.userVideoRelationOperationTimestamps >:operateDateStart and uvr.userVideoRelationOperationTimestamps <:operateDateEnd and uvr.userVideoRelationType =:operation_type";
+			videoList = em.createQuery(jpql2).setParameter("userId", userId)
+																.setParameter("operateDateStart", operateDateStart_temp2)
+																.setParameter("operateDateEnd", operateDateEnd_temp2)
+																.setParameter("operation_type", operation_type)
+																.getResultList();
+		}
+																		
+		return videoList;
+	}
+
 
 	@Override
 	public Integer getNumOfComments(String videoId, String uploadDateStart, String uploadDateEnd) throws ParseException {
@@ -141,13 +176,25 @@ public class VideoDAOImpl implements VideoDAO{
 		
 	}
 	
+//	@Override
+//	public TblDatadictionary getTblDatadictionaryByVideoCategory(String videoCategory) {
+//		// TODO Auto-generated method stub
+//		String jpql = "select tb from TblDatadictionary tb where tb.dataDictionaryName =:videoCategory";
+//		List<TblDatadictionary> tblDatadictionaryList = em.createQuery(jpql).setParameter("videoCategory", videoCategory).getResultList();
+//		if(tblDatadictionaryList.size() > 0){
+//			return tblDatadictionaryList.get(0);
+//		}else{
+//			return null;
+//		}
+//	}
+	
 	@Override
-	public TblDatadictionary getTblDatadictionaryByVideoCategory(String videoCategory) {
+	public TblVideoCategory getTblVideoCategoryByVideoCategoryName(String videoCategoryName) {
 		// TODO Auto-generated method stub
-		String jpql = "select tb from TblDatadictionary tb where tb.dataDictionaryName =:videoCategory";
-		List<TblDatadictionary> tblDatadictionaryList = em.createQuery(jpql).setParameter("videoCategory", videoCategory).getResultList();
-		if(tblDatadictionaryList.size() > 0){
-			return tblDatadictionaryList.get(0);
+		String jpql = "select tvc from TblVideoCategory tvc where tvc.videoCategoryName =:videoCategoryName";
+		List<TblVideoCategory> tblVideoCategoryList = em.createQuery(jpql).setParameter("videoCategoryName", videoCategoryName).getResultList();
+		if(tblVideoCategoryList.size() > 0){
+			return tblVideoCategoryList.get(0);
 		}else{
 			return null;
 		}
@@ -159,8 +206,8 @@ public class VideoDAOImpl implements VideoDAO{
 		TblVideo video = getVideoByVideoID(videoId);
 		video.setVideoName(videoName);
 		video.setVideoDescription(videoDescription);
-		TblDatadictionary tblDatadictionary = getTblDatadictionaryByVideoCategory(videoCategory);
-		video.setTblDatadictionary(tblDatadictionary);
+		TblVideoCategory tblVideoCategroy = getTblVideoCategoryByVideoCategoryName(videoCategory);
+		video.setTblVideocategory(tblVideoCategroy);;
 		
 		em.merge(video);
 		return video;
@@ -226,6 +273,7 @@ public class VideoDAOImpl implements VideoDAO{
 		return totalCount_playPeople.intValue();
 	}
 
+	
 
 
 	

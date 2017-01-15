@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.videoPlatform.dao.UserDAO;
 import com.videoPlatform.model.TblRole;
+import com.videoPlatform.model.TblRolePermissionRelation;
 import com.videoPlatform.model.TblUser;
 
 @Repository("ud")
@@ -78,6 +79,15 @@ public class UserDAOImpl implements UserDAO{
 		// TODO Auto-generated method stub
 		em.merge(user);
 		return user;
+	}
+
+	@Override
+	public List<TblRolePermissionRelation> getRolePermissionRelationListByRole(TblRole tblRole) {
+		// TODO Auto-generated method stub
+		String jpql = "select rpr from TblRolePermissionRelation rpr where rpr.tblRole =:tblRole";
+		List<TblRolePermissionRelation> tblRolePermissionRelationList = em.createQuery(jpql).setParameter("tblRole", tblRole).getResultList();
+		
+		return tblRolePermissionRelationList;
 	}
 
 	

@@ -1,5 +1,5 @@
 package com.videoPlatform.model;
-// Generated 2016-12-27 14:58:57 by Hibernate Tools 3.4.0.CR1
+// Generated 2017-1-15 13:56:31 by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 import java.util.HashSet;
@@ -29,22 +29,16 @@ public class TblUser implements java.io.Serializable {
 	private String userNickName;
 	private String userSex;
 	private String userBirthPlace;
-	private String userAvatarImgLink;
 	private String userEmail;
+	private String userAvatarImgLink;
 	private String userPhoneNumber;
 	private String userPassword;
 	private Date userBirthDate;
-	@JsonIgnore
 	private Set<TblVideo> tblVideos = new HashSet<TblVideo>(0);
-	@JsonIgnore
 	private Set<TblUserpicture> tblUserpictures = new HashSet<TblUserpicture>(0);
-	@JsonIgnore
 	private Set<TblComment> tblComments = new HashSet<TblComment>(0);
-	@JsonIgnore
 	private Set<TblUservideorelation> tblUservideorelations = new HashSet<TblUservideorelation>(0);
-	@JsonIgnore
 	private Set<TblUserlog> tblUserlogs = new HashSet<TblUserlog>(0);
-	@JsonIgnore
 	private Set<TblVideotagrelation> tblVideotagrelations = new HashSet<TblVideotagrelation>(0);
 
 	public TblUser() {
@@ -55,7 +49,7 @@ public class TblUser implements java.io.Serializable {
 	}
 
 	public TblUser(String userId, TblRole tblRole, String userNickName, String userSex, String userBirthPlace,
-			String userAvatarImgLink, String userEmail, String userPhoneNumber, String userPassword, Date userBirthDate,
+			String userEmail, String userAvatarImgLink, String userPhoneNumber, String userPassword, Date userBirthDate,
 			Set<TblVideo> tblVideos, Set<TblUserpicture> tblUserpictures, Set<TblComment> tblComments,
 			Set<TblUservideorelation> tblUservideorelations, Set<TblUserlog> tblUserlogs,
 			Set<TblVideotagrelation> tblVideotagrelations) {
@@ -64,8 +58,8 @@ public class TblUser implements java.io.Serializable {
 		this.userNickName = userNickName;
 		this.userSex = userSex;
 		this.userBirthPlace = userBirthPlace;
-		this.userAvatarImgLink = userAvatarImgLink;
 		this.userEmail = userEmail;
+		this.userAvatarImgLink = userAvatarImgLink;
 		this.userPhoneNumber = userPhoneNumber;
 		this.userPassword = userPassword;
 		this.userBirthDate = userBirthDate;
@@ -125,15 +119,6 @@ public class TblUser implements java.io.Serializable {
 		this.userBirthPlace = userBirthPlace;
 	}
 
-	@Column(name = "user_avatarImgLink")
-	public String getUserAvatarImgLink() {
-		return this.userAvatarImgLink;
-	}
-
-	public void setUserAvatarImgLink(String userAvatarImgLink) {
-		this.userAvatarImgLink = userAvatarImgLink;
-	}
-
 	@Column(name = "user_email")
 	public String getUserEmail() {
 		return this.userEmail;
@@ -141,6 +126,15 @@ public class TblUser implements java.io.Serializable {
 
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;
+	}
+
+	@Column(name = "user_avatarImgLink")
+	public String getUserAvatarImgLink() {
+		return this.userAvatarImgLink;
+	}
+
+	public void setUserAvatarImgLink(String userAvatarImgLink) {
+		this.userAvatarImgLink = userAvatarImgLink;
 	}
 
 	@Column(name = "user_phoneNumber")
@@ -172,6 +166,7 @@ public class TblUser implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblUser")
+	@JsonIgnore
 	public Set<TblVideo> getTblVideos() {
 		return this.tblVideos;
 	}
@@ -181,6 +176,7 @@ public class TblUser implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblUser")
+	@JsonIgnore
 	public Set<TblUserpicture> getTblUserpictures() {
 		return this.tblUserpictures;
 	}
@@ -190,6 +186,7 @@ public class TblUser implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblUser")
+	@JsonIgnore
 	public Set<TblComment> getTblComments() {
 		return this.tblComments;
 	}
@@ -199,6 +196,7 @@ public class TblUser implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblUser")
+	@JsonIgnore
 	public Set<TblUservideorelation> getTblUservideorelations() {
 		return this.tblUservideorelations;
 	}
@@ -208,6 +206,7 @@ public class TblUser implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblUser")
+	@JsonIgnore
 	public Set<TblUserlog> getTblUserlogs() {
 		return this.tblUserlogs;
 	}
@@ -217,6 +216,7 @@ public class TblUser implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblUser")
+	@JsonIgnore
 	public Set<TblVideotagrelation> getTblVideotagrelations() {
 		return this.tblVideotagrelations;
 	}

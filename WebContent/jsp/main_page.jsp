@@ -27,10 +27,10 @@
                     <ul class="ht-list -list-main">
                         <li class="list-item -login">
                         		<c:if test="${ (user.tblRole.roleId == 3) }">
-                        			<a href="authProcess_load">用户名： ${ user.userNickName }</a>
+                        			<a href="userManage_load">用户名： ${ user.userNickName }</a>
                         		</c:if>
                         		<c:if test="${! (user.tblRole.roleId == 3) }">
-	                    			<a href="edit_personalProfile_load">用户名： ${ user.userNickName }</a>
+	                    			<a href="edit_personalProfile_load?tab=baseProfile">用户名： ${ user.userNickName }</a>
 	                    		</c:if>
 	                    </li>
                         <li class="list-item -login">
@@ -97,7 +97,7 @@
                 <div class="row">
                     <div class="col-md-5"></div>
                     <div class="col-md-2">
-                        <a href="videoSearchInit?videoCategoryID=1&page=1">
+                        <a href="videoSearchInit?videoCategoryID=11379899-6D4F-CD42-30DF-958A62867C36&page=1">
 	                        <button class="btn ht-btn -btn-blue -btn-lg">
 	                            <span>进入平台</span>
 	                            <span class="glyphicon glyphicon-hand-up"></span>

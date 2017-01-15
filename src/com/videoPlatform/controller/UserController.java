@@ -97,11 +97,11 @@ public class UserController {
 	}
 	
 	@RequestMapping("edit_personalProfile_load")
-	public ModelAndView edit_personalProfile_load( HttpServletRequest request){
+	public ModelAndView edit_personalProfile_load( String tab, HttpServletRequest request){
 		ModelAndView mv = new ModelAndView("personalProfile");
 		TblUser user = um.getSession(request, "user");
 		mv.addObject("user", user);
-		mv.addObject("defualt_tab", "baseProfile");
+		mv.addObject("defualt_tab", tab);
 		return mv;//跳转至personalProfile页面
 	}
 	

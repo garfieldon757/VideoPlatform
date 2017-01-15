@@ -1,15 +1,15 @@
 package com.videoPlatform.model;
-// Generated 2016-12-27 14:58:57 by Hibernate Tools 3.4.0.CR1
+// Generated 2017-1-15 13:56:31 by Hibernate Tools 3.4.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,18 +21,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "tbl_permission", catalog = "videoplatform")
 public class TblPermission implements java.io.Serializable {
 
-	@Id
-	@Column(name = "permission_ID", unique = true, nullable = false)
 	private String permissionId;
-	private String permissionDescription;
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "permission_resourceID")
 	private TblResource tblResource;
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "permission_operationID")
 	private TblOperation tblOperation;
-	@JsonIgnore
-	private Set<TblRolePermissionRelation> tblRolePermissionRelations = new HashSet<TblRolePermissionRelation>(0);
+	private String permissionDescription;
+	private Set<TblRolePermissionRelation> tblRolepermissionrelations = new HashSet<TblRolePermissionRelation>(0);
 
 	public TblPermission() {
 	}
@@ -41,17 +34,18 @@ public class TblPermission implements java.io.Serializable {
 		this.permissionId = permissionId;
 	}
 
-	public TblPermission(String permissionId, String permissionDescription, TblResource tblResource,
-			TblOperation tblOperation, Set<TblRolePermissionRelation> tblRolePermissionRelations) {
-		super();
+	public TblPermission(String permissionId, TblResource tblResource, TblOperation tblOperation,
+			String permissionDescription, Set<TblRolePermissionRelation> tblRolepermissionrelations) {
 		this.permissionId = permissionId;
-		this.permissionDescription = permissionDescription;
 		this.tblResource = tblResource;
 		this.tblOperation = tblOperation;
-		this.tblRolePermissionRelations = tblRolePermissionRelations;
+		this.permissionDescription = permissionDescription;
+		this.tblRolepermissionrelations = tblRolepermissionrelations;
 	}
 
-	
+	@Id
+
+	@Column(name = "permission_ID", unique = true, nullable = false)
 	public String getPermissionId() {
 		return this.permissionId;
 	}
@@ -60,39 +54,43 @@ public class TblPermission implements java.io.Serializable {
 		this.permissionId = permissionId;
 	}
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "permission_resourceID")
 	public TblResource getTblResource() {
-		return tblResource;
+		return this.tblResource;
 	}
 
 	public void setTblResource(TblResource tblResource) {
 		this.tblResource = tblResource;
 	}
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "permission_operationID")
 	public TblOperation getTblOperation() {
-		return tblOperation;
+		return this.tblOperation;
 	}
 
 	public void setTblOperation(TblOperation tblOperation) {
 		this.tblOperation = tblOperation;
 	}
-	
 
-	public Set<TblRolePermissionRelation> getTblRolePermissionRelations() {
-		return tblRolePermissionRelations;
-	}
-
-	public void setTblRolePermissionRelations(Set<TblRolePermissionRelation> tblRolePermissionRelations) {
-		this.tblRolePermissionRelations = tblRolePermissionRelations;
-	}
-
+	@Column(name = "permission_description")
 	public String getPermissionDescription() {
-		return permissionDescription;
+		return this.permissionDescription;
 	}
 
 	public void setPermissionDescription(String permissionDescription) {
 		this.permissionDescription = permissionDescription;
 	}
 
-	
-	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblPermission")
+	@JsonIgnore
+	public Set<TblRolePermissionRelation> getTblRolepermissionrelations() {
+		return this.tblRolepermissionrelations;
+	}
+
+	public void setTblRolepermissionrelations(Set<TblRolePermissionRelation> tblRolepermissionrelations) {
+		this.tblRolepermissionrelations = tblRolepermissionrelations;
+	}
+
 }

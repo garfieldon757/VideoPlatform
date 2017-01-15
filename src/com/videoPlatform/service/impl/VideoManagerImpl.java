@@ -20,6 +20,7 @@ import com.videoPlatform.model.TblDatadictionary;
 import com.videoPlatform.model.TblTag;
 import com.videoPlatform.model.TblUser;
 import com.videoPlatform.model.TblVideo;
+import com.videoPlatform.model.TblVideoCategory;
 import com.videoPlatform.model.TblVideotagrelation;
 import com.videoPlatform.service.VideoManager;
 import com.videoPlatform.util.CustomVideoInfo;
@@ -38,21 +39,21 @@ public class VideoManagerImpl implements VideoManager{
 	private HttpServletRequest httpServletRequest;
 	
 	@Override
-	public List<TblDatadictionary> getVideoCategoryList() {
-		List<TblDatadictionary> videoCategoryList = videoDAO.getVideoCategoryList();
+	public List<TblVideoCategory> getVideoCategoryList() {
+		List<TblVideoCategory> videoCategoryList = videoDAO.getVideoCategoryList();
 		return videoCategoryList;
 	}
 
 	@Override
 	public List<TblVideo> getVideoListByVideoCategroyIDAndPage(String videoCategroyID , int page) {
-		TblDatadictionary videoCategory = videoDAO.getVideoCategoryByVideoCategoryID(videoCategroyID);
+		TblVideoCategory videoCategory = videoDAO.getVideoCategoryByVideoCategoryID(videoCategroyID);
 		List<TblVideo> videoList = videoDAO.getVideoListByVideoCategroyAndPage(videoCategory , page);
 		return videoList;
 	}
 
 	@Override
 	public int getVideoListSizeByVideoCategoryID(String videoCategoryID) {
-		TblDatadictionary videoCategory = videoDAO.getVideoCategoryByVideoCategoryID(videoCategoryID);
+		TblVideoCategory videoCategory = videoDAO.getVideoCategoryByVideoCategoryID(videoCategoryID);
 		int videoListSize = videoDAO.getVideoListSizeByVideoCategory(videoCategory);
 		return videoListSize;
 	}

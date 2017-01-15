@@ -1,5 +1,5 @@
 package com.videoPlatform.model;
-// Generated 2016-12-27 14:58:57 by Hibernate Tools 3.4.0.CR1
+// Generated 2017-1-15 13:56:31 by Hibernate Tools 3.4.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,15 +21,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "tbl_video", catalog = "videoplatform")
 public class TblVideo implements java.io.Serializable {
 
-	@Id
-	@Column(name = "video_ID", unique = true, nullable = false)
 	private String videoId;
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "user_ID")
 	private TblUser tblUser;
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "video_videoCategoryID")
-	private TblVideoCategory tblVideoCategory;
+	private TblVideoCategory tblVideocategory;
 	private String videoName;
 	private String videoBrand;
 	private String videoCountry;
@@ -40,14 +34,8 @@ public class TblVideo implements java.io.Serializable {
 	private String videoSourceLink;
 	private String videoDescription;
 	private String videoOriginSource;
-	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblVideo")
 	private Set<TblUservideorelation> tblUservideorelations = new HashSet<TblUservideorelation>(0);
-	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblVideo")
 	private Set<TblComment> tblComments = new HashSet<TblComment>(0);
-	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblVideo")
 	private Set<TblVideotagrelation> tblVideotagrelations = new HashSet<TblVideotagrelation>(0);
 
 	public TblVideo() {
@@ -57,15 +45,14 @@ public class TblVideo implements java.io.Serializable {
 		this.videoId = videoId;
 	}
 
-	public TblVideo(String videoId, TblUser tblUser, TblVideoCategory tblVideoCategory, String videoName,
+	public TblVideo(String videoId, TblUser tblUser, TblVideoCategory tblVideocategory, String videoName,
 			String videoBrand, String videoCountry, String videoIsDownloadable, String videoLanguage,
 			String videoPublishYear, String videoCoverLink, String videoSourceLink, String videoDescription,
 			String videoOriginSource, Set<TblUservideorelation> tblUservideorelations, Set<TblComment> tblComments,
 			Set<TblVideotagrelation> tblVideotagrelations) {
-		super();
 		this.videoId = videoId;
 		this.tblUser = tblUser;
-		this.tblVideoCategory = tblVideoCategory;
+		this.tblVideocategory = tblVideocategory;
 		this.videoName = videoName;
 		this.videoBrand = videoBrand;
 		this.videoCountry = videoCountry;
@@ -81,7 +68,9 @@ public class TblVideo implements java.io.Serializable {
 		this.tblVideotagrelations = tblVideotagrelations;
 	}
 
+	@Id
 
+	@Column(name = "video_ID", unique = true, nullable = false)
 	public String getVideoId() {
 		return this.videoId;
 	}
@@ -90,6 +79,8 @@ public class TblVideo implements java.io.Serializable {
 		this.videoId = videoId;
 	}
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_ID")
 	public TblUser getTblUser() {
 		return this.tblUser;
 	}
@@ -98,12 +89,14 @@ public class TblVideo implements java.io.Serializable {
 		this.tblUser = tblUser;
 	}
 
-	public TblVideoCategory getTblVideoCategory() {
-		return tblVideoCategory;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "video_videoCategoryID")
+	public TblVideoCategory getTblVideocategory() {
+		return this.tblVideocategory;
 	}
 
-	public void setTblVideoCategory(TblVideoCategory tblVideoCategory) {
-		this.tblVideoCategory = tblVideoCategory;
+	public void setTblVideocategory(TblVideoCategory tblVideocategory) {
+		this.tblVideocategory = tblVideocategory;
 	}
 
 	@Column(name = "video_name")
@@ -196,7 +189,8 @@ public class TblVideo implements java.io.Serializable {
 		this.videoOriginSource = videoOriginSource;
 	}
 
-
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblVideo")
+	@JsonIgnore
 	public Set<TblUservideorelation> getTblUservideorelations() {
 		return this.tblUservideorelations;
 	}
@@ -205,7 +199,8 @@ public class TblVideo implements java.io.Serializable {
 		this.tblUservideorelations = tblUservideorelations;
 	}
 
-
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblVideo")
+	@JsonIgnore
 	public Set<TblComment> getTblComments() {
 		return this.tblComments;
 	}
@@ -214,7 +209,8 @@ public class TblVideo implements java.io.Serializable {
 		this.tblComments = tblComments;
 	}
 
-
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblVideo")
+	@JsonIgnore
 	public Set<TblVideotagrelation> getTblVideotagrelations() {
 		return this.tblVideotagrelations;
 	}

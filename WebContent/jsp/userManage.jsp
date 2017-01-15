@@ -15,104 +15,13 @@
     <link href="css/app.css" rel="stylesheet" type="text/css">
 <body class="ng-scope">
 
-<div class="ng-scope">
-    <div class="navbar navbar-static-top ng-scope">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#/"></a>
-            </div>
-            <ul class="nav navbar-nav pull-right ng-scope">
-                <li  class="ng-scope" style="">
-                    <c:if test="${ videoLibMainPageLink == 1 }">
-                        <a href="videoSearchInit?videoCategoryID=1&page=1" class="icon-settings">视频库主页</a>
-                    </c:if>
-                </li>
-                <li id="dropdown_index" class="dropdown">
-                    <c:if test="${ personalProfileDropDownList == 1 }">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">个人设置<span class="caret"></span></a>
-                    </c:if>
-                    <ul class="dropdown-menu" role="menu" >
-                        <li>
-                            <c:if test="${ personalProfileEditLink == 1 }">
-                                <a href="edit_personalProfile_load">个人信息编辑</a>
-                            </c:if>
-                        </li>
-                        <li>
-                            <c:if test="${ user.tblRole.roleId == 1 or user.tblRole.roleId == 2 and authSettingsLink == 1 }">
-                                <a href="authSettings_load">个人权限申请</a>
-                            </c:if>
-                        </li>
-                        <li>
-                            <c:if test="${ authProcessLink == 1 }">
-                                <a href="authProcess_load">角色申请处理</a>
-                            </c:if>
-                        </li>
-                        <li>
-                            <c:if test="${ monitorLink == 1 }">
-                                <a href="monitor_load">后台运行监控台</a>
-                            </c:if>
-                        </li>
-                        <li>
-                            <c:if test="${ logMonitorLink == 1 }">
-                                <a href="logSearch_load">日志检索</a>
-                            </c:if>
-                        </li>
-
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
-<div ng-include="'/public/app/templates/horizontal-header.html'" class="ng-scope"><!-- ngIf: currentUser && currentUser.isConsumer -->
-    <div class="horizontal-header ng-scope" ng-if="currentUser &amp;&amp; currentUser.isConsumer">
-        <div class="container ">
-            <img class="pic-thumb pull-left" src="img/logo.jpg">
-            <h4 id="userName" class="ng-binding" value="${user.userNickName}">${user.userNickName}</h4>
-            <button type="button" class="btn btn-default pull-right" class="logout" ><a href="logout">退出</a></button>
-        </div>
-    </div>
-</div>
+<%@include file="header.jsp"%>		
 
 <div id="main">
     <div class="container">
         <div class="row">
             <div class="col-xs-3 ng-scope" >
-                <div ng-show="isActive('/settings')" class="ng-scope" style="">
-                    <div class="page-header">
-                        <h2>设置</h2>
-                    </div>
-                    <hr style="margin-top: 0;">
-                    <ul class="nav nav-stacked side-nav">
-
-                        <c:if test="${ personalProfileEditLink == 1 }">
-                            <li  class="active">
-                                <a href="edit_personalProfile_load">个人信息编辑</a>
-                            </li>
-                        </c:if>
-                        <c:if test="${ user.tblRole.roleId == 1 or user.tblRole.roleId == 2 and authSettingsLink == 1 }">
-                            <li >
-                                <a href="authSettings_load">个人权限申请</a>
-                            </li>
-                        </c:if>
-                        <c:if test="${ user.tblRole.roleId == 3 and authProcessLink == 1 }">
-                            <li >
-                                <a href="authProcess_load">角色申请处理</a>
-                            </li>
-                        </c:if>
-                        <c:if test="${ monitorLink == 1 }">
-                            <li >
-                                <a href="monitor_load">后台运行监控台</a>
-                            </li>
-                        </c:if>
-                        <c:if test="${ logMonitorLink == 1 }">
-                            <li >
-                                <a href="logSearch_load">日志检索</a>
-                            </li>
-                        </c:if>
-
-                    </ul>
-                </div>
+            		<%@include file="sideBar.jsp"%>	
             </div>
             <div class="col-xs-9 col-xs-9-remove">
                 <div class="ng-scope">
@@ -160,6 +69,16 @@
                                         </tr>
                                         </tbody>
                                     </table>
+                                    
+                                    <div style="text-align: center">
+		          	                    <nav>
+		          		                    <ul class="pagination" id="pagination">
+		          		                    
+		          		                    	
+		          		                        
+		          		                    </ul>
+		          		                </nav>
+		          		             </div>
 
                                 </div>
                             </div>
@@ -190,15 +109,8 @@
 </div>
 
 </div>
-<footer>
-    <div class="container">
-        <ul class="nav">
-            <li><a href="/contact" target="_blank">Contact Us</a></li>
-            <li><a href="/terms-caremarketplace" target="_blank">Terms - Care Marketplace</a></li>
-            <li><a href="/faq-caremarketplace" target="_blank">FAQs - Care Marketplace</a></li>
-        </ul>
-    </div>
-</footer>
+
+<%@include file="footer.jsp"%>	
 
 
 <script src="js/jquery.min.js"></script>
@@ -207,52 +119,71 @@
 
 <script type="text/javascript">
 
+	function formValidation_check(userName){
+		if(userName == "" )
+		{
+			alert("用户昵称信息未填写完整！");
+			return false;
+		}
+		
+		return true;
+	}
+
 	var userId_temp = "";
 
     $(document).ready(function(){
+    	
+    	$("#userManage_menu").attr("class" , "active");
 
         $("#userNicknameSearchBtn").click(function(){
 
             var userNickname = $("#userNickname").val() ;
 
-            $.ajax({
-                url:"ajax_search_userManage_users",
-                data:{
-            		userNickname : userNickname
-                },
-                type:"GET",
-                success:function(jsonString){
-
-                    jsonObject = eval("(" + jsonString + ")");
-                    jsonObjectLength = jsonObject.length;
-                    var concatStr = "";
-                    if(jsonObject.length == 0){
-                    	
-                    	 concatStr += 	"<tr>"
-		                                + 			"<td colspan=\"7\" style=\"text-align:center;vertical-align:middle;\"> 尚未查询结果 </td>"
+            var check_result = formValidation_check(userNickname);
+	    	if( check_result ){
+	            $.ajax({
+	                url:"ajax_search_userManage_users",
+	                data:{
+	            		userNickname : userNickname
+	                },
+	                type:"GET",
+	                success:function(jsonString){
+	
+	                    jsonObject = eval("(" + jsonString + ")");
+	                    jsonObjectLength = jsonObject.length;
+	                    var concatStr = "";
+	                    var concatStr_pagination = "";
+	                    if(jsonObject.length == 0){
+	                    	
+	                    	 concatStr += 	"<tr>"
+			                                + 			"<td colspan=\"7\" style=\"text-align:center;vertical-align:middle;\"> 尚未查询结果 </td>"
+			                                +		 "</tr>";
+	                    	
+	                    }else{
+	                    	
+	                    	for(var i = 0 ; i < jsonObjectLength ; i++)
+		                    {
+		                        concatStr += 	"<tr id='user_'" + jsonObject[i].userId + ">"
+		                                + 			"<td>" + jsonObject[i].userNickName + "</td>"
+		                                + 			"<td>" + jsonObject[i].userSex + "</td>"
+		                                + 			"<td>" + jsonObject[i].userBirthDate + "</td>"
+		                                + 			"<td>" + jsonObject[i].userBirthPlace + "</td>"
+		                                + 			"<td><a href='userConsole_load?userId=" + jsonObject[i].userId + "'>监控</a>/<a id='deleteUser_btn_"+ jsonObject[i].userId +"' onclick='deleteUser(\""+ jsonObject[i].userId +"\")' >删除</a></td>"
 		                                +		 "</tr>";
-                    	
-                    }else{
-                    	
-                    	for(var i = 0 ; i < jsonObjectLength ; i++)
-	                    {
-	                        concatStr += 	"<tr id='user_'" + jsonObject[i].userId + ">"
-	                                + 			"<td>" + jsonObject[i].userNickName + "</td>"
-	                                + 			"<td>" + jsonObject[i].userSex + "</td>"
-	                                + 			"<td>" + jsonObject[i].userBirthDate + "</td>"
-	                                + 			"<td>" + jsonObject[i].userBirthPlace + "</td>"
-	                                + 			"<td><a href='userConsole_load?userId=" + jsonObject[i].userId + "'>监控</a>/<a id='deleteUser_btn_"+ jsonObject[i].userId +"' onclick='deleteUser(\""+ jsonObject[i].userId +"\")' >删除</a></td>"
-	                                +		 "</tr>";
+		                        
+		                    }
+	                    	concatStr_pagination += "<li><a >1</a></li>";
 	                    }
-                    	
-                    }
-                    
-
-                    $("#userNickname_Tbody" + userId_temp ).html("");
-                    $("#userNickname_Tbody").html(concatStr);
-
-                }
-            })
+	                    
+	
+	                    $("#userNickname_Tbody" + userId_temp ).html("");
+	                    $("#userNickname_Tbody").html(concatStr);
+						$("#pagination").html("");
+						$("#pagination").html(concatStr_pagination);
+	
+	                }
+	            })
+	    	}
 
         });
         

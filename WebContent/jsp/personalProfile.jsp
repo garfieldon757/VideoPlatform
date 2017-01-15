@@ -17,104 +17,15 @@
     <!-- endbuild -->
 <body class="ng-scope">
 
-<div class="ng-scope">
-    <div class="navbar navbar-static-top ng-scope">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#/"></a>
-            </div>
-            <ul class="nav navbar-nav pull-right ng-scope">
-                <li  class="ng-scope" style="">
-                    <c:if test="${ videoLibMainPageLink == 1 }">
-                        <a href="videoSearchInit?videoCategoryID=1&page=1" class="icon-settings">视频库主页</a>
-                    </c:if>
-                </li>
-                <li id="dropdown_index" class="dropdown">
-                    <c:if test="${ personalProfileDropDownList == 1 }">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">个人设置<span class="caret"></span></a>
-                    </c:if>
-                    <ul class="dropdown-menu" role="menu" >
-                        <li>
-                            <c:if test="${ personalProfileEditLink == 1 }">
-                                <a href="edit_personalProfile_load">个人信息编辑</a>
-                            </c:if>
-                        </li>
-                        <li>
-                        	<c:if test="${ user.tblRole.roleId == 1 or user.tblRole.roleId == 2 and authSettingsLink == 1 }">
-                                <a href="authSettings_load">个人权限申请</a>
-                            </c:if> 
-                        </li>
-                        <li>
-                            <c:if test="${ authProcessLink == 1 }">
-                                <a href="authProcess_load">角色申请处理</a>
-                            </c:if>
-                        </li>
-                        <li>
-                            <c:if test="${ monitorLink == 1 }">
-                                <a href="monitor_load">后台运行监控台</a>
-                            </c:if>
-                        </li>
-                        <li>
-                            <c:if test="${ logMonitorLink == 1 }">
-                                <a href="logSearch_load">日志检索</a>
-                            </c:if>
-                        </li>
-
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
-<div ng-include="'/public/app/templates/horizontal-header.html'" class="ng-scope"><!-- ngIf: currentUser && currentUser.isConsumer -->
-    <div class="horizontal-header ng-scope" ng-if="currentUser &amp;&amp; currentUser.isConsumer">
-        <div class="container ">
-            <img class="pic-thumb pull-left" src="img/logo.jpg">
-            <h4 id="userName" class="ng-binding" value="${user.userNickName}">${user.userNickName}</h4>
-            <button type="button" class="btn btn-default pull-right" class="logout" ><a href="logout">退出</a></button>
-        </div>
-    </div>
-</div>
+	<%@include file="header.jsp"%>		
 
 <div id="main">
     <div class="container">
         <div class="row">
             <div class="col-xs-3 ng-scope" >
-                <div ng-show="isActive('/settings')" class="ng-scope" style="">
-                    <div class="page-header">
-                        <h2>设置</h2>
-                    </div>
-                    <hr style="margin-top: 0;">
-                    <ul class="nav nav-stacked side-nav">
-
-                        <c:if test="${ personalProfileEditLink == 1 }">
-                            <li  class="active">
-                                <a href="edit_personalProfile_load">个人信息编辑</a>
-                            </li>
-                        </c:if>
-                        <c:if test="${ user.tblRole.roleId == 1 or user.tblRole.roleId == 2 and authSettingsLink == 1 }">
-                            <li >
-                                <a href="authSettings_load">个人权限申请</a>
-                            </li>
-                        </c:if>
-                        <c:if test="${ user.tblRole.roleId == 3 and authProcessLink == 1 }">
-                            <li >
-                                <a href="authProcess_load">角色申请处理</a>
-                            </li>
-                        </c:if>
-                        <c:if test="${ monitorLink == 1 }">
-                            <li >
-                                <a href="monitor_load">后台运行监控台</a>
-                            </li>
-                        </c:if>
-                        <c:if test="${ logMonitorLink == 1 }">
-                            <li >
-                                <a href="logSearch_load">日志检索</a>
-                            </li>
-                        </c:if>
-
-                    </ul>
-                </div>
+                
+            	<%@include file="sideBar.jsp"%>		
+            
             </div>
             <div class="col-xs-9 col-xs-9-remove">
                 <div class="ng-scope">
@@ -154,12 +65,12 @@
                            id="baseProfile" name="baseProfile">
                                 <div class="panel panel-default">
                                     <div class="panel-body">
-
+                                    	<br/>
                                         <form id="form_baseProfile" action="edit_personalProfile_baseProfile">
 
-                                            <div class="ng-scope">
-                                                <div class="panel ng-scope">
-                                                    <div class="panel-body">
+                                            <div class="row">
+                                            	<div class="col-md-3"></div>
+                                                <div class="col-md-6">
                                                         <div id="userName_div" class="form-group" >
                                                             <div class="form-inline">
                                                                 <label for="userName" class="form-inline">昵称</label>
@@ -184,7 +95,7 @@
                                                         <div class="form-group" >
                                                             <div class="form-inline">
                                                                 <label for="birthDate" class="form-inline">生日</label>
-                                                                &nbsp;&nbsp;
+                                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                                 <input type="date"  name="userBirthDate" value="${user.userBirthDate}" />
                                                             </div>
                                                         </div>
@@ -203,13 +114,12 @@
                                                             </div>
 
                                                         </div>
-                                                    </div>
                                                 </div>
-                                                
+                                                <div class="col-md-3"></div>
                                             </div>
 
                                         </form>
-                                        <button class="btn btn-primary" onclick="before_submit_baseProfile()">保存</button>
+                                        <button class="btn btn-primary center-block" onclick="before_submit_baseProfile()">保存</button>
                                     </div>
                                 </div>
                             </div>
@@ -221,17 +131,34 @@
                         	id="baseAvatar" name="baseAvatar">
                                 <div class="panel panel-default">
                                     <div class="panel-body">
-
-	                                    <form id="uploadAvatarForm" action="uploadAvatar" method="post" enctype="multipart/form-data">
-			                                	<input type="file" id="imgFile" name="imgFile" accept="image/jpeg,image/jpg,image/png"/><br> 
-			                                	<img src="${user.userAvatarImgLink}" id="imgPreview" style="width:200px; height:200px" ><br>
-			                                	<div class="progress">
-				                                    <div id="progress_bar" class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-				                                        60%
-				                                    </div>
-				                                </div>
-				                                <input id="submit-btn" type="submit" value="上传" />
-		                                </form>
+                                    	<br/>
+		                                
+		                                <div class="row">
+	                                    	<div class="col-md-3"></div>
+	                                        <div class="col-md-6">
+	                                        	<form id="uploadAvatarForm" action="uploadAvatar" method="post" enctype="multipart/form-data">
+	                                                <div id="userAvatar_div" class="form-group" >
+		                                                    <label for="imgFile" class="form-inline">文件选择</label>
+	                                                        &nbsp;&nbsp;
+	                                                    	<input type="file" id="imgFile" name="imgFile" class="form-control" accept="image/jpeg,image/jpg,image/png"/><br> 
+	                                                </div>
+	                                                <div id="userAvatarPreview_div" class="form-group" >
+			                                                <label for="imgPreview" class="form-inline">头像预览</label>
+		                                                    &nbsp;&nbsp;
+	                                                    	<img src="${user.userAvatarImgLink}" id="imgPreview" style="width:200px; height:200px" class="form-control" ><br>
+	                                                </div>
+	                                                <div class="progress">
+			                                                <label for="progress_bar" class="form-inline">上传进度</label>
+		                                                    &nbsp;&nbsp;
+						                                    <div id="progress_bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+						                                        0.00%
+						                                    </div>
+					                                </div>
+					                                <input id="submit-btn" type="submit" class="btn btn-primary center-block" value="上传" />
+				                                </form>
+	                                        </div>
+	                                        <div class="col-md-3"></div>
+	                                    </div>
 		                              
                                     </div>
                                 </div>
@@ -245,12 +172,12 @@
                             id="security" name="security">
                                 <div class="panel panel-default">
                                     <div class="panel-body">
-
+                                    	<br/>
                                         <form id="form_security" action="edit_personalProfile_security">
 
-                                            <div class="ng-scope">
-                                                <div class="panel ng-scope">
-                                                    <div class="panel-body">
+                                        <div class="row">
+	                                    	<div class="col-md-3"></div>
+	                                        <div class="col-md-6">
                                                         <div id="email_div" class="form-group" >
                                                             <div class="form-inline">
                                                                 <label for="email" class="form-inline">绑定邮箱</label>
@@ -273,12 +200,11 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-3"></div>
                                                 </div>
-                                                
-                                            </div>
 
                                         </form>
-                                        <button class="btn btn-primary" onclick="before_submit_security()">保存</button>
+                                        <button class="btn btn-primary  center-block" onclick="before_submit_security()">保存</button>
 
                                     </div>
                                 </div>
@@ -296,15 +222,8 @@
         </div>
     </div>
 </div>
-<footer>
-    <div class="container">
-        <ul class="nav">
-            <li><a href="/contact" target="_blank">Contact Us</a></li>
-            <li><a href="/terms-caremarketplace" target="_blank">Terms - Care Marketplace</a></li>
-            <li><a href="/faq-caremarketplace" target="_blank">FAQs - Care Marketplace</a></li>
-        </ul>
-    </div>
-</footer>
+
+<%@include file="footer.jsp"%>	
 
 
 <script src="js/jquery.min.js"></script>
@@ -335,7 +254,8 @@
 
     $(document).ready(function(){
 
-
+    	$("#personalInfoEdit_menu").attr("class" , "active");
+    	
 //    	$("#uploadVideoFile").change(function(){
 //    		var objUrl = getObjectURL(this.files[0]) ;
 //    		console.log("objUrl = "+objUrl) ;

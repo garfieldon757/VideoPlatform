@@ -1,5 +1,5 @@
 package com.videoPlatform.model;
-// Generated 2016-12-27 14:58:57 by Hibernate Tools 3.4.0.CR1
+// Generated 2017-1-15 13:56:31 by Hibernate Tools 3.4.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,14 +19,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "tbl_datadictionary", catalog = "videoplatform")
 public class TblDatadictionary implements java.io.Serializable {
 
-	@Id
-	@Column(name = "dataDictionary_ID", unique = true, nullable = false)
 	private String dataDictionaryId;
 	private String dataDictionaryKey;
 	private String dataDictionaryValue;
 	private String dataDictionaryDescription;
-	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblDatadictionary")
 	private Set<TblUserlog> tblUserlogs = new HashSet<TblUserlog>(0);
 
 	public TblDatadictionary() {
@@ -38,7 +34,6 @@ public class TblDatadictionary implements java.io.Serializable {
 
 	public TblDatadictionary(String dataDictionaryId, String dataDictionaryKey, String dataDictionaryValue,
 			String dataDictionaryDescription, Set<TblUserlog> tblUserlogs) {
-		super();
 		this.dataDictionaryId = dataDictionaryId;
 		this.dataDictionaryKey = dataDictionaryKey;
 		this.dataDictionaryValue = dataDictionaryValue;
@@ -46,46 +41,52 @@ public class TblDatadictionary implements java.io.Serializable {
 		this.tblUserlogs = tblUserlogs;
 	}
 
+	@Id
+
+	@Column(name = "dataDictionary_ID", unique = true, nullable = false)
 	public String getDataDictionaryId() {
-		return dataDictionaryId;
+		return this.dataDictionaryId;
 	}
 
 	public void setDataDictionaryId(String dataDictionaryId) {
 		this.dataDictionaryId = dataDictionaryId;
 	}
 
+	@Column(name = "dataDictionary_key")
 	public String getDataDictionaryKey() {
-		return dataDictionaryKey;
+		return this.dataDictionaryKey;
 	}
 
 	public void setDataDictionaryKey(String dataDictionaryKey) {
 		this.dataDictionaryKey = dataDictionaryKey;
 	}
 
+	@Column(name = "dataDictionary_value")
 	public String getDataDictionaryValue() {
-		return dataDictionaryValue;
+		return this.dataDictionaryValue;
 	}
 
 	public void setDataDictionaryValue(String dataDictionaryValue) {
 		this.dataDictionaryValue = dataDictionaryValue;
 	}
 
+	@Column(name = "dataDictionary_description")
 	public String getDataDictionaryDescription() {
-		return dataDictionaryDescription;
+		return this.dataDictionaryDescription;
 	}
 
 	public void setDataDictionaryDescription(String dataDictionaryDescription) {
 		this.dataDictionaryDescription = dataDictionaryDescription;
 	}
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblDatadictionary")
+	@JsonIgnore
 	public Set<TblUserlog> getTblUserlogs() {
-		return tblUserlogs;
+		return this.tblUserlogs;
 	}
 
 	public void setTblUserlogs(Set<TblUserlog> tblUserlogs) {
 		this.tblUserlogs = tblUserlogs;
 	}
-
-	
 
 }

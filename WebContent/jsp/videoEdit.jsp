@@ -193,15 +193,8 @@
 </div>
 </div>
 </div>
-<footer>
-    <div class="container">
-        <ul class="nav">
-            <li><a href="/contact" target="_blank">Contact Us</a></li>
-            <li><a href="/terms-caremarketplace" target="_blank">Terms - Care Marketplace</a></li>
-            <li><a href="/faq-caremarketplace" target="_blank">FAQs - Care Marketplace</a></li>
-        </ul>
-    </div>
-</footer>
+
+<%@include file="footer.jsp"%>	
 
 
 <script src="js/jquery.min.js"></script>

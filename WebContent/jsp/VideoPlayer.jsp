@@ -19,45 +19,7 @@
 </head>
 <body class="ng-scope">
 
-			<div class="ng-scope">
-				<div class="navbar navbar-static-top ng-scope">
-				    <div class="container">
-				        <div class="navbar-header">
-				            <a class="navbar-brand" href="#/"></a>
-				        </div>
-				        <ul class="nav navbar-nav pull-right ng-scope">
-				            <li  class="ng-scope" style="">
-					            <a href="videoSearchInit?videoCategoryID=1&page=1" class="icon-settings">视频库主页</a>
-					        </li>
-					        <li id="dropdown_index" class="dropdown">
-				                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">个人设置<span class="caret"></span></a>
-				                <ul class="dropdown-menu" role="menu" >
-				                    <li>
-				                        <a href="edit_personalProfile_load">个人信息编辑</a>
-				                    </li>
-				                    <li>
-				                        <a href="authSettings_load">个人权限申请</a>
-				                    </li>
-				                    <li>
-				                        <a href="authProcess_load">角色申请处理</a>
-				                    </li>
-				                </ul>
-				            </li>
-				        </ul>
-				    </div>
-				</div>
-			</div>
-			
-			<div  class="ng-scope">
-				<div class="horizontal-header ng-scope" ng-if="currentUser &amp;&amp; currentUser.isConsumer">
-				    <div class="container ">
-				    	<img class="pic-thumb pull-left" src="img/logo.jpg">
-				        <h4 id="userName_label" class="ng-binding" value="${user.userNickName}">${user.userNickName}</h4>
-				        <input type="hidden" id="userId" name="userId" value="${user.userId}"> 
-				        <a href="logout"><button type="button" class="btn btn-default pull-right">退出</button></a>
-				    </div>
-				</div>
-			</div>
+<%@include file="header.jsp"%>		
 
 <div id="main">
 
@@ -67,7 +29,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="page-header">
-                        <h2>${video.videoName} <small>${video.tblDatadictionary.dataDictionaryName}</small></h2>
+                        <h2>${video.videoName} <small>${video.tblVideocategory.videoCategoryName}</small></h2>
                     </div>
 
                     <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="500" height="400">
@@ -87,7 +49,7 @@
                     <div id="video-block-footer" class="row">
                         <br />
                         <div class="col-md-6">
-
+                        	<br/>
                             <dl class="dl-horizontal">
                                 <dt>品牌：</dt>
                                 <dd>${video.videoBrand}</dd>
@@ -106,7 +68,7 @@
                             </dl>
                             <dl class="dl-horizontal">
                                 <dt>发布者信息：</dt>
-                                <dd>${video.tblUser.userNickName} (ID: ${video.tblUser.userId} )</dd>
+                                <dd>${video.tblUser.userNickName}</dd>
                                 <input type="hidden" id="videoId" name="videoId" value="${video.videoId}"> 
                                 <button id="video_userName" value="${video.tblUser.userNickName}" style="display:none"></button>
                             </dl>
@@ -139,7 +101,7 @@
 			                    <div class="np-reply-box blueLight np-reply-box-active" id="np-reply-box" style="">
 			                    
 			                        <div class="np-reply-box-content textarea">
-			                            <textarea id="comment_content" name="comment_content" style="height: 60px; padding: 10px;"></textarea>
+			                            <textarea id="comment_content" name="comment_content" style="height: 60px; padding: 10px;" placeholder="输入评论..."></textarea>
 			                        </div>
 			                        
 			                        <div class="commtSub np-reply-box-footer" style="position:relative;display:block;height:40px" id="p_login_btn">
@@ -155,6 +117,7 @@
 			            </div>
 	                </div>
 	                
+	                <br />
 	                <ul id="comment_list" class="post-list np-comment-list">
 	                	<li id="comment_list_first" class="np-title-hot">相关评论</li>
 	                	
@@ -204,7 +167,7 @@
 		                	
 		                	<div id="loadMore" class="np-load-more" style="display: block;">
 
-			                    <span style="display: block;">加载更多</span>
+			                    <span style="display: block;">暂无评论</span>
 			                    <em style="display: none;" class="np-load-more-loading">没有更多了</em>
 	
 			                </div>
@@ -322,15 +285,7 @@
 
 </div>
 
-<footer>
-    <div class="container">
-        <ul class="nav">
-            <li><a href="/contact" target="_blank">Contact Us</a></li>
-            <li><a href="/terms-caremarketplace" target="_blank">Terms - Care Marketplace</a></li>
-            <li><a href="/faq-caremarketplace" target="_blank">FAQs - Care Marketplace</a></li>
-        </ul>
-    </div>
-</footer>
+<%@include file="footer.jsp"%>	
 
 
 <script src="js/jquery.min.js"></script>

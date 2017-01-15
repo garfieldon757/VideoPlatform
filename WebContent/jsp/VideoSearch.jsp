@@ -18,44 +18,7 @@
 </head>
 <body class="ng-scope">
 
-		<div class="ng-scope">
-			<div class="navbar navbar-static-top ng-scope">
-			    <div class="container">
-			        <div class="navbar-header">
-			            <a class="navbar-brand" href="#/"></a>
-			        </div>
-			        <ul class="nav navbar-nav pull-right ng-scope">
-			            <li  class="ng-scope" style="">
-				            <a href="videoSearchInit?videoCategoryID=1&page=1" class="icon-settings">视频库主页</a>
-				        </li>
-				        <li id="dropdown_index" class="dropdown">
-			                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">个人设置<span class="caret"></span></a>
-			                <ul class="dropdown-menu" role="menu" >
-			                    <li>
-			                        <a href="edit_personalProfile_load">个人信息编辑</a>
-			                    </li>
-			                    <li>
-			                        <a href="authSettings_load">个人权限申请</a>
-			                    </li>
-			                    <li>
-			                        <a href="authProcess_load">角色申请处理</a>
-			                    </li>
-			                </ul>
-			            </li>
-			        </ul>
-			    </div>
-			</div>
-		</div>
-
-		<div  class="ng-scope">
-			<div class="horizontal-header ng-scope" ng-if="currentUser &amp;&amp; currentUser.isConsumer">
-			    <div class="container ">
-			        <img class="pic-thumb pull-left" src="img/logo.jpg">
-			        <h4 id="userName" class="ng-binding" value="${user.userName}">${user.userName}</h4>
-			        <a href="logout"><button type="button" class="btn btn-default pull-right">退出</button></a>
-			    </div>
-			</div>
-		</div>
+<%@include file="header.jsp"%>	
 
         <div id="main">
 
@@ -69,13 +32,13 @@
                         <hr style="margin-top: 0;">
                         <ul class="nav nav-stacked side-nav">
                             <c:forEach items="${videoCategoryList}" var="vc">
-                            	<c:if test="${ vc.dataDictionaryId == videoCategoryID }">
+                            	<c:if test="${ vc.videoCategoryId == videoCategoryID }">
                                 	<li  class="active">
                                 </c:if>
-                                <c:if test="${ vc.dataDictionaryId != videoCategoryID }">
+                                <c:if test="${ vc.videoCategoryId != videoCategoryID }">
 	                            	<li  class="">
 	                            </c:if>
-	                                    <a href="${vc.dataDictionaryValue}">${vc.dataDictionaryName}</a>
+	                                    <a href="${vc.videoCategoryName}">${vc.videoCategoryName}</a>
 	                                </li>
                            </c:forEach>
                         </ul>
@@ -161,44 +124,7 @@
 		                    <ul class="pagination">
 		                    
 		                    	<fmt:formatNumber value="${ videoListSize / 16}" pattern="0" var="totalPageNum"></fmt:formatNumber>
-		                        <c:if test="${ page - 4 > 0 }">
-			                        <li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=1">首页</a></li>
-			                        <li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=2">2</a></li>
-		                        	<li><a href="">...</a></li>
-		                        	<li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=${page-2}">${page - 2}</a></li>
-		                        	<li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=${page-1}">${page - 1}</a></li>
-		                        </c:if>
-		                        <c:if test="${ ( page - 3 > 0 )  and  (  page - 4 == 0 ) }">
-		                        	<li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=${page-3}">${page - 3}</a></li>
-		                        	<li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=${page-2}">${page - 2}</a></li>
-		                        	<li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=${page-1}">${page - 1}</a></li>
-		                        </c:if>
-		                        <c:if test="${ ( page - 2 > 0 )  and  (  page - 3 == 0 ) }">
-			                        <li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=${page-2}">${page - 2}</a></li>
-		                        	<li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=${page-1}">${page - 1}</a></li>
-		                        </c:if>
-		                        <c:if test="${  ( page - 1 > 0 )  and  (  page - 2 == 0 ) }">
-		                        	<li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=${page-1}">${page - 1}</a></li>
-		                        </c:if>
-		                        <li class="active"><a href="">${page}</a></li>
-		                        <c:if test="${  (page + 1 <= totalPageNum)  and  (page + 2 > totalPageNum) }">
-		                        	<li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=${page+1}">${page + 1}</a></li>
-		                        </c:if>
-		                        <c:if test="${ (page + 2 <= totalPageNum) and (page + 3 > totalPageNum) }">
-			                        <li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=${page+1}">${page + 1}</a></li>
-		                        	<li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=${page+1}">${page + 2}</a></li>
-		                        </c:if>
-		                        <c:if test="${ (page + 3 <= totalPageNum) and (page + 4 > totalPageNum) }">
-		                        	<li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=${page+1}">${page+1}</a></li>
-		                        	<li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=${page+2}">${page+2}</a></li>
-		                        	<li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=${page+3}">${page+3}</a></li>
-		                        </c:if>
-		                        <c:if test="${ page + 4 <= totalPageNum }">
-			                        <li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=${page+1}">${page + 1}</a></li>
-		                        	<li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=${page+2}">${page + 2}</a></li>
-		                        	<li><a href="">...</a></li>
-		                        	<li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=<fmt:formatNumber type="number" value="${videoListSize/16}" maxFractionDigits="0"/>">尾页</a></li>
-		                        </c:if>
+		                    	<%@include file="pagination.jsp"%>	
 		                        
 		                    </ul>
 		                </nav>
@@ -210,15 +136,7 @@
 
         </div>
 
-        <footer>
-            <div class="container">
-                <ul class="nav">
-                    <li><a href="/contact" target="_blank">Contact Us</a></li>
-                    <li><a href="/terms-caremarketplace" target="_blank">Terms - Care Marketplace</a></li>
-                    <li><a href="/faq-caremarketplace" target="_blank">FAQs - Care Marketplace</a></li>
-                </ul>
-            </div>
-        </footer>
+        <%@include file="footer.jsp"%>	
 
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>

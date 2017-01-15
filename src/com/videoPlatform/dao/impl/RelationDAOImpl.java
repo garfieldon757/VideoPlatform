@@ -1,10 +1,14 @@
 package com.videoPlatform.dao.impl;
 
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -63,7 +67,7 @@ public class RelationDAOImpl implements RelationDAO {
 	}
 
 	@Override
-	public Date getOperationDatetime(TblUser user, String operation_type, TblVideo video) {
+	public java.sql.Date getOperationDatetime(TblUser user, String operation_type, TblVideo video) {
 		// TODO Auto-generated method stub
 		String jpql = "select uvr from TblUservideorelation uvr where uvr.tblUser.userId =:userId and uvr.tblVideo.videoId =:videoId and uvr.userVideoRelationType =:userVideoRelationType";
 		List<TblUservideorelation> tblUservideorelationList = em.createQuery(jpql).setParameter("userId", user.getUserId())
@@ -71,7 +75,7 @@ public class RelationDAOImpl implements RelationDAO {
 																															.setParameter("userVideoRelationType", operation_type)
 																															.getResultList();
 		if(tblUservideorelationList.size() > 0){
-			Date operationDatetime = new java.sql.Date(tblUservideorelationList.get(0).getUserVideoRelationOperationTimestamps().getTime());
+			java.sql.Date operationDatetime = new java.sql.Date(tblUservideorelationList.get(0).getUserVideoRelationOperationTimestamps().getTime());
 			return operationDatetime;
 		}else{
 			return null;
@@ -98,8 +102,8 @@ public class RelationDAOImpl implements RelationDAO {
 	}
 
 	@Override
-	public List<TblUservideorelation> getUservideorelationList(String userId, Date userOperationDatetimeStart,
-			Date userOperationDatetimeEnd, String operationType) {
+	public List<TblUservideorelation> getUservideorelationList(String userId,  java.sql.Date userOperationDatetimeStart,
+			 java.sql.Date userOperationDatetimeEnd, String operationType) {
 		// TODO Auto-generated method stub
 		String jpql = "select uvr from TblUservideorelation uvr where uvr.tblUser.userId =:userId and uvr.userVideoRelationOperationTimestamps >:uploadDateStart and uvr.userVideoRelationOperationTimestamps <:uploadDateEnd and uvr.userVideoRelationType =:relationType ";
 		List<TblUservideorelation> tblUservideorelationList = em.createQuery(jpql).setParameter("userId", userId)
@@ -108,6 +112,40 @@ public class RelationDAOImpl implements RelationDAO {
 																																.setParameter("relationType", operationType)
 																																.getResultList();
 		return tblUservideorelationList;
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Override
+	public List<Map<String, List<TblUservideorelation>>> getUservideorelationListByUserIdAndOpetationType(String userId,
+			String operationType) throws ParseException {
+		// TODO Auto-generated method stub
+		//获取时间
+		List<Map<String, List<TblUservideorelation>>> watchRecord_List = new ArrayList<Map<String, List<TblUservideorelation>>>();
+		Map<String, List<TblUservideorelation>> watchRecord = new TreeMap<String, List<TblUservideorelation>>();
+		
+		Calendar now = Calendar.getInstance(); 
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  //yyyy-MM-dd HH:mm:ss
+        String nowString = sdf.format(now.getTime());  
+		String start_datetime = "";
+		String end_datetime = "";
+		for(int i = 0; i < 7; i++){
+			now.set(Calendar.DATE, now.get(Calendar.DATE) - i);
+			start_datetime = nowString + " 00:00:00";
+			end_datetime = nowString + " 23:59:59";
+			java.util.Date dateStart_temp2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(start_datetime);
+			java.util.Date dateEnd_temp2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(end_datetime);;
+			
+			String jpql = "select uvr from TblUservideorelation uvr where uvr.tblUser.userId =:userId and uvr.userVideoRelationType =:relationType and uvr.userVideoRelationOperationTimestamps >:operateDateStart and uvr.userVideoRelationOperationTimestamps <:operateDateEnd";
+			List<TblUservideorelation> tblUservideorelationList = em.createQuery(jpql).setParameter("userId", userId)
+																																	.setParameter("relationType", operationType)
+																																	.setParameter("operateDateStart", dateStart_temp2)
+																																	.setParameter("operateDateEnd", dateEnd_temp2)
+																																	.getResultList();
+			watchRecord.put(nowString, tblUservideorelationList);
+			watchRecord_List.add(i, watchRecord);
+		}
+		
+		return watchRecord_List;
 	}
 
 	@Override
@@ -189,5 +227,7 @@ public class RelationDAOImpl implements RelationDAO {
 		TblComment replyTo_comment = (TblComment) em.createQuery(jpql).setParameter("replyTo_commentId", replyTo_commentId).getResultList().get(0);
 		return replyTo_comment;
 	}
+
+	
 
 }
