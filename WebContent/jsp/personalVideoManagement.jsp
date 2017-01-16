@@ -237,7 +237,8 @@
 	    	var uploadDateEnd = $("#videos_uploadDateEnd").val() ;
 	    	
 	    	var check_result = formValidation_check(videoName, uploadDateStart, uploadDateEnd);
-	    	if( ckeck_result ){
+	    	
+	    	if(check_result ){
 	    		
 	    		$.ajax({
 					url:"ajax_search_personalVideoManagement_videos",
@@ -297,7 +298,8 @@
 	    	var uploadDateEnd = $("#favorite_uploadDateEnd").val() ;
 	    	
 	    	var check_result = formValidation_check(videoName, uploadDateStart, uploadDateEnd);
-	    	if( ckeck_result == true ){
+	    	
+	    	if(  check_result ){
 	    		
 		    	$.ajax({
 					url:"ajax_search_personalVideoManagement_favorite",
