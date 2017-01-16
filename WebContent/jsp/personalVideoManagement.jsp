@@ -113,7 +113,7 @@
                                   
                                   <br />
                                   <div class="row">
-	                            		<a href=""><button id="upLoadVideoBtn" class="btn btn-primary btn-lg center-block" >上传新视频</button></a>
+	                            		<a href="edit_personalVideoManagement_load?tab=videos"><button id="upLoadVideoBtn" class="btn btn-primary btn-lg center-block" >上传新视频</button></a>
 	                            </div>
                                         
                                     </div>
@@ -297,7 +297,7 @@
 	    	var uploadDateEnd = $("#favorite_uploadDateEnd").val() ;
 	    	
 	    	var check_result = formValidation_check(videoName, uploadDateStart, uploadDateEnd);
-	    	if( ckeck_result ){
+	    	if( ckeck_result == true ){
 	    		
 		    	$.ajax({
 					url:"ajax_search_personalVideoManagement_favorite",

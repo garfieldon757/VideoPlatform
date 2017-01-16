@@ -38,7 +38,7 @@
                                 <c:if test="${ vc.videoCategoryId != videoCategoryID }">
 	                            	<li  class="">
 	                            </c:if>
-	                                    <a href="${vc.videoCategoryName}">${vc.videoCategoryName}</a>
+	                                    <a href="${vc.videoCategroyUrl}">${vc.videoCategoryName}</a>
 	                                </li>
                            </c:forEach>
                         </ul>
@@ -123,7 +123,7 @@
 	                    <nav>
 		                    <ul class="pagination">
 		                    
-		                    	<fmt:formatNumber value="${ videoListSize / 16}" pattern="0" var="totalPageNum"></fmt:formatNumber>
+		                    	<fmt:formatNumber value="${ (videoListSize / 12) }" pattern="0" var="totalPageNum"></fmt:formatNumber>
 		                    	<%@include file="pagination.jsp"%>	
 		                        
 		                    </ul>

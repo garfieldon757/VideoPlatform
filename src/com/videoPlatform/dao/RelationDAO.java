@@ -26,4 +26,6 @@ public interface RelationDAO {
 	public TblComment addComment(TblUser user, TblVideo video, TblComment replyTo_tblcomment, String comment_content);
 	public List<TblComment> getCommentListByVideoId(String videoId);
 	public TblComment getCommentByCommentId(String replyTo_commentId);
+	
+	public TblUservideorelation addUservideorelation(TblUser user, String videoId, String userVideoRelationType);
 }

@@ -91,10 +91,13 @@ public class VideoController {
 	@RequestMapping(value="videoInfoEdit_load")
 	public ModelAndView videoInfoEdit_load(@RequestParam("videoId") String videoId , HttpServletRequest request){
 		ModelAndView mv = new ModelAndView("videoEdit");
+		HttpSession session = request.getSession();
+		TblUser user = (TblUser) session.getAttribute("user");
 		TblVideo video = vm.getVideoByVideoID(videoId);
 		List<TblVideoCategory> tblVideoCategoryList = vm.getVideoCategoryList();
 		List<TblVideotagrelation> videoTagList = vm.getVideoTagList(videoId);
 		if(video != null){
+			mv.addObject("user", user);
 			mv.addObject("video", video);
 			mv.addObject("videoCategoryList", tblVideoCategoryList);
 			mv.addObject("videoTagList", videoTagList);
@@ -102,42 +105,42 @@ public class VideoController {
 		return mv;
 	}
 	
-	@RequestMapping(value="videoInfoEdit")
-	public ModelAndView videoInfoEdit(HttpServletRequest request) throws UnsupportedEncodingException{
-		ModelAndView mv = new ModelAndView("videoEdit");
-		
-		HttpSession session = request.getSession();
-		TblUser user = (TblUser) session.getAttribute("user");
-		
-		String videoId = request.getParameter("videoId");
-		String videoName = request.getParameter("videoName");
-		String videoDescription = request.getParameter("videoDescription");//为获取
-		String videoCategory = request.getParameter("videoCategory");//中文编码
-		String tag = request.getParameter("tag");
-		//对tag进行预处理：将传入的tag字符串再空格处分割成独立的tags
-		String[] newTagList_temp = tag.split(" ");
-		List<String> newTagList = new ArrayList<String>();
-		for(String newTag:newTagList_temp){
-			if( !newTag.equals("") ){
-				newTagList.add(newTag);
-			}
-		}
-		
-		vm.addTags(newTagList);
-		TblVideo video = videoDAO.updateVideo(videoId, videoName, videoDescription, videoCategory);
-		vm.addVideotagrelations(user, videoId, newTagList);
-		
-		video = vm.getVideoByVideoID(videoId);
-		List<TblVideoCategory> tblVideoCategoryList = vm.getVideoCategoryList();
-		List<TblVideotagrelation> videoTagList = vm.getVideoTagList(videoId);
-		if(video != null){
-			mv.addObject("video", video);
-			mv.addObject("videoCategoryList", tblVideoCategoryList);
-			mv.addObject("videoTagList", videoTagList);
-		}
-		
-		return mv;
-	}
+//	@RequestMapping(value="videoInfoEdit")
+//	public ModelAndView videoInfoEdit(HttpServletRequest request) throws UnsupportedEncodingException{
+//		ModelAndView mv = new ModelAndView("videoEdit");
+//		
+//		HttpSession session = request.getSession();
+//		TblUser user = (TblUser) session.getAttribute("user");
+//		
+//		String videoId = request.getParameter("videoId");
+//		String videoName = request.getParameter("videoName");
+//		String videoDescription = request.getParameter("videoDescription");//为获取
+//		String videoCategory = request.getParameter("videoCategory");//中文编码
+//		String tag = request.getParameter("tag");
+//		//对tag进行预处理：将传入的tag字符串再空格处分割成独立的tags
+//		String[] newTagList_temp = tag.split(" ");
+//		List<String> newTagList = new ArrayList<String>();
+//		for(String newTag:newTagList_temp){
+//			if( !newTag.equals("") ){
+//				newTagList.add(newTag);
+//			}
+//		}
+//		
+//		vm.addTags(newTagList);
+//		TblVideo video = videoDAO.updateVideo(videoId, user, videoName, videoDescription, videoCategory);
+//		vm.addVideotagrelations(user, videoId, newTagList);
+//		
+//		video = vm.getVideoByVideoID(videoId);
+//		List<TblVideoCategory> tblVideoCategoryList = vm.getVideoCategoryList();
+//		List<TblVideotagrelation> videoTagList = vm.getVideoTagList(videoId);
+//		if(video != null){
+//			mv.addObject("video", video);
+//			mv.addObject("videoCategoryList", tblVideoCategoryList);
+//			mv.addObject("videoTagList", videoTagList);
+//		}
+//		
+//		return mv;
+//	}
 	
 	
 	@RequestMapping(value="videoManage_load")

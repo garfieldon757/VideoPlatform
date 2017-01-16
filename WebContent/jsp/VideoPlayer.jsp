@@ -167,7 +167,7 @@
 		                	
 		                	<div id="loadMore" class="np-load-more" style="display: block;">
 
-			                    <span style="display: block;">暂无评论</span>
+			                    <span style="display: none;">暂无评论</span>
 			                    <em style="display: none;" class="np-load-more-loading">没有更多了</em>
 	
 			                </div>
@@ -300,7 +300,7 @@
 
 </div>
 
-<%@include file="footer.jsp"%>	
+
 
 
 <script src="js/jquery.min.js"></script>

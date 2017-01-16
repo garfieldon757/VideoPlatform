@@ -27,7 +27,7 @@ public interface VideoDAO {
 	public List<TblVideotagrelation> getVideoTagList(String videoId);
 	
 	public TblVideoCategory getTblVideoCategoryByVideoCategoryName(String videoCategoryName);
-	public TblVideo updateVideo(String videoId, String videoName, String videoDescription, String videoCategory);
+	public TblVideo updateVideo(String videoId, TblUser user, String videoName, String videoDescription, String videoCategory, String videoCoverLink, String videoSourceLink);
 	public TblTag getTblTagByTagName(String newTag);
 	public List<TblTag> getTblTagList();
 	public void addVideotagrelation(TblUser user, String videoId, String newTag);
@@ -35,6 +35,8 @@ public interface VideoDAO {
 	
 	public Integer getTotalCountOfPlay(String videoId, Date videoPlayDatetimeStart, Date videoPlayDatetimeEnd);
 	public Integer getTotalCountOfPlayPeople(String videoId, Date videoPlayDatetimeStart, Date videoPlayDatetimeEnd);
+	
+	
 	
 	
 	

@@ -92,6 +92,13 @@ public class VideoManagerImpl implements VideoManager{
 		List<TblVideotagrelation> tblVideotagrelationList = videoDAO.getVideoTagList(videoId);
 		return tblVideotagrelationList;
 	}
+	
+	@Override
+	public List<TblTag> getAllVideoTagList() {
+		// TODO Auto-generated method stub
+		 List<TblTag> tblTagList = videoDAO.getTblTagList();
+		return tblTagList;
+	}
 
 	@Override
 	public void addVideotagrelations(TblUser user, String videoId, List<String> newTagList) {
@@ -104,8 +111,14 @@ public class VideoManagerImpl implements VideoManager{
 
 	@Override
 	public void addTags(List<String> newTagList) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub\
+		List<TblTag> tblTagList = videoDAO.getTblTagList();
 		for(String newTag:newTagList){
+			for(TblTag existTag:tblTagList){
+				if( existTag.getTagName().equals(newTag) ){
+					continue;
+				}
+			}
 			videoDAO.addTag(newTag);
 		}
 		return;
@@ -151,6 +164,8 @@ public class VideoManagerImpl implements VideoManager{
 		
 		return playCountList;
 	}
+
+	
 
 
 	

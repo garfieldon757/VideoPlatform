@@ -153,10 +153,10 @@
 		                                        <label for="videoCategory" class="form-group">分类</label>
 		                                        &nbsp;&nbsp;
                                         		<select class="form-group" id="videoCategory" name="videoCategory">
-                                        				<option>${video.tblDatadictionary.dataDictionaryName}</option>
+                                        				<option>${video.tblVideocategory.videoCategoryName}</option>
                                         			<c:forEach items="${videoCategoryList}" var="vcl">
-                                        				<c:if test="${ vcl.dataDictionaryName != video.tblDatadictionary.dataDictionaryName }">
-                                        					<option>${vcl.dataDictionaryName}</option>
+                                        				<c:if test="${ vcl.videoCategoryName != video.tblVideocategory.videoCategoryName }">
+                                        					<option>${vcl.videoCategoryName}</option>
                                         				</c:if>
                                         			</c:forEach>
                                         		</select>

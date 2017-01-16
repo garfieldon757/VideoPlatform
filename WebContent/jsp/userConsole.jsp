@@ -262,7 +262,7 @@
             $.ajax({
                 url:"ajax_search_userConsole_operationInfo",
                 data:{
-            		user_console_id : user_console_id,
+            		userId : user_console_id,
             		userOperationDatetimeStart : userOperationDatetimeStart,
             		userOperationDatetimeEnd : userOperationDatetimeEnd
                 },

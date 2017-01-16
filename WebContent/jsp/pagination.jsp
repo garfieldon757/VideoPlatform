@@ -23,7 +23,7 @@
 </c:if>
 <c:if test="${ (page + 2 <= totalPageNum) and (page + 3 > totalPageNum) }">
     <li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=${page+1}">${page + 1}</a></li>
-	<li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=${page+1}">${page + 2}</a></li>
+	<li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=${page+2}">${page + 2}</a></li>
 </c:if>
 <c:if test="${ (page + 3 <= totalPageNum) and (page + 4 > totalPageNum) }">
 	<li><a href="videoSearchInit?videoCategoryID=${videoCategoryID}&page=${page+1}">${page+1}</a></li>

@@ -201,11 +201,16 @@ public class VideoDAOImpl implements VideoDAO{
 	}
 
 	@Override
-	public TblVideo updateVideo(String videoId, String videoName, String videoDescription, String videoCategory) {
+	public TblVideo updateVideo(String videoId, TblUser user, String videoName, String videoDescription, String videoCategory, String videoCoverLink, String videoSourceLink) {
 		// TODO Auto-generated method stub
-		TblVideo video = getVideoByVideoID(videoId);
+		TblVideo video = new TblVideo();
+		video.setVideoId(videoId);
+		video.setTblUser(user);
 		video.setVideoName(videoName);
 		video.setVideoDescription(videoDescription);
+		video.setVideoIsDownloadable("1");
+		video.setVideoCoverLink(videoCoverLink);
+		video.setVideoSourceLink(videoSourceLink);
 		TblVideoCategory tblVideoCategroy = getTblVideoCategoryByVideoCategoryName(videoCategory);
 		video.setTblVideocategory(tblVideoCategroy);;
 		

@@ -44,7 +44,7 @@
                                                 <div id="uploadVideoFile_div_step1" class="form-inline" >
                                                     <form id="uploadVideoFileForm" action="uploadVideoFile" method="post" enctype="multipart/form-data">
                                                             
-                                                    		<input type="file" id="uploadVideoFile_loadVideoPath_btn" name="uploadVideoFile_loadVideoPath_btn" class="file center-block form-group" value="视频文件选择">
+                                                    		<input type="file" id="uploadVideoFile" name="uploadVideoFile" class="file center-block form-group" value="视频文件选择">
                                                     		<input type="submit" id="uploadVideoFile_confirmUpload_btn" name="uploadVideoFile_confirmUpload_btn" class="file center-block form-group" value="确认上传">
                                                     		<br />
                                                     		<div class="progress">
@@ -60,7 +60,22 @@
                                             </div>
                                         </div>
 
-
+                                      
+                                        <div id="videoUploadStatus_div" >
+	                                        <div class="form-inline text-center" >
+	                                            <label for="videoUploadStatus" class="form-group">视频是否已上传状态</label>
+	                                            &nbsp;&nbsp;
+	                                            <p id="videoUploadStatus" class="text-danger form-group">
+	                                            	<c:if test="${ empty videoId }">
+	                                            		尚未上传视频，请完成第一步！
+	                                            	</c:if>
+	                                            	<c:if test="${ !(empty videoId) }">
+	                                        			视频已上传完成，请补充视频相关信息
+	                                            	</c:if>
+	                                            </p>
+	                                            <br/>
+	                                        </div>
+	                                    </div>
 
                                         <div class="panel panel-default">
                                             <div class="panel-heading">第二步-填写视频基本信息</div>
@@ -69,16 +84,21 @@
                                             		<div class="col-md-2"></div>
                                             		<div class="col-md-8">
                                             		
-		                                            		<form id="form_VideoProfile" action="videoInfoEdit" class=" " method="POST">
+		                                            		<form id="form_VideoProfile" action="videoInfoEdit" class=" " method="POST" enctype="multipart/form-data">
 		
-			                                                    <div id="hidden_div" class="form-group" hidden>
-			                                                        <input id="videoId" name="videoId" class="form-group" type="text"  value="${video.videoId}">
+			                                                    <div id="hidden_div_4videoId" class="form-group" hidden>
+			                                                        <input id="videoId" name="videoId" class="form-group" type="text"  value="${videoId}">
 			                                                    </div>
+			                                                        
+		                                                        <div id="hidden_div_4videoSourceLink" class="form-group" hidden>
+			                                                        <input id="videoSourceLink" name="videoSourceLink" class="form-group" type="text"  value="${videoSourceLink}">
+			                                                    </div>
+			                                                    
 			                                                    <div id="videoCover_div" class="form-group " >
 			                                                        <div class="form-inline">
 			                                                            <label for="videoCover" class="form-group">视频封面</label>
 			                                                            &nbsp;&nbsp;
-			                                                            <input type="file" id="uploadVideoFile" name="uploadVideoFile" class="file form-group" value="上传视频" />
+			                                                            <input type="file" id="uploadVideoCoverFile" name="uploadVideoCoverFile" class="file form-group" value="上传视频" />
 			                                                        </div>
 			                                                    </div>
 			                                                    <div id="videoName_div" class="form-group" >
@@ -99,7 +119,7 @@
 			                                                        <label for="videoCategory" class="form-group">分类</label>
 			                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			                                                        <select class="form-group" id="videoCategory" name="videoCategory">
-			                                                            <option>${video.tblDatadictionary.dataDictionaryName}</option>
+			                                                            <option>${video.tblVideocategory.videoCategoryName}</option>
 			                                                            <c:forEach items="${videoCategoryList}" var="vcl">
 			                                                                <c:if test="${ vcl.videoCategoryName != video.tblVideocategory.videoCategoryName }">
 			                                                                    <option>${vcl.videoCategoryName}</option>
@@ -170,6 +190,7 @@
 			
 		 $(document).ready(function(){
 			 
+			 
 			 $("#uploadVideo_menu").attr("class" , "active");
 			 
 			$("#uploadVideoFile_confirmUpload_btn").click(function(){
@@ -213,6 +234,21 @@
 		        	
 		        }
 		    } , 100 );
+			
+			$("#updateVideoProfileBtn").click(function(){
+				
+				var videoId = $("#videoId").val();
+				var videoName = $("#videoName").val();
+				var videoDescription = $("#videoDescription").val();
+				var videoCategory = $("#videoCategory").val();
+				var tag = $("#tag").val();
+				var videoSourceLink = $("#videoSourceLink").val();
+				
+				var redirect_value = "/VideoPlatform/uploadVideoCoverImgFile?videoId=" + videoId + "&videoName=" + videoName + "&videoDescription=" + videoDescription +"&videoCategory=" + videoCategory + "&tag=" + tag + "&videoSourceLink=" + videoSourceLink ;
+				
+				$("#form_VideoProfile").attr("action", redirect_value);
+				$("#form_VideoProfile").submit();
+			})
 		    
 		})
 

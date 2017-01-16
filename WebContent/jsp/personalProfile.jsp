@@ -82,13 +82,13 @@
                                                             <div class="form-inline">
                                                                 <label for="sex" class="form-inline">性别</label>
                                                                 &nbsp;&nbsp;&nbsp;&nbsp;
-                                                                		<c:if test="${user.userSex == '男' }">
-                                                                男：<input type="radio" checked="checked" name="userSex" value="男" />
-                                                                女：<input type="radio" name="userSex" value="女" />
+                                                                		<c:if test="${user.userSex == 'male' }">
+                                                                		male：<input type="radio" checked="checked" name="userSex" value="male" />
+                                                                		female：<input type="radio" name="userSex" value="female" />
                                                                 		</c:if>
-                                                                		<c:if test="${user.userSex == '女' }">
-                                                                		  男：<input type="radio"  name="userSex" value="男" />
-                                                                女：<input type="radio" checked="checked" name="userSex" value="女" />
+                                                                		<c:if test="${user.userSex == 'female' }">
+                                                                		male：<input type="radio"  name="userSex" value="male" />
+                                                                		female：<input type="radio" checked="checked" name="userSex" value="female" />
                                                                 		</c:if>
                                                             </div>
                                                         </div>

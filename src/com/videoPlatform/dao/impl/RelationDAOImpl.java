@@ -15,10 +15,12 @@ import java.util.UUID;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.videoPlatform.dao.RelationDAO;
+import com.videoPlatform.dao.VideoDAO;
 import com.videoPlatform.model.TblComment;
 import com.videoPlatform.model.TblUser;
 import com.videoPlatform.model.TblUservideorelation;
@@ -30,6 +32,9 @@ public class RelationDAOImpl implements RelationDAO {
 
 	@PersistenceContext(name="un")
 	private EntityManager em;
+	
+	@Autowired(required=true)
+	private VideoDAO videoDAO;
 	
 	@Override
 	public Integer getNumOfComments(String videoId, String uploadDateStart, String uploadDateEnd) throws ParseException {
@@ -217,7 +222,6 @@ public class RelationDAOImpl implements RelationDAO {
 		// TODO Auto-generated method stub
 		UUID uuid = UUID.randomUUID();
 		Timestamp now = new Timestamp(System.currentTimeMillis()); 
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
 		TblComment comment = new TblComment(uuid.toString(), video , user, replyTo_tblcomment, comment_content, now, null);
 		em.persist(comment);
 		return comment;
@@ -237,6 +241,17 @@ public class RelationDAOImpl implements RelationDAO {
 		String jpql = "select c from TblComment c where c.commentId =:replyTo_commentId";
 		TblComment replyTo_comment = (TblComment) em.createQuery(jpql).setParameter("replyTo_commentId", replyTo_commentId).getResultList().get(0);
 		return replyTo_comment;
+	}
+
+	@Override
+	public TblUservideorelation addUservideorelation(TblUser user, String videoId, String userVideoRelationType) {
+		// TODO Auto-generated method stub
+		UUID uuid = UUID.randomUUID();
+		TblVideo video = videoDAO.getVideoByVideoID(videoId);
+		Timestamp now = new Timestamp(System.currentTimeMillis()); 
+		TblUservideorelation tblUservideorelation = new TblUservideorelation( uuid.toString(), video, user, userVideoRelationType, now);
+		em.persist(tblUservideorelation);
+		return tblUservideorelation;
 	}
 
 	

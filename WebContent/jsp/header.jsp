@@ -93,6 +93,7 @@
     <div class="horizontal-header ng-scope" ng-if="currentUser &amp;&amp; currentUser.isConsumer">
         <div class="container ">
             <img class="pic-thumb pull-left" src="img/logo.jpg">
+            <input type="hidden" id="userId" value="${user.userId}">
             <h4 id="userName" class="ng-binding" value="${user.userNickName}">${user.userNickName}</h4>
             <button type="button" class="btn btn-default pull-right" class="logout" ><a href="logout">退出</a></button>
         </div>
