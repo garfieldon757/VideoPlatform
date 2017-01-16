@@ -29,6 +29,7 @@ public interface VideoDAO {
 	public TblVideoCategory getTblVideoCategoryByVideoCategoryName(String videoCategoryName);
 	public TblVideo updateVideo(String videoId, String videoName, String videoDescription, String videoCategory);
 	public TblTag getTblTagByTagName(String newTag);
+	public List<TblTag> getTblTagList();
 	public void addVideotagrelation(TblUser user, String videoId, String newTag);
 	public void addTag(String newTag);
 	

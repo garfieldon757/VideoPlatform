@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -116,24 +117,24 @@ public class RelationDAOImpl implements RelationDAO {
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public List<Map<String, List<TblUservideorelation>>> getUservideorelationListByUserIdAndOpetationType(String userId,
+	public Map<String, List<TblUservideorelation>> getUservideorelationListByUserIdAndOpetationType(String userId,
 			String operationType) throws ParseException {
 		// TODO Auto-generated method stub
 		//获取时间
-		List<Map<String, List<TblUservideorelation>>> watchRecord_List = new ArrayList<Map<String, List<TblUservideorelation>>>();
-		Map<String, List<TblUservideorelation>> watchRecord = new TreeMap<String, List<TblUservideorelation>>();
+		Map<String, List<TblUservideorelation>> watchRecord_MapList = new LinkedHashMap<String, List<TblUservideorelation>>();
 		
 		Calendar now = Calendar.getInstance(); 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  //yyyy-MM-dd HH:mm:ss
-        String nowString = sdf.format(now.getTime());  
+        String nowString = "";  
 		String start_datetime = "";
 		String end_datetime = "";
 		for(int i = 0; i < 7; i++){
-			now.set(Calendar.DATE, now.get(Calendar.DATE) - i);
+			now.set(Calendar.DATE, now.get(Calendar.DATE) - 1);
+			nowString = sdf.format(now.getTime()); 
 			start_datetime = nowString + " 00:00:00";
 			end_datetime = nowString + " 23:59:59";
 			java.util.Date dateStart_temp2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(start_datetime);
-			java.util.Date dateEnd_temp2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(end_datetime);;
+			java.util.Date dateEnd_temp2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(end_datetime);
 			
 			String jpql = "select uvr from TblUservideorelation uvr where uvr.tblUser.userId =:userId and uvr.userVideoRelationType =:relationType and uvr.userVideoRelationOperationTimestamps >:operateDateStart and uvr.userVideoRelationOperationTimestamps <:operateDateEnd";
 			List<TblUservideorelation> tblUservideorelationList = em.createQuery(jpql).setParameter("userId", userId)
@@ -141,11 +142,21 @@ public class RelationDAOImpl implements RelationDAO {
 																																	.setParameter("operateDateStart", dateStart_temp2)
 																																	.setParameter("operateDateEnd", dateEnd_temp2)
 																																	.getResultList();
-			watchRecord.put(nowString, tblUservideorelationList);
-			watchRecord_List.add(i, watchRecord);
-		}
+			watchRecord_MapList.put(nowString, tblUservideorelationList);
+		}//查询最近7天的观看记录
+		now.set(Calendar.DATE, now.get(Calendar.DATE) - 1);
+		nowString = sdf.format(now.getTime()); 
+		start_datetime = nowString + " 00:00:00";
+		java.util.Date dateStart_temp2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(start_datetime);
+		String jpql = "select uvr from TblUservideorelation uvr where uvr.tblUser.userId =:userId and uvr.userVideoRelationType =:relationType and uvr.userVideoRelationOperationTimestamps <:operateDateStart";
+		List<TblUservideorelation> tblUservideorelationList = em.createQuery(jpql).setParameter("userId", userId)
+																																.setParameter("relationType", operationType)
+																																.setParameter("operateDateStart", dateStart_temp2)
+																																.getResultList();
+		watchRecord_MapList.put("更早", tblUservideorelationList);
+		//更早观看记录
 		
-		return watchRecord_List;
+		return watchRecord_MapList;
 	}
 
 	@Override

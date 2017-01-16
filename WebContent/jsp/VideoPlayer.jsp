@@ -187,18 +187,33 @@
                     </div>
                     
             		<div class="bs-example">
-            			<c:forEach items="tblVideotagrelationList" var="vtr" varStatus="status" begin="1" end="12">
-            				<c:when test="${status.index % 4 == 0}">
-	            				<div class="row">
-	            			</c:when>
-            				
-	            			<h3 class=" col-md-3"><span class="label label-default" >${vtr.tblTag.tagName}</span></h3>
-            				
-	            			<c:when test="${status.index % 4 == 3}">
-            					</div>
-	            			</c:when>
-		            				
-        				</c:forEach>
+            			<div class="row" >
+            				<table>
+            					<tr>
+		            				<c:forEach items="${tblVideotagrelationList}" var="vtr" varStatus="status">
+		            					<c:choose>
+			            					<c:when test="${status.index % 4 == 0 }">
+			            						<tr>
+					            					<td>
+						            					<h3 class=" col-md-2" style="height:30px;"><span class="label label-default" style="height:30px;">${vtr.tblTag.tagName}</span></h3>            				
+						            				</td>
+			            					</c:when>
+			            					<c:when test="${status.index % 4 == 1 || status.index % 4 == 2 }">
+				            					<td>
+					            					<h3 class=" col-md-2" style="height:30px;"><span class="label label-default" style="height:30px;">${vtr.tblTag.tagName}</span></h3>            				
+					            				</td>
+				            				</c:when>
+				            				<c:when test="${status.index % 4 == 3 }">
+						            				<td>
+						            					<h3 class=" col-md-2" style="height:30px;"><span class="label label-default" style="height:30px;">${vtr.tblTag.tagName}</span></h3>            				
+						            				</td>
+					            				</tr>
+			            					</c:when>
+		            					</c:choose>
+		            				</c:forEach>
+	            				</tr>
+            				<table>
+        				</div>
             	   </div>
                     
                 </div>

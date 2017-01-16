@@ -139,12 +139,6 @@ public class VideoController {
 		return mv;
 	}
 	
-	@RequestMapping(value="videoUpload_load")
-	public ModelAndView videoUpload_load(HttpServletRequest request){
-		ModelAndView mv = new ModelAndView("videoUpload");
-
-		return mv;
-	}
 	
 	@RequestMapping(value="videoManage_load")
 	public ModelAndView videoManage_load(HttpServletRequest request){
@@ -209,7 +203,7 @@ public class VideoController {
 		HttpSession session = httpServletRequest.getSession();
 		TblUser user = (TblUser) session.getAttribute("user");
 		
-		List<Map<String, List<TblUservideorelation>>> uservideorelation_watchRecord_list = relationDAO.getUservideorelationListByUserIdAndOpetationType(user.getUserId(), "play");
+		Map<String, List<TblUservideorelation>> uservideorelation_watchRecord_list = relationDAO.getUservideorelationListByUserIdAndOpetationType(user.getUserId(), "play");
 
 		mv.addObject("tblUservideorelationList_watchRecord", uservideorelation_watchRecord_list);
 		return mv;

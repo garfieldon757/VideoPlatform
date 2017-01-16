@@ -65,62 +65,70 @@
                                         <div class="panel panel-default">
                                             <div class="panel-heading">第二步-填写视频基本信息</div>
                                             <div class="panel-body">
-
-                                                <form id="form_VideoProfile" action="videoInfoEdit" method="POST">
-
-                                                    <div id="hidden_div" class="form-group" hidden>
-                                                        <input id="videoId" name="videoId" class="form-group" type="text"  value="${video.videoId}">
-                                                    </div>
-                                                    <div id="videoCover_div" class="form-group" >
-                                                        <div class="form-inline">
-                                                            <label for="videoCover" class="form-group">视频封面</label>
-                                                            <input type="file" id="uploadVideoFile" name="uploadVideoFile" class="file center-block" value="上传视频" />
-                                                            /*<img id="videoCover" src="${video.videoCoverLink}" class="img-responsive"  class="form-group" alt="Responsive image">*/
-                                                        </div>
-                                                    </div>
-                                                    <div id="videoName_div" class="form-group" >
-                                                        <div class="form-inline">
-                                                            <label for="videoName" class="form-group">标题</label>
-                                                            &nbsp;&nbsp;&nbsp;&nbsp;
-                                                            <input id="videoName" name="videoName" class="form-group" type="text"  value="${video.videoName}">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="form-inline">
-                                                            <label for="introduction" class="form-group">简介</label>
-                                                            &nbsp;&nbsp;&nbsp;&nbsp;
-                                                            <textarea class="form-group" id="videoDescription" name="videoDescription"  rows="3" value="${video.videoDescription}">${video.videoDescription}</textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group form-inline">
-                                                        <label for="videoCategory" class="form-group">分类</label>
-                                                        &nbsp;&nbsp;
-                                                        <select class="form-group" id="videoCategory" name="videoCategory">
-                                                            <option>${video.tblDatadictionary.dataDictionaryName}</option>
-                                                            <c:forEach items="${videoCategoryList}" var="vcl">
-                                                                <c:if test="${ vcl.dataDictionaryName != video.tblDatadictionary.dataDictionaryName }">
-                                                                    <option>${vcl.dataDictionaryName}</option>
-                                                                </c:if>
-                                                            </c:forEach>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group" >
-                                                        <div>
-                                                            <label for="tag" class="form-inline">标签</label>
-                                                            &nbsp;&nbsp;
-                                                            <input id="tag" name="tag" class="form-group" type="text">(多个标签用空格分隔)
-                                                            <div class="form-inline">
-                                                                <span class="form-group">常用的标签</span>
-                                                                <div class="bs-example form-group">
-                                                                    <c:forEach items="${videoTagList}" var="vtl" varStatus="status">
-                                                                        <span class="label label-default">${vtl.tblTag.tagName}</span>
-                                                                    </c:forEach>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <button class="btn btn-primary center-block" id="updateVideoProfileBtn">确认上传</button>
-                                                </form>
+                                            	<div class="row">
+                                            		<div class="col-md-2"></div>
+                                            		<div class="col-md-8">
+                                            		
+		                                            		<form id="form_VideoProfile" action="videoInfoEdit" class=" " method="POST">
+		
+			                                                    <div id="hidden_div" class="form-group" hidden>
+			                                                        <input id="videoId" name="videoId" class="form-group" type="text"  value="${video.videoId}">
+			                                                    </div>
+			                                                    <div id="videoCover_div" class="form-group " >
+			                                                        <div class="form-inline">
+			                                                            <label for="videoCover" class="form-group">视频封面</label>
+			                                                            &nbsp;&nbsp;
+			                                                            <input type="file" id="uploadVideoFile" name="uploadVideoFile" class="file form-group" value="上传视频" />
+			                                                        </div>
+			                                                    </div>
+			                                                    <div id="videoName_div" class="form-group" >
+			                                                        <div class="form-inline">
+			                                                            <label for="videoName" class="form-group">标题</label>
+			                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			                                                            <input id="videoName" name="videoName" class="form-group" type="text"  value="${video.videoName}">
+			                                                        </div>
+			                                                    </div>
+			                                                    <div class="form-group">
+			                                                        <div class="form-inline">
+			                                                            <label for="introduction" class="form-group">简介</label>
+			                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			                                                            <textarea class="form-group" id="videoDescription" name="videoDescription"  rows="3" value="${video.videoDescription}">${video.videoDescription}</textarea>
+			                                                        </div>
+			                                                    </div>
+			                                                    <div class="form-group form-inline">
+			                                                        <label for="videoCategory" class="form-group">分类</label>
+			                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			                                                        <select class="form-group" id="videoCategory" name="videoCategory">
+			                                                            <option>${video.tblDatadictionary.dataDictionaryName}</option>
+			                                                            <c:forEach items="${videoCategoryList}" var="vcl">
+			                                                                <c:if test="${ vcl.videoCategoryName != video.tblVideocategory.videoCategoryName }">
+			                                                                    <option>${vcl.videoCategoryName}</option>
+			                                                                </c:if>
+			                                                            </c:forEach>
+			                                                        </select>
+			                                                    </div>
+			                                                    <div class="form-group" >
+			                                                        <div>
+			                                                            <label for="tag" class="form-inline">标签</label>
+			                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			                                                            <input id="tag" name="tag" class="form-group" type="text"></input>(多个标签用空格分隔)
+			                                                            <div class="form-inline">
+			                                                                <span class="form-group">常用的标签:&nbsp;</span>
+			                                                                <div class="bs-example form-group">
+			                                                                    <c:forEach items="${videoTagList}" var="vtl" varStatus="status">
+			                                                                        <span class="label label-default" id="tag_${vtl.tagName}" onclick="addTag('${vtl.tagName}')" >${vtl.tagName}</span>
+			                                                                    </c:forEach>
+			                                                                </div>
+			                                                            </div>
+			                                                        </div>
+			                                                    </div>
+			                                                    <button class="btn btn-primary center-block" id="updateVideoProfileBtn">确认上传</button>
+			                                                </form>
+                                            		
+                                            		</div>
+                                            		<div class="col-md-2"></div>
+                                            	</div>
+                                                
                                             </div>
 
                                 </div>
@@ -148,6 +156,13 @@
 
 
 <script type="text/javascript">
+
+		function addTag(tagName)
+		{
+			var tag_str = $("#tag").val();
+			tag_str = tag_str + " " + tagName ;
+			$("#tag").val(tag_str);
+		}
 
 		var uploadCheck = false;
 		var uploadComplete = false;

@@ -17,7 +17,7 @@ public interface RelationDAO {
 	public Date getOperationDatetime(TblUser user, String operation_type, TblVideo video);
 	public Integer getVideoPlayNum(String videoId, String datetimeStart, String datetimeEnd);
 	public List<TblUservideorelation> getUservideorelationList(String userId, Date userOperationDatetimeStart, Date userOperationDatetimeEnd, String operationType);
-	public  List<Map<String, List<TblUservideorelation>>> getUservideorelationListByUserIdAndOpetationType(String userId, String operationType) throws ParseException;
+	public Map<String, List<TblUservideorelation>> getUservideorelationListByUserIdAndOpetationType(String userId, String operationType) throws ParseException;
 	
 	public Integer getUserPlayNum(String userId, String datetimeStart, String datetimeEnd);
 	public Integer getUserCollectNum(String userId, String datetimeStart, String datetimeEnd);

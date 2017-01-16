@@ -220,6 +220,14 @@ public class VideoDAOImpl implements VideoDAO{
 		TblTag tblTag = (TblTag) em.createQuery(jpql).setParameter("newTag", newTag).getResultList().get(0);
 		return tblTag;
 	}
+	
+	@Override
+	public List<TblTag> getTblTagList() {
+		// TODO Auto-generated method stub
+		String jpql = "select tt from TblTag tt";
+		List<TblTag> tblTagList = em.createQuery(jpql).getResultList();
+		return tblTagList;
+	}
 
 	@Override
 	public void addVideotagrelation(TblUser user, String videoId, String newTag) {
@@ -272,6 +280,8 @@ public class VideoDAOImpl implements VideoDAO{
 																								.getSingleResult();
 		return totalCount_playPeople.intValue();
 	}
+
+	
 
 	
 

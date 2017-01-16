@@ -31,8 +31,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.videoPlatform.dao.UserDAO;
+import com.videoPlatform.dao.VideoDAO;
 import com.videoPlatform.listener.MyProgressListener;
+import com.videoPlatform.model.TblTag;
 import com.videoPlatform.model.TblUser;
+import com.videoPlatform.model.TblVideoCategory;
 import com.videoPlatform.util.CustomMultipartResolver;
 import com.videoPlatform.util.Progress;
 
@@ -43,7 +46,8 @@ public class uploadController {
 	@Autowired(required=true)
 	UserDAO userDAO;
 	
-	
+	@Autowired(required=true)
+	VideoDAO videoDAO;
 	
 	@RequestMapping("uploadAvatar")
 	public ModelAndView uploadAvatar(@RequestParam(value = "imgFile", required = false) MultipartFile file, HttpServletRequest request) throws FileNotFoundException, IOException, InterruptedException{
@@ -127,9 +131,13 @@ public class uploadController {
 		 return s;
     }
 	
-	@RequestMapping(value="uploadVideoFile_load")
+	@RequestMapping(value="videoUpload_load")
 	public ModelAndView uploadVideoFile_load(){
 		ModelAndView mv = new ModelAndView("videoUpload");
+		List<TblVideoCategory> tblVideoCategoryList = videoDAO.getVideoCategoryList();
+		List<TblTag> tblTagList = videoDAO.getTblTagList();
+		mv.addObject("videoTagList", tblTagList);
+		mv.addObject("videoCategoryList", tblVideoCategoryList);
 		return mv;
 	}
 	
